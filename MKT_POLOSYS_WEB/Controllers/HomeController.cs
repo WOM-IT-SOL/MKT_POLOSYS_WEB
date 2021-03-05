@@ -38,5 +38,7 @@ namespace MKT_POLOSYS_WEB.Controllers
         {
             Console.WriteLine("hello");
         }
+
+        public string Getdata {get;set;}
     }
 }
