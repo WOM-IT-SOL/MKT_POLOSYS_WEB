@@ -1,0 +1,311 @@
+﻿@model MKT_POLOSYS_WEB.Models.IndexViewModel
+
+@{
+    ViewData["Title"] = "Index asdadasd";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script src="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"></script>
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable();
+
+        var myTable = $('#myTableList').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": true,
+            "data": [],
+            "columns": [
+                {
+                    "title": "SOURCE DATA",
+                    "data": "sourceData"
+                },{
+                    "title": "CABANG",
+                    "data": "cabang"
+                },{
+                    "title": "Region",
+                    "data": "regional"
+                }, {
+                    "title": "Task ID",
+                    "data": "taskID"
+                }, {
+                    "title": "Jenis Task",
+                    "data": "jenisTask"
+                }, {
+                    "title": "Cust ID",
+                    "data": "customerID"
+                }, {
+                    "title": "Customer Name",
+                    "data": "customerName"
+                }, {
+                    "title": "Distributed Date",
+                    "data": "distributedDT"
+                }, {
+                    "title": "Started Date",
+                    "data": "startedDT"
+                }, {
+                    "title": "SLA Remaining",
+                    "data": "slaRemaining"
+                }, {
+                    "title": "Field Person Name",
+                    "data": "fieldPersonName"
+                }, {
+                    "title": "Emp Position",
+                    "data": "empPosition"
+                }, {
+                    "title": "Status Prospek",
+                    "data": "statusProspek"
+                }, {
+                    "title": "Priority Level",
+                    "data": "priorityLevel"
+                }, {
+                    "title": "Aplikasi IA",
+                    "data": "aplikasiAI"
+                }, {
+                    "title": "Application ID",
+                    "data": "applicationID"
+                }, {
+                    "title": "Status MSS",
+                    "data": "statusMSS"
+                }, {
+                    "title": "Status WISE",
+                    "data": "statusWISE"
+                }, {
+                    "title": "Status Dukcapil",
+                    "data": "statusDukcapil"
+                }, {
+                    "title": "SOA",
+                    "data": "soa"
+                }, {
+                    "title": "Referantor 1",
+                    "data": "referentorName"
+                }, {
+                    "title": "Referantor 2",
+                    "data": "referentorName2"
+                }
+            ]
+        });
+
+
+            $.ajax({
+                url: '@Url.Action("ListDetail")',
+                contentType: false,
+                async: false,
+                processData: false,
+                dataType: 'json',
+                type: 'POST',
+                success: function (result) {
+                    var jsonString = JSON.stringify(result);
+                        myTable.clear();
+                        $.each(result, function (index, value) {
+                            myTable.row.add(value);
+                        });
+                        myTable.draw();
+                }
+            });
+
+    });
+</script>
+<style>
+    .spasi {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    .ex1 {
+        width: 100%;
+        overflow-x: scroll;
+    }
+</style>
+
+<form method="post" id="frm">
+    <div class="container">
+        <div class="row">
+            <div class="col spasi">
+                Region
+            </div>
+            <div class="col">
+                <select class="form-control" data-toggle="dropdown" id="pType" name="pType">
+                    <option>All</option>
+                    @foreach (var item in Model.ddlRegion)
+                    {
+                        <option id="" value="@item.Value"> @item.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col spasi">
+                Field Person Name
+            </div>
+            <div class="col">
+                <input id="txtFpName" class="form-control" />
+            </div>
+            <div>
+                Download All
+            </div>
+            <div>
+                <button id="btnDownload" class="btn btn-primary" style="background-color:#f1f1f1;color:black">Download</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col spasi">
+                Branch Name
+            </div>
+            <div class="col">
+                <select class="form-control" data-toggle="dropdown" id="pType" name="pType">
+                    <option>All</option>
+                    @foreach (var item in Model.ddlBranch)
+                    {
+                        <option id="" value="@item.Value"> @item.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col spasi">
+                Emp Position
+            </div>
+            <div class="col">
+                <select class="form-control" data-toggle="dropdown" id="pType" name="pType">
+                    <option>All</option>
+                    @foreach (var item in Model.ddlEmpPosition)
+                    {
+                        <option id="" value="@item.Value"> @item.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col-2"></div>
+        </div>
+        <div class="row">
+            <div class="col spasi">
+                Task ID
+            </div>
+            <div class="col">
+                <input id="txtFpName" class="form-control" />
+            </div>
+            <div class="col spasi">
+                Status Prospek
+            </div>
+            <div class="col">
+                <select class="form-control" data-toggle="dropdown" id="pType" name="pType">
+                    <option>All</option>
+                    @foreach (var item in Model.ddlStsProspek)
+                    {
+                        <option id="" value="@item.Value"> @item.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col-2"></div>
+        </div>
+        <div class="row">
+            <div class="col spasi">
+                Application ID
+            </div>
+            <div class="col">
+                <input id="txtFpName" class="form-control" />
+            </div>
+            <div class="col spasi">
+                Priority Level
+            </div>
+            <div class="col">
+                <select class="form-control" data-toggle="dropdown" id="pType" name="pType">
+                    <option>All</option>
+                    @foreach (var item in Model.ddlPriotityLevel)
+                    {
+                        <option id="" value="@item.Value"> @item.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col-2"></div>
+        </div>
+        <div class="row">
+            <div class="col spasi">
+                Customer Name
+            </div>
+            <div class="col">
+                <input id="txtFpName" class="form-control" />
+            </div>
+            <div class="col spasi">
+                Status Dukcapil
+            </div>
+            <div class="col">
+                <select class="form-control" data-toggle="dropdown" id="pType" name="pType">
+                    <option>All</option>
+                    @foreach (var item in Model.ddlStatusDukcapil)
+                    {
+                        <option id="" value="@item.Value"> @item.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col-2"></div>
+        </div>
+        <div class="row">
+            <div class="col spasi">
+                Distributed Date >=
+            </div>
+            <div class="col">
+
+                <input style="width: 200px;" class="form-control" type="date" id="edate" name="edate">
+            </div>
+            <div class="col spasi">
+                Distributed Date <=
+            </div>
+            <div class="col">
+
+                <input style="width: 200px;" class="form-control" type="date" id="edate" name="edate">
+            </div>
+            <div class="col-2"></div>
+        </div>
+        <div class="row">
+            <div class="col spasi">
+                Source Data
+            </div>
+            <div class="col">
+                <select class="form-control" data-toggle="dropdown" id="pType" name="pType">
+                    <option>All</option>
+                    @foreach (var item in Model.ddlSourceData)
+                    {
+                        <option id="" value="@item.Value"> @item.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col spasi">
+            </div>
+            <div class="col">
+            </div>
+            <div class="col-2"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="col" style="background-color:aqua">
+            Task History
+        </div>
+        <div class="col">
+            <div class="card ex1">
+                <div class="container-fluid" style="padding: 30px;">
+                    <table id="myTableList" class="table table-striped table-bordered" style="width:100%">
+                        <thead class="font_header">
+                        </thead>
+                        <tbody class="font_detail">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</form>
+
+<script>
+    $("#btnDownload").click(function (e) {
+        e.preventDefault(); 
+        var href = '';
+        href = 'TaskInquiry/Excel';
+        window.location.href = href;
+    });
+
+</script>

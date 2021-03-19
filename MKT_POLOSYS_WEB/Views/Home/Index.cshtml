@@ -1,8 +1,154 @@
-﻿@{
+﻿@model MKT_POLOSYS_WEB.Models.IndexViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<style>
+    .spasi {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+</style>
+
+<h1 style="background-color:aqua">
+    TASK DETAIL
+</h1>
+<button type="button" id="btnTaskDetail" class="btn-primary" ></button>
+<button type="button" id="btnHistoryPenanganan" class="btn-primary"></button>
+<form method="post" id="frm">
+    <div class="container">
+        <div class="row">
+            <div class="col spasi" style="background-color:gainsboro;border-bottom:solid;">
+                Task ID
+            </div>
+            <div class="col- spasi">
+                :
+            </div>
+            <div class="col spasi" style="border-bottom: solid;">
+            </div>
+            <div class="col- spasi">
+            </div>
+            <div class="col spasi" style="background-color:gainsboro;border-bottom:solid" ;border-color:lightgray>
+                Field Person Name
+            </div>
+            <div class="col- spasi">
+                :
+            </div>
+            <div class="col spasi" style="border-bottom: solid;">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col spasi" style="background-color:gainsboro;border-bottom:solid;">
+                Jenis Task
+            </div>
+            <div class="col- spasi">
+                :
+            </div>
+            <div class="col spasi" style="border-bottom: solid;">
+            </div>
+            <div class="col- spasi">
+            </div>
+            <div class="col spasi" style="background-color:gainsboro;border-bottom:solid" ;border-color:lightgray>
+                Emp Position
+            </div>
+            <div class="col- spasi">
+                :
+            </div>
+            <div class="col spasi" style="border-bottom: solid;">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col spasi" style="background-color:gainsboro;border-bottom:solid;">
+                Customer Name
+            </div>
+            <div class="col- spasi">
+                :
+            </div>
+            <div class="col spasi" style="border-bottom: solid;">
+            </div>
+            <div class="col- spasi">
+            </div>
+            <div class="col spasi" style="background-color:gainsboro;border-bottom:solid" ;border-color:lightgray>
+                Status Prospek
+            </div>
+            <div class="col- spasi">
+                :
+            </div>
+            <div class="col spasi" style="border-bottom: solid;">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col spasi" style="background-color:gainsboro;border-bottom:solid;">
+                Distributed Date
+            </div>
+            <div class="col- spasi">
+                :
+            </div>
+            <div class="col spasi" style="border-bottom: solid;">
+            </div>
+            <div class="col- spasi">
+            </div>
+            <div class="col spasi" style="background-color:gainsboro;border-bottom:solid" ;border-color:lightgray>
+                Priority Level
+            </div>
+            <div class="col- spasi">
+                :
+            </div>
+            <div class="col spasi" style="border-bottom: solid;">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col spasi" style="background-color:gainsboro;border-bottom:solid;">
+                Started Date
+            </div>
+            <div class="col- spasi">
+                :
+            </div>
+            <div class="col spasi" style="border-bottom: solid;">
+            </div>
+            <div class="col- spasi">
+            </div>
+            <div class="col spasi" style="background-color:gainsboro;border-bottom:solid" ;border-color:lightgray>
+                Aplikasi IA
+            </div>
+            <div class="col- spasi">
+                :
+            </div>
+            <div class="col spasi" style="border-bottom: solid;">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col spasi" style="background-color:gainsboro;border-bottom:solid;">
+                Status Dukcapil
+            </div>
+            <div class="col- spasi">
+                :
+            </div>
+            <div class="col spasi" style="border-bottom: solid;">
+            </div>
+            <div class="col- spasi">
+            </div>
+            <div class="col spasi" style="background-color:gainsboro;border-bottom:solid" ;border-color:lightgray>
+                Source Data
+            </div>
+            <div class="col- spasi">
+                :
+            </div>
+            <div class="col spasi" style="border-bottom: solid;">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="col" style="background-color:aqua">
+            Task History
+        </div>
+    </div>
+</form>
