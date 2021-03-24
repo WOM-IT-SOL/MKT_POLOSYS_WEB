@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>a2929809-6533-42f8-a81d-45abfbfa09d8</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,6 +29,12 @@
 
   <ItemGroup>
     <None Include="wwwroot\js\jquery-3.6.0.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="POLO_EXTENSION">
+      <HintPath>D:\Arif 000204694\Work document\WEB POOLING\dll\POLO_EXTENSION.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 

@@ -1,115 +1,307 @@
 ﻿@model MKT_POLOSYS_WEB.Models.IndexViewModel
 
-@{
-    ViewData["Title"] = "Index asdadasd";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+
+
+@Html.HiddenFor(m => m.empNo)
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.bundle.min.js" integrity="sha512-wV7Yj1alIZDqZFCUQJy85VN+qvEIly93fIQAN7iqDFCPEucLCeNFz4r35FCo9s6WrpdDQPi80xbljXB8Bjtvcg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
 <script>
-    $(document).ready(function () {
-        $('#example').DataTable();
+        $(document).ready(function () {
+            $('#ddlPriorityLevel').multiselect();
 
-        var myTable = $('#myTableList').DataTable({
-            "paging": true,
-            "lengthChange": true,
-            "searching": true,
-            "ordering": true,
-            "info": true,
-            "autoWidth": true,
-            "data": [],
-            "columns": [
-                {
-                    "title": "SOURCE DATA",
-                    "data": "sourceData"
-                },{
-                    "title": "CABANG",
-                    "data": "cabang"
-                },{
-                    "title": "Region",
-                    "data": "regional"
-                }, {
-                    "title": "Task ID",
-                    "data": "taskID"
-                }, {
-                    "title": "Jenis Task",
-                    "data": "jenisTask"
-                }, {
-                    "title": "Cust ID",
-                    "data": "customerID"
-                }, {
-                    "title": "Customer Name",
-                    "data": "customerName"
-                }, {
-                    "title": "Distributed Date",
-                    "data": "distributedDT"
-                }, {
-                    "title": "Started Date",
-                    "data": "startedDT"
-                }, {
-                    "title": "SLA Remaining",
-                    "data": "slaRemaining"
-                }, {
-                    "title": "Field Person Name",
-                    "data": "fieldPersonName"
-                }, {
-                    "title": "Emp Position",
-                    "data": "empPosition"
-                }, {
-                    "title": "Status Prospek",
-                    "data": "statusProspek"
-                }, {
-                    "title": "Priority Level",
-                    "data": "priorityLevel"
-                }, {
-                    "title": "Aplikasi IA",
-                    "data": "aplikasiAI"
-                }, {
-                    "title": "Application ID",
-                    "data": "applicationID"
-                }, {
-                    "title": "Status MSS",
-                    "data": "statusMSS"
-                }, {
-                    "title": "Status WISE",
-                    "data": "statusWISE"
-                }, {
-                    "title": "Status Dukcapil",
-                    "data": "statusDukcapil"
-                }, {
-                    "title": "SOA",
-                    "data": "soa"
-                }, {
-                    "title": "Referantor 1",
-                    "data": "referentorName"
-                }, {
-                    "title": "Referantor 2",
-                    "data": "referentorName2"
-                }
-            ]
-        });
+            var myTable = $('#myTableList').DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": true,
+                "data": [],
+                "columns": [
+                    {
+                        "title": "SOURCE DATA",
+                        "data": "sourceData"
+                    }, {
+                        "title": "CABANG",
+                        "data": "cabang"
+                    }, {
+                        "title": "Region",
+                        "data": "regional"
+                    }, {
+                        "title": "Task ID",
+                        "data": "taskID"
+                    }, {
+                        "title": "Jenis Task",
+                        "data": "jenisTask"
+                    }, {
+                        "title": "Cust ID",
+                        "data": "customerID"
+                    }, {
+                        "title": "Customer Name",
+                        "data": "customerName"
+                    }, {
+                        "title": "Distributed Date",
+                        "data": "distributedDT"
+                    }, {
+                        "title": "Started Date",
+                        "data": "startedDT"
+                    }, {
+                        "title": "SLA Remaining",
+                        "data": "slaRemaining"
+                    }, {
+                        "title": "Field Person Name",
+                        "data": "fieldPersonName"
+                    }, {
+                        "title": "Emp Position",
+                        "data": "empPosition"
+                    }, {
+                        "title": "Status Prospek",
+                        "data": "statusProspek"
+                    }, {
+                        "title": "Priority Level",
+                        "data": "priorityLevel"
+                    }, {
+                        "title": "Aplikasi IA",
+                        "data": "aplikasiAI"
+                    }, {
+                        "title": "Application ID",
+                        "data": "applicationID"
+                    }, {
+                        "title": "Status MSS",
+                        "data": "statusMSS"
+                    }, {
+                        "title": "Status WISE",
+                        "data": "statusWISE"
+                    }, {
+                        "title": "Status Dukcapil",
+                        "data": "statusDukcapil"
+                    }, {
+                        "title": "SOA",
+                        "data": "soa"
+                    }, {
+                        "title": "Referantor 1",
+                        "data": "referentorName"
+                    }, {
+                        "title": "Referantor 2",
+                        "data": "referentorName2"
+                    }, {
+                        "title": "order ID",
+                        "data": "orderInID"
+                    },
+                    {
+                        defaultContent: '<input type="button" class="taskID" value="Download"/>'
+                    }],
+                columnDefs: [
+                    {
+                        targets: [6],
+                        render: function (data) {
+                            return '<a href="" class="rowClick">' + data + '</a>'
+                        }
+                    }, {
+                        targets: [22],
+                        visible: false,
+                        searchable: false
+                    }
+                    ]
+            });
+
+            
 
 
-            $.ajax({
-                url: '@Url.Action("ListDetail")',
-                contentType: false,
-                async: false,
-                processData: false,
-                dataType: 'json',
-                type: 'POST',
-                success: function (result) {
-                    var jsonString = JSON.stringify(result);
+
+            function list() {
+                var pRegion = $("#ddlRegion").val(),
+                    pFPName = $("#txtFpName").val(),
+                    pBranchName = $("#ddlBranch").val(),
+                    pEmpPosition = $("#ddlEmpPosition").val(),
+                    pTaskID = $("#txtTaskID").val(),
+                    pStatProspek = $("#ddlStsProspek").val(),
+                    pAppID = $("#txtAppID").val(),
+                    pPriorityLevel = $("#ddlPriorityLevel").val(),
+                    pCustName = $("#txtCustName").val(),
+                    pStatDukcapil = $("#ddlStatusDukcapil").val(),
+                    pSdate = $("#sdate").val(),
+                    pEdate = $("#edate").val(),
+                    pSourceData = $("#ddlSourceData").val()
+
+                if (pFPName == null || pFPName == "")
+                    pFPName = "All";
+                if (pTaskID == null || pTaskID == "")
+                    pTaskID = "All";
+                if (pAppID == null || pAppID == "")
+                    pAppID = "All";
+                if (pCustName == null || pCustName == "")
+                    pCustName = "All";
+                if (pPriorityLevel == null || pPriorityLevel == "")
+                    pPriorityLevel = "All";
+                if (pSdate == null || pSdate == "")
+                    pSdate = "All";
+                if (pEdate == null || pEdate == "")
+                    pEdate = "All";
+
+                $.ajax({
+                    url: '@Url.Action("ListDetail")',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    async: false,
+                    dataType: 'json',
+                    type: 'POST',
+                    data: {
+                        pRegion : $("#ddlRegion").val(),
+                        pFPName : pFPName,
+                        pBranchName : $("#ddlBranch").val(),
+                        pEmpPosition : $("#ddlEmpPosition").val(),
+                        pTaskID : pTaskID,
+                        pStatProspek : $("#ddlStsProspek").val(),
+                        pAppID : pAppID,
+                        pPriorityLevel : pPriorityLevel,
+                        pCustName : pCustName,
+                        pStatDukcapil : $("#ddlStatusDukcapil").val(),
+                        pSdate : pSdate,
+                        pEdate :pEdate,
+                        pSourceData : $("#ddlSourceData").val(),
+                        pEmpNo : $("#empNo").val()
+                    },
+                    success: function (result) {
+                        var jsonString = JSON.stringify(result);
                         myTable.clear();
                         $.each(result, function (index, value) {
                             myTable.row.add(value);
                         });
                         myTable.draw();
-                }
+                    }
+                });
+            }
+
+
+            $('#myTableList tbody').on('click', '.taskID', function (e) {
+                e.preventDefault();
+                var row = $(this).closest('tr');
+                var id= myTable.row(row).data().orderInID;
+                var href = '';
+                href = 'TaskInquiry/ExcelDetail?pID=' + id + "&pEmpNo=" + $("#empNo").val()
+                window.location.href = href;
             });
 
-    });
+            $('#myTableList tbody').on('click', '.rowClick', function (e) {
+                e.preventDefault();
+                var row = $(this).closest('tr');
+                var href = '';
+                href = 'Taskinquiry/Views/'+myTable.row(row).data().orderInID;
+                window.location.href = href;
+            });
+
+            $('#btnSearch').click(function (e) {
+                e.preventDefault();
+                list();
+            });
+
+            
+
+    $("#btnDownload").click(function (e) {
+            e.preventDefault();
+            var pRegion = $("#ddlRegion").val(),
+                pFPName = $("#txtFpName").val(),
+                pBranchName = $("#ddlBranch").val(),
+                pEmpPosition = $("#ddlEmpPosition").val(),
+                pTaskID = $("#txtTaskID").val(),
+                pStatProspek = $("#ddlStsProspek").val(),
+                pAppID = $("#txtAppID").val(),
+                pPriorityLevel = $("#ddlPriorityLevel").val(),
+                pCustName = $("#txtCustName").val(),
+                pStatDukcapil = $("#ddlStatusDukcapil").val(),
+                pSdate = $("#sdate").val(),
+                pEdate = $("#edate").val(),
+                pSourceData = $("#ddlSourceData").val(),
+                pEmpNo = $("#empNo").val()
+
+            if (pFPName == null || pFPName == "")
+                pFPName = "All";
+            if (pTaskID == null || pTaskID == "")
+                pTaskID = "All";
+            if (pAppID == null || pAppID == "")
+                pAppID = "All";
+            if (pCustName == null || pCustName == "")
+                pCustName = "All";
+            if (pPriorityLevel == null || pPriorityLevel == "")
+                pPriorityLevel = "All";
+            if (pSdate == null || pSdate == "")
+                pSdate = "All";
+            if (pEdate == null || pEdate == "")
+                pEdate = "All";
+            var href = '';
+            href = 'TaskInquiry/Excel?pRegion=' + pRegion + "&pFPName="
+                + pFPName + "&pBranchName=" + pBranchName + "&pEmpPosition="
+                + pEmpPosition + "&pTaskID=" + pTaskID + "&pStatProspek="
+                + pStatProspek + "&pAppID=" + pAppID + "&pPriorityLevel="
+                + pPriorityLevel + "&pCustName=" + pCustName + "&pStatDukcapil="
+                + pStatDukcapil + "&pSdate=" + pSdate + "&pEdate="
+                + pEdate + "&pSourceData=" + pSourceData + "&pEmpNo="
+                + pEmpNo
+
+            window.location.href = href;
+        });
+
+
+
+        $('#btnReset').click(function (e) {
+            e.preventDefault();
+            var date = new Date();
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear();
+            if (month < 10) month = "0" + month;
+            if (day < 10) day = "0" + day;
+            var today = year + "-" + month + "-" + day;
+            $("#ddlRegion").val("All");
+            $("#txtFpName").val("");
+            $("#ddlBranch").val();
+            $("#ddlEmpPosition").val("All");
+            $("#txtTaskID").val("");
+            $("#ddlStsProspek").val("All");
+            $("#txtAppID").val("");
+            $("#ddlPriorityLevel option:selected").prop("selected", false);
+            $('#ddlPriorityLevel').multiselect('rebuild');
+            $("#txtCustName").val("");
+            $("#ddlStatusDukcapil").val("All");
+            $("#sdate").val(today);
+            $("#edate").val(today);
+            $("#ddlSourceData").val("All");
+        });
+
+            $(document).on("change", "#ddlRegion", function () {
+                var selectedRegion = $(this).val();
+                $("#ddlBranch").find("option").each(function () {
+                    if ($(this).data("region") == selectedRegion) {
+                        $(this).show();
+                        $('#ddlBranch [data-region="0"]').show()
+                        $("#ddlBranch").val("");
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+
+        });
 </script>
 <style>
     .spasi {
@@ -121,57 +313,61 @@
         width: 100%;
         overflow-x: scroll;
     }
+
+    .tableDownload {
+        font-size: 8px;
+    }
 </style>
+
+
 
 <form method="post" id="frm">
     <div class="container">
         <div class="row">
-            <div class="col spasi">
+            <div class="col-2 spasi">
                 Region
             </div>
             <div class="col">
-                <select class="form-control" data-toggle="dropdown" id="pType" name="pType">
+                <select class="form-control" data-toggle="dropdown" id="ddlRegion" name="ddlRegion">
                     <option>All</option>
                     @foreach (var item in Model.ddlRegion)
                     {
-                        <option id="" value="@item.Value"> @item.Text</option>
+                        <option value="@item.Value"> @item.Text</option>
                     }
                 </select>
             </div>
-            <div class="col spasi">
+            <div class="col-2 spasi">
                 Field Person Name
             </div>
             <div class="col">
                 <input id="txtFpName" class="form-control" />
             </div>
-            <div>
-                Download All
-            </div>
-            <div>
-                <button id="btnDownload" class="btn btn-primary" style="background-color:#f1f1f1;color:black">Download</button>
+            <div class="col-2">
+                Download All<button id="btnDownload" class="btn btn-primary" style="background-color:#f1f1f1;color:black">Download</button>
             </div>
         </div>
         <div class="row">
-            <div class="col spasi">
+            <div class="col-2 spasi">
                 Branch Name
             </div>
             <div class="col">
-                <select class="form-control" data-toggle="dropdown" id="pType" name="pType">
-                    <option>All</option>
+                <select class="form-control" data-toggle="dropdown" id="ddlBranch" name="ddlBranch">
+                    <option data-region="0">All</option>
                     @foreach (var item in Model.ddlBranch)
                     {
-                        <option id="" value="@item.Value"> @item.Text</option>
+                        <option data-region="@item.Filter" value="@item.Value"> @item.Text</option>
                     }
                 </select>
             </div>
-            <div class="col spasi">
+            <div class="col-2 spasi">
                 Emp Position
             </div>
             <div class="col">
-                <select class="form-control" data-toggle="dropdown" id="pType" name="pType">
+                <select class="form-control" data-toggle="dropdown" id="ddlEmpPosition" name="ddlEmpPosition">
                     <option>All</option>
                     @foreach (var item in Model.ddlEmpPosition)
                     {
+
                         <option id="" value="@item.Value"> @item.Text</option>
                     }
                 </select>
@@ -179,40 +375,39 @@
             <div class="col-2"></div>
         </div>
         <div class="row">
-            <div class="col spasi">
+            <div class="col-2 spasi">
                 Task ID
             </div>
             <div class="col">
-                <input id="txtFpName" class="form-control" />
+                <input id="txtTaskID" class="form-control" />
             </div>
-            <div class="col spasi">
+            <div class="col-2 spasi">
                 Status Prospek
             </div>
             <div class="col">
-                <select class="form-control" data-toggle="dropdown" id="pType" name="pType">
+                <select class="form-control" data-toggle="dropdown" id="ddlStsProspek" name="ddlStsProspek">
                     <option>All</option>
                     @foreach (var item in Model.ddlStsProspek)
                     {
-                        <option id="" value="@item.Value"> @item.Text</option>
+                        <option value="@item.Value"> @item.Text</option>
                     }
                 </select>
             </div>
             <div class="col-2"></div>
         </div>
         <div class="row">
-            <div class="col spasi">
+            <div class="col-2 spasi">
                 Application ID
             </div>
             <div class="col">
-                <input id="txtFpName" class="form-control" />
+                <input id="txtAppID" class="form-control" />
             </div>
-            <div class="col spasi">
+            <div class="col-2 spasi">
                 Priority Level
             </div>
             <div class="col">
-                <select class="form-control" data-toggle="dropdown" id="pType" name="pType">
-                    <option>All</option>
-                    @foreach (var item in Model.ddlPriotityLevel)
+                <select id="ddlPriorityLevel" multiple="multiple">
+                    @foreach (var item in Model.ddlPriorityLevel)
                     {
                         <option id="" value="@item.Value"> @item.Text</option>
                     }
@@ -221,17 +416,17 @@
             <div class="col-2"></div>
         </div>
         <div class="row">
-            <div class="col spasi">
+            <div class="col-2 spasi">
                 Customer Name
             </div>
             <div class="col">
-                <input id="txtFpName" class="form-control" />
+                <input id="txtCustName" class="form-control" />
             </div>
-            <div class="col spasi">
+            <div class="col-2 spasi">
                 Status Dukcapil
             </div>
             <div class="col">
-                <select class="form-control" data-toggle="dropdown" id="pType" name="pType">
+                <select class="form-control" data-toggle="dropdown" id="ddlStatusDukcapil" name="ddlStatusDukcapil">
                     <option>All</option>
                     @foreach (var item in Model.ddlStatusDukcapil)
                     {
@@ -242,28 +437,30 @@
             <div class="col-2"></div>
         </div>
         <div class="row">
-            <div class="col spasi">
+            <div class="col-2 spasi">
                 Distributed Date >=
             </div>
             <div class="col">
-
-                <input style="width: 200px;" class="form-control" type="date" id="edate" name="edate">
+                <input class="form-control" type="date" id="sdate" name="sdate" style="line-height:1.5">
             </div>
-            <div class="col spasi">
+            <div class="col-2 spasi">
                 Distributed Date <=
             </div>
             <div class="col">
 
-                <input style="width: 200px;" class="form-control" type="date" id="edate" name="edate">
+                <input class="form-control" type="date" id="edate" name="edate" style="line-height:1.5">
             </div>
-            <div class="col-2"></div>
+            <div class="col-2">
+                <button id="btnSearch" class="btn btn-primary" style="background-color:#f1f1f1;color:black">Search</button>
+                <button id="btnReset" class="btn btn-primary" style="background-color:#f1f1f1;color:black">Reset</button>
+            </div>
         </div>
         <div class="row">
-            <div class="col spasi">
+            <div class="col-2 spasi">
                 Source Data
             </div>
             <div class="col">
-                <select class="form-control" data-toggle="dropdown" id="pType" name="pType">
+                <select class="form-control" data-toggle="dropdown" id="ddlSourceData" name="ddlSourceData">
                     <option>All</option>
                     @foreach (var item in Model.ddlSourceData)
                     {
@@ -271,7 +468,7 @@
                     }
                 </select>
             </div>
-            <div class="col spasi">
+            <div class="col-2 spasi">
             </div>
             <div class="col">
             </div>
@@ -283,7 +480,7 @@
         <div class="col" style="background-color:aqua">
             Task History
         </div>
-        <div class="col">
+        <div class="col tableDownload">
             <div class="card ex1">
                 <div class="container-fluid" style="padding: 30px;">
                     <table id="myTableList" class="table table-striped table-bordered" style="width:100%">
@@ -299,13 +496,3 @@
     </div>
 
 </form>
-
-<script>
-    $("#btnDownload").click(function (e) {
-        e.preventDefault(); 
-        var href = '';
-        href = 'TaskInquiry/Excel';
-        window.location.href = href;
-    });
-
-</script>

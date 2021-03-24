@@ -14,9 +14,11 @@ namespace MKT_POLOSYS_WEB.Models
         public IEnumerable<DropdownListViewModel> ddlBranch { get; set; }
         public IEnumerable<DropdownListViewModel> ddlEmpPosition { get; set; }
         public IEnumerable<DropdownListViewModel> ddlStsProspek { get; set; }
-        public IEnumerable<DropdownListViewModel> ddlPriotityLevel { get; set; }
+        public IEnumerable<DropdownListViewModel> ddlPriorityLevel { get; set; }
         public IEnumerable<DropdownListViewModel> ddlStatusDukcapil { get; set; }
         public IEnumerable<DropdownListViewModel> ddlSourceData { get; set; }
+
+        public string empNo { get; set; }
 
 
     }

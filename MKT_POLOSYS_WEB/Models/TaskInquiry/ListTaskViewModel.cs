@@ -33,6 +33,7 @@ namespace MKT_POLOSYS_WEB.Models
         public string soa { get; set; }
         public string referentorName { get; set; }
         public string referentorName2 { get; set; }
+        public string orderInID { get; set; }
 
 
     }
