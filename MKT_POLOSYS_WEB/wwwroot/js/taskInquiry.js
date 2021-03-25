@@ -1,5 +1,4 @@
-﻿
-$('#ddlPriorityLevel').multiselect();
+﻿$('#ddlPriorityLevel').multiselect();
 
 var myTable = $('#myTableList').DataTable({
     "paging": true,
@@ -81,7 +80,8 @@ var myTable = $('#myTableList').DataTable({
             "data": "orderInID"
         },
         {
-            defaultContent: '<input type="button" class="taskID" value="Download" />'
+            "title":"download",
+            defaultContent: '<input type="button" class="taskID" value="Download"/>'
         }],
     columnDefs: [
         {
@@ -97,80 +97,7 @@ var myTable = $('#myTableList').DataTable({
     ]
 });
 
-$("#btnDownload").click(function (e) {
-    e.preventDefault();
-    var pRegion = $("#ddlRegion").val(),
-        pFPName = $("#txtFpName").val(),
-        pBranchName = $("#ddlBranch").val(),
-        pEmpPosition = $("#ddlEmpPosition").val(),
-        pTaskID = $("#txtTaskID").val(),
-        pStatProspek = $("#ddlStsProspek").val(),
-        pAppID = $("#txtAppID").val(),
-        pPriorityLevel = $("#ddlPriorityLevel").val(),
-        pCustName = $("#txtCustName").val(),
-        pStatDukcapil = $("#ddlStatusDukcapil").val(),
-        pSdate = $("#sdate").val(),
-        pEdate = $("#edate").val(),
-        pSourceData = $("#ddlSourceData").val(),
-        pEmpNo = $("#empNo").val()
 
-    if (pFPName == null || pFPName == "")
-        pFPName = "All";
-    if (pTaskID == null || pTaskID == "")
-        pTaskID = "All";
-    if (pAppID == null || pAppID == "")
-        pAppID = "All";
-    if (pCustName == null || pCustName == "")
-        pCustName = "All";
-    if (pPriorityLevel == null || pPriorityLevel == "")
-        pPriorityLevel = "All";
-    if (pSdate == null || pSdate == "")
-        pSdate = "All";
-    if (pEdate == null || pEdate == "")
-        pEdate = "All";
-    var href = '';
-    href = 'TaskInquiry/Excel?pRegion=' + pRegion + "&pFPName="
-        + pFPName + "&pBranchName=" + pBranchName + "&pEmpPosition="
-        + pEmpPosition + "&pTaskID=" + pTaskID + "&pStatProspek="
-        + pStatProspek + "&pAppID=" + pAppID + "&pPriorityLevel="
-        + pPriorityLevel + "&pCustName=" + pCustName + "&pStatDukcapil="
-        + pStatDukcapil + "&pSdate=" + pSdate + "&pEdate="
-        + pEdate + "&pSourceData=" + pSourceData + "&pEmpNo="
-        + pEmpNo
-
-    window.location.href = href;
-});
-
-$('#btnSearch').click(function (e) {
-    e.preventDefault();
-    list();
-});
-
-$('#btnReset').click(function (e) {
-    e.preventDefault();
-    var date = new Date();
-    var day = date.getDate();
-    var month = date.getMonth() + 1;
-    var year = date.getFullYear();
-    if (month < 10) month = "0" + month;
-    if (day < 10) day = "0" + day;
-    var today = year + "-" + month + "-" + day;
-    $("#ddlRegion").val("All");
-    $("#txtFpName").val("");
-    $("#ddlBranch").val();
-    $("#ddlEmpPosition").val("All");
-    $("#txtTaskID").val("");
-    $("#ddlStsProspek").val("All");
-    $("#txtAppID").val("");
-    $("#ddlPriorityLevel option:selected").prop("selected", false);
-    $('#ddlPriorityLevel').multiselect('rebuild');
-    $("#txtCustName").val("");
-    $("#ddlStatusDukcapil").val("All");
-    $("#sdate").val(today);
-    $("#edate").val(today);
-    $("#ddlSourceData").val("All");
-    list();
-});
 
 
 
@@ -205,7 +132,7 @@ function list() {
         pEdate = "All";
 
     $.ajax({
-        url: '@Url.Action("ListDetail")',
+        url: 'TaskInquiry/ListDetail',
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
         async: false,
         dataType: 'json',
@@ -255,7 +182,118 @@ $('#myTableList tbody').on('click', '.rowClick', function (e) {
     window.location.href = href;
 });
 
+$('#btnSearch').click(function (e) {
+    e.preventDefault();
+    if ($("#sdate").val() == "") {
+        swal("Information", "Distributed Date >=  Date harus diisi.", "info")
+        return false;
+    }
+    if ($("#edate").val() == "") {
+        swal("Information", "Distributed Date <=  harus diisi.", "info")
+        return false;
+    }
+    list();
+});
 
+
+
+$("#btnDownload").click(function (e) {
+    e.preventDefault();
+    if ($("#sdate").val() == "") {
+        swal("Information", "Distributed Date >=  Date harus diisi.", "info")
+        return false;
+    }
+    if ($("#edate").val() == "") {
+        swal("Information", "Distributed Date <=  harus diisi.", "info")
+        return false;
+    }
+
+    $.ajax({
+        url: 'TaskInquiry/ValidasiDownload',
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+        async: false,
+        dataType: 'json',
+        type: 'POST',
+        data: {
+            pEmpNo: $("#empNo").val()
+        },
+        success: function (isSucceed) {
+            if (isSucceed == true) {
+                swal("Information", "Proses Download tidak bisa dilakukan karena belum dilakukan Upload pada proses Download sebelumnyaProses Download tidak bisa dilakukan karena belum dilakukan Upload pada proses Download sebelumnya.", "info")
+                return false;
+            }
+            else {
+                var pRegion = $("#ddlRegion").val(),
+                    pFPName = $("#txtFpName").val(),
+                    pBranchName = $("#ddlBranch").val(),
+                    pEmpPosition = $("#ddlEmpPosition").val(),
+                    pTaskID = $("#txtTaskID").val(),
+                    pStatProspek = $("#ddlStsProspek").val(),
+                    pAppID = $("#txtAppID").val(),
+                    pPriorityLevel = $("#ddlPriorityLevel").val(),
+                    pCustName = $("#txtCustName").val(),
+                    pStatDukcapil = $("#ddlStatusDukcapil").val(),
+                    pSdate = $("#sdate").val(),
+                    pEdate = $("#edate").val(),
+                    pSourceData = $("#ddlSourceData").val(),
+                    pEmpNo = $("#empNo").val()
+
+                if (pFPName == null || pFPName == "")
+                    pFPName = "All";
+                if (pTaskID == null || pTaskID == "")
+                    pTaskID = "All";
+                if (pAppID == null || pAppID == "")
+                    pAppID = "All";
+                if (pCustName == null || pCustName == "")
+                    pCustName = "All";
+                if (pPriorityLevel == null || pPriorityLevel == "")
+                    pPriorityLevel = "All";
+                if (pSdate == null || pSdate == "")
+                    pSdate = "All";
+                if (pEdate == null || pEdate == "")
+                    pEdate = "All";
+                var href = '';
+                href = 'TaskInquiry/Excel?pRegion=' + pRegion + "&pFPName="
+                    + pFPName + "&pBranchName=" + pBranchName + "&pEmpPosition="
+                    + pEmpPosition + "&pTaskID=" + pTaskID + "&pStatProspek="
+                    + pStatProspek + "&pAppID=" + pAppID + "&pPriorityLevel="
+                    + pPriorityLevel + "&pCustName=" + pCustName + "&pStatDukcapil="
+                    + pStatDukcapil + "&pSdate=" + pSdate + "&pEdate="
+                    + pEdate + "&pSourceData=" + pSourceData + "&pEmpNo="
+                    + pEmpNo
+
+                window.location.href = href;
+            }
+        }
+    });
+});
+
+
+
+$('#btnReset').click(function (e) {
+    e.preventDefault();
+    var date = new Date();
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+    var today = year + "-" + month + "-" + day;
+    $("#ddlRegion").val("All");
+    $("#txtFpName").val("");
+    $("#ddlBranch").val();
+    $("#ddlEmpPosition").val("All");
+    $("#txtTaskID").val("");
+    $("#ddlStsProspek").val("All");
+    $("#txtAppID").val("");
+    $("#ddlPriorityLevel option:selected").prop("selected", false);
+    $('#ddlPriorityLevel').multiselect('rebuild');
+    $("#txtCustName").val("");
+    $("#ddlStatusDukcapil").val("All");
+    $("#sdate").val(today);
+    $("#edate").val(today);
+    $("#ddlSourceData").val("All");
+});
 
 $(document).on("change", "#ddlRegion", function () {
     var selectedRegion = $(this).val();
@@ -263,8 +301,8 @@ $(document).on("change", "#ddlRegion", function () {
         if ($(this).data("region") == selectedRegion) {
             $(this).show();
             $('#ddlBranch [data-region="0"]').show()
-            $("#ddlBranch").val(""
-                } else {
+            $("#ddlBranch").val("");
+        } else {
             $(this).hide();
         }
     });

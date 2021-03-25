@@ -664,6 +664,34 @@ SELECT DESCR AS TEXT,MASTER_CODE AS VALUE FROM CONFINS.DBO.REF_MASTER where REF_
         //        Console.WriteLine("key: " + item.Key + "; value: " + item.ToString());
         //    }
         //}
+
+        public bool  validasiDownload(string empNo)
+        {
+            bool isSucceed = true;
+            var connectionString = context.Database.GetDbConnection().ConnectionString;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                //Declare COnnection                
+                var querySstring = @"select CASE WHEN COUNT(EMP_NO) > 0 THEN cast(1 as  bit) else cast(0 as  bit) end as validasi from WISE_STAGING.DBO.T_MKT_POLO_LOG_USER_DOWNLOAD where EMP_NO='" + empNo + "'AND FLAG_DOWNLOAD='T'";
+                SqlCommand command = new SqlCommand(querySstring, connection);
+                //open Connection
+                command.Connection.Open();
+
+                //PRoses Sp
+                SqlDataReader rd = command.ExecuteReader();
+                while (rd.Read())
+                {
+                    isSucceed = Convert.ToBoolean(rd[0].ToString());
+                }
+
+                //Connection Close
+                command.Connection.Close();
+
+            }
+
+            return isSucceed;
+
+        }
     }
 }
 

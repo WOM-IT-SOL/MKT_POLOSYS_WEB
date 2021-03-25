@@ -110,10 +110,10 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
         }
 
         public IActionResult Excel(string pRegion,
-            string pFPName,string pBranchName, string pEmpPosition,
-            string pTaskID,string pStatProspek, string pAppID,string[] pPriorityLevel,
+            string pFPName, string pBranchName, string pEmpPosition,
+            string pTaskID, string pStatProspek, string pAppID, string[] pPriorityLevel,
             string pCustName, string pStatDukcapil, string pSdate, string pEdate,
-            string pSource,string pSourceData, string pEmpNo)
+            string pSource, string pSourceData, string pEmpNo)
         {
             using (var workbook = new XLWorkbook())
             {
@@ -135,7 +135,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                 worksheet.Cell(currentRow, 13).Value = "Regional_id";
                 worksheet.Cell(currentRow, 14).Value = "Product";
                 worksheet.Cell(currentRow, 15).Value = "Cab_Id";
-                worksheet.Cell(currentRow, 16).Value = "Nik Ktp"; 
+                worksheet.Cell(currentRow, 16).Value = "Nik Ktp";
                 worksheet.Cell(currentRow, 17).Value = "Tempat Lahir";
                 worksheet.Cell(currentRow, 18).Value = "Tanggal Lahir";
                 worksheet.Cell(currentRow, 19).Value = "Rw (Legal)";
@@ -411,6 +411,15 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                        pEmpNo + "_FL_" + DateTime.Now.ToString("yyyyMMdd") + ".xlsx");
                 }
             }
+        }
+
+        public IActionResult ValidasiDownload(string pEmpNo)
+        {
+            TaskInquiryProvider taskInquiryProvider = new TaskInquiryProvider();
+            Boolean isSucceed = true;
+            isSucceed = taskInquiryProvider.validasiDownload(pEmpNo);
+            return Json(isSucceed);
+
         }
     }
 }
