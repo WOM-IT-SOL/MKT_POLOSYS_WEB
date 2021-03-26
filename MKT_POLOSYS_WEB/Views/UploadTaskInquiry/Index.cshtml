@@ -1,0 +1,95 @@
+﻿@model MKT_POLOSYS_WEB.Models.UploadTaskInquiry.IndexViewModel
+
+
+
+@Html.HiddenFor(m => m.empNo)
+
+
+<div class="wrapper">
+    <div class="container-fluid">
+        <div>
+        </div>
+        <div class="container-fluid mx-auto mt-3 mb-2" style="width: 100%;">
+            <div class="text-align:left">
+            </div>
+        </div>
+        <form id="frm" action="" method="POST" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="myFile">Nama File :</label>
+                    <div class="custom-file">
+                        <input type="file" id="myFileUpload" name="filename">
+                    </div>
+                </div>
+
+            </div>
+            <div id="wrapLoading">
+                <fieldset>
+                </fieldset>
+                <table>
+
+                    <tr>
+                        <td>
+                            <button type="submit" class="btn btn-md btn-primary">Validate & Upload</button>
+                            <button type="submit" class="btn btn-md btn-warning" id="reset">Reset</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            &nbsp;
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+
+<script>
+    $('#frm').submit(function (e) {
+        e.preventDefault();
+        debugger;
+        var form = new FormData(this)
+        var fileExtension = ['xlsx'];
+        var namaFile = $("#myFileUpload").val();
+        var userdecript = $("#userdecript").val()
+        if (namaFile == "" || namaFile == "Choose file...") {
+            swal("Information", "Format file extension yang diupload, hanya diperbolehkan xlsx", "info")
+            return false;
+        }
+        else if ($.inArray($("#myFileUpload").val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+
+            swal("Information", "Format file extension yang diupload, hanya diperbolehkan xlsx", "info")
+            return false;
+        } else {
+
+            $.ajax({
+                url: 'UploadTaskInquiry/Upload?empNo='+$("#empNo").val(),
+                data: form,
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                enctype: 'multipart/form-data',
+                dataType: 'json',
+                success: function (result) {
+                    if (result.isSucced) {
+                        swal("Information", result.message, "info")
+                        var jsonString = JSON.stringify(result.returnValue)
+                        myTables.clear();
+                        $.each(result.returnValue, function (index, value) {
+                            myTables.row.add(value);
+                        });
+                        myTables.draw();
+                    }
+                    else {
+
+                        swal("Information", result.message, "info")
+                    }
+                }
+            });
+        }
+        return false;
+    });
+</script>

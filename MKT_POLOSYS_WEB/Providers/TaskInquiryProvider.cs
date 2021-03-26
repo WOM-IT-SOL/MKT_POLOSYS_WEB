@@ -423,9 +423,9 @@ namespace MKT_POLOSYS_WEB.Providers
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 //Declare COnnection                
-                var querySstring = @"select ROA.AREA_NAME AS TEXT ,OFFICE_REGION_MBR_X_ID AS VALUE
-from CONFINS.dbo.REF_OFFICE_AREA ROA
-JOIN CONFINS.dbo.OFFICE_REGION_MBR_X ORMX ON ROA.REF_OFFICE_AREA_ID = ORMX.REF_OFFICE_AREA_ID";
+                var querySstring = @"select ORX.OFFICE_REGION_NAME AS TEXT ,ORX.OFFICE_REGION_CODE AS VALUE
+FROM CONFINS.dbo.OFFICE_REGION_X ORX
+WHERE IS_aCTIVE=1";
                 SqlCommand command = new SqlCommand(querySstring, connection);
                 //open Connection
                 command.Connection.Open();
@@ -456,11 +456,11 @@ JOIN CONFINS.dbo.OFFICE_REGION_MBR_X ORMX ON ROA.REF_OFFICE_AREA_ID = ORMX.REF_O
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 //Declare COnnection                
-                var querySstring = @"select RO.OFFICE_NAME AS TEXT ,RO.OFFICE_NAME AS VALUE,OFFICE_REGION_MBR_X_ID FILTER
-from CONFINS.dbo.REF_OFFICE_AREA ROA
-JOIN CONFINS.dbo.OFFICE_REGION_MBR_X ORMX ON ROA.REF_OFFICE_AREA_ID=ORMX.REF_OFFICE_AREA_ID
-JOIN CONFINS.dbo.REF_OFFICE RO ON ROA.REF_OFFICE_AREA_ID = RO.REF_OFFICE_AREA_ID
-WHERE RO.ORG_MDL_ID in ('6','7') ";
+                var querySstring = @"SELECT  ro.OFFICE_NAME as TEXT,ro.REF_OFFICE_ID  VALUE,ORX.OFFICE_REGION_CODE FILTER FROM CONFINS.dbo.REF_OFFICE ro  
+					   JOIN CONFINS.dbo.REF_OFFICE_AREA roa on ro.REF_OFFICE_AREA_ID = roa.REF_OFFICE_AREA_ID
+					   JOIN CONFINS.dbo.OFFICE_REGION_MBR_X ormx on roa.REF_OFFICE_AREA_ID = ormx.REF_OFFICE_AREA_ID
+					   JOIN CONFINS.dbo.OFFICE_REGION_X orx on ormx.OFFICE_REGION_X_ID =orx.office_region_x_id
+					   WHERE ro.ORG_MDL_ID in ('6','7') and orx.is_active=1 order by filter,ro.OFFICE_NAME asc";
                 SqlCommand command = new SqlCommand(querySstring, connection);
                 //open Connection
                 command.Connection.Open();

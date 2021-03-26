@@ -293,17 +293,29 @@ $('#btnReset').click(function (e) {
     $("#sdate").val(today);
     $("#edate").val(today);
     $("#ddlSourceData").val("All");
+    myTable.clear();
+    myTable.draw();
 });
 
 $(document).on("change", "#ddlRegion", function () {
     var selectedRegion = $(this).val();
-    $("#ddlBranch").find("option").each(function () {
-        if ($(this).data("region") == selectedRegion) {
-            $(this).show();
-            $('#ddlBranch [data-region="0"]').show()
-            $("#ddlBranch").val("");
-        } else {
-            $(this).hide();
-        }
-    });
+    if ($("#ddlRegion").val() =="All") {
+        $('#ddlBranch option').show();
+        $("#ddlBranch").val("All");
+    }
+    else {
+        $("#ddlBranch").find("option").each(function () {
+            if ($(this).data("region") == selectedRegion) {
+                $(this).show();
+                $('#ddlBranch [data-region="0"]').show()
+                $("#ddlBranch").val("All");
+            } else {
+                if ($("#ddlRegion").val() == "All") {
+                } else {
+                    $(this).hide();
+                }
+            }
+        });
+    }
+    
 });
