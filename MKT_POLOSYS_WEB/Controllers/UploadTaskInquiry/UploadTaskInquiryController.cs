@@ -15,6 +15,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
     public class UploadTaskInquiryController : Controller
     {
 
+
         // GET: TaskInquiry
         public ActionResult Index(string emp_no)
         {
@@ -156,8 +157,10 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
             updateTaskInquiryProvider.SendApiCekDukcapil(guid);
             TaskInquiryProvider taskInquiryProvider = new TaskInquiryProvider();
             updateTaskInquiryProvider.SendApiToWiseMSS(guid);
-
-            var result = new { 'isSucceed': isSucceed}
+            var result = new { isSucceed = true, pguid = guid, message = "Upload Done"};
+            return Json(result);
+            Boolean isSucceed = true;
+            isSucceed = taskInquiryProvider.validasiDownload("a");
             return Json(isSucceed);
 
         }
