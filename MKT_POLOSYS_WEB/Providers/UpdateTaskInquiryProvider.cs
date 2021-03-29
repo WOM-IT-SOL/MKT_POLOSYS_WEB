@@ -9,6 +9,10 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.Linq;
+using System.Net.Http;
+using System.Text;
 
 
 namespace MKT_POLOSYS_WEB.Providers
@@ -16,8 +20,8 @@ namespace MKT_POLOSYS_WEB.Providers
     public class UpdateTaskInquiryProvider
     {
         private WISE_STAGINGContext context = new WISE_STAGINGContext();
-        string guid = System.Guid.NewGuid().ToString();
-        public List<ListTaskViewModel> UploadData(UploadViewModel model)
+        
+        public List<ListTaskViewModel> UploadData(UploadViewModel model,string guid)
         {
             List<ListTaskViewModel> ListData = new List<ListTaskViewModel>();
             var connectionString = context.Database.GetDbConnection().ConnectionString;
@@ -28,6 +32,7 @@ namespace MKT_POLOSYS_WEB.Providers
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 //Define Query Parameter
                 command.Parameters.AddWithValue("@pOfficeCode", model.CabId);
+                command.Parameters.AddWithValue("@pOfficeName", model.BranchName);
                 command.Parameters.AddWithValue("@pOfficeRegionCode", model.RegionalId);
                 command.Parameters.AddWithValue("@pOfficeRegionName", model.Region);
                 command.Parameters.AddWithValue("@pTaskID", model.TaskID);
@@ -40,7 +45,7 @@ namespace MKT_POLOSYS_WEB.Providers
                 command.Parameters.AddWithValue("@pSoa", model.soa);
                 command.Parameters.AddWithValue("@pReferentor1", model.Referentor1);
                 command.Parameters.AddWithValue("@pProduct", model.Product);
-                command.Parameters.AddWithValue("@pIdNo", model.NIK);   
+                command.Parameters.AddWithValue("@pIdNo", model.NIK);
                 command.Parameters.AddWithValue("@pBirthPlace", model.TempatLahir);
                 command.Parameters.AddWithValue("@pBirthDt", model.TglLahir);
                 command.Parameters.AddWithValue("@pRwLeg", model.RWLeg);
@@ -48,6 +53,7 @@ namespace MKT_POLOSYS_WEB.Providers
                 command.Parameters.AddWithValue("@pKabupatenLeg", model.KabLeg);
                 command.Parameters.AddWithValue("@pKecamatanLeg", model.KecLeg);
                 command.Parameters.AddWithValue("@pKelurahanLeg", model.KelLeg);
+                command.Parameters.AddWithValue("@pAlamatRes", model.AlamatRes);
                 command.Parameters.AddWithValue("@pRtRes", model.RTRes);
                 command.Parameters.AddWithValue("@pRwRes", model.RWRes);
                 command.Parameters.AddWithValue("@pProvinsiRes", model.ProvRes);
@@ -66,6 +72,7 @@ namespace MKT_POLOSYS_WEB.Providers
                 command.Parameters.AddWithValue("@pOfficePhone2", model.OfficePhone2);
                 command.Parameters.AddWithValue("@pOtrPrice", model.OtrPrice);
                 command.Parameters.AddWithValue("@pItemYear", model.ItemYear);
+                command.Parameters.AddWithValue("@pMonthIncome", model.MonthlyIncome);
                 command.Parameters.AddWithValue("@pMonthlyInstallment", model.MonthInstallment);
                 command.Parameters.AddWithValue("@pDownPayment", model.DP);
                 command.Parameters.AddWithValue("@pLtv", model.LTV);
@@ -74,8 +81,10 @@ namespace MKT_POLOSYS_WEB.Providers
                 command.Parameters.AddWithValue("@pOsTenor", model.SisaTenor);
                 command.Parameters.AddWithValue("@pTenorId", model.TenorId);
                 command.Parameters.AddWithValue("@pReleaseDateBpkb", model.ReleaseDateBpkb);
-                command.Parameters.AddWithValue("@pMaxPastDueDt", model.TanggalJatuhTempo);
+                command.Parameters.AddWithValue("@pMaxPastDueDt", model.MaxPastDueDt);
                 command.Parameters.AddWithValue("@pReligion", model.Religion);
+                command.Parameters.AddWithValue("@pMaturityDt", model.MaturityDt);
+                command.Parameters.AddWithValue("@pTglJatuhTempo", model.TanggalJatuhTempo);
                 command.Parameters.AddWithValue("@pCallStat", model.StatusCall);
                 command.Parameters.AddWithValue("@pAnswerCall", model.AnswerCall);
                 command.Parameters.AddWithValue("@pCustRating", model.CustomerRating);
@@ -84,7 +93,7 @@ namespace MKT_POLOSYS_WEB.Providers
                 command.Parameters.AddWithValue("@pNotes", model.Notes);
                 command.Parameters.AddWithValue("@pQueueUid", guid);
                 command.Parameters.AddWithValue("@pEmpNo", model.EmpNo);
-                //open Connection
+                    //open Connection
                 command.Connection.Open();
 
                 //PRoses Sp
@@ -93,30 +102,6 @@ namespace MKT_POLOSYS_WEB.Providers
                 {
 
                     ListTaskViewModel data = new ListTaskViewModel();
-                    //data.sourceData = rd[0].ToString();
-                    //data.cabang = rd[1].ToString();
-                    //data.regional = rd[2].ToString();
-                    //data.taskID = rd[3].ToString();
-                    //data.jenisTask = rd[4].ToString();
-                    //data.customerID = rd[5].ToString();
-                    //data.customerName = rd[6].ToString();
-                    //data.distributedDT = rd[7].ToString();
-                    //data.startedDT = rd[8].ToString();
-                    //data.slaRemaining = rd[9].ToString();
-                    //data.fieldPersonName = rd[10].ToString();
-                    //data.empPosition = rd[11].ToString();
-                    //data.statusProspek = rd[12].ToString();
-                    //data.priorityLevel = rd[13].ToString();
-                    //data.aplikasiAI = rd[14].ToString();
-                    //data.applicationID = rd[15].ToString();
-                    //data.statusMSS = rd[16].ToString();
-                    //data.statusWISE = rd[17].ToString();
-                    //data.statusDukcapil = rd[18].ToString();
-                    //data.soa = rd[19].ToString();
-                    //data.referentorName = rd[20].ToString();
-                    //data.referentorName2 = rd[21].ToString();
-                    //data.orderInID = rd[22].ToString();
-                    //ListData.Add(data);
                 }
 
                 //Connection Close
@@ -127,8 +112,64 @@ namespace MKT_POLOSYS_WEB.Providers
 
         }
 
+        public async Task SendApiCekDukcapil(string sGUID)
+        {
+            var connectionString = context.Database.GetDbConnection().ConnectionString;
+            var url = string.Empty;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                //Declare COnnection                
+                var querySstring = @"select PARAMETER_VALUE from WISE_STAGING.dbo.M_MKT_POLO_PARAMETER where PARAMETER_ID like 'URL_MKT_POLO_API_DUKCAPIL_FROM POLO'";
+                SqlCommand command = new SqlCommand(querySstring, connection);
+                //open Connection
+                command.Connection.Open();
 
+                //PRoses Sp
+                SqlDataReader rd = command.ExecuteReader();
+                while (rd.Read())
+                {
+                    url = rd[0].ToString();
+                }
+
+                //Connection Close
+                command.Connection.Close();
+
+            }
+            string bodyJSON = JsonConvert.SerializeObject(new { dataSource = "UPLOAD", queueUID = sGUID }, Formatting.Indented);
+            var content = new StringContent(bodyJSON, Encoding.UTF8, "application/json");
+            HttpClient client = new HttpClient();
+            var response = await client.PostAsync(new Uri(url), content);
+        }
+
+        public async Task SendApiToWiseMSS(string guid)
+        {
+            var taskId = string.Empty;
+            var connectionString = context.Database.GetDbConnection().ConnectionString;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                //Declare COnnection                
+                var querySstring = @"select TASK_ID from WISE_STAGING.dbo.T_MKT_POLO_UPLOAD where UPLOAD_STS=1 and QUEUE_UID=''";
+                SqlCommand command = new SqlCommand(querySstring, connection);
+                //open Connection
+                command.Connection.Open();
+
+                //PRoses Sp
+                SqlDataReader rd = command.ExecuteReader();
+                while (rd.Read())
+                {
+                    taskId = rd[0].ToString();
+                    SendDataPreparation send = new SendDataPreparation(connectionString);
+                    await send.startProcess(taskId);
+                }
+
+                //Connection Close
+                command.Connection.Close();
+
+            }
+        }
         
+
+
 
         public bool  validasiDownload(string empNo)
         {
@@ -155,6 +196,60 @@ namespace MKT_POLOSYS_WEB.Providers
             }
 
             return isSucceed;
+
+        }
+
+        public bool validasiUser(string empNo)
+        {
+            bool isSucceed = true;
+            var connectionString = context.Database.GetDbConnection().ConnectionString;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                //Declare COnnection                
+                var querySstring = @"select CASE WHEN COUNT(EMP_NO) > 0 THEN cast(1 as  bit) else cast(0 as  bit) end as validasi from confins.dbo.REF_EMP where EMP_NO='" + empNo + "'";
+                SqlCommand command = new SqlCommand(querySstring, connection);
+                //open Connection
+                command.Connection.Open();
+
+                //PRoses Sp
+                SqlDataReader rd = command.ExecuteReader();
+                while (rd.Read())
+                {
+                    isSucceed = Convert.ToBoolean(rd[0].ToString());
+                }
+                //Connection Close
+                command.Connection.Close();
+
+            }
+
+            return isSucceed;
+
+        }
+
+        public string getUser(string empNo)
+        {
+            string empName = string.Empty;
+            var connectionString = context.Database.GetDbConnection().ConnectionString;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                //Declare COnnection                
+                var querySstring = @"select EMP_NAME as name from confins.dbo.REF_EMP where EMP_NO='" + empNo + "'";
+                SqlCommand command = new SqlCommand(querySstring, connection);
+                //open Connection
+                command.Connection.Open();
+
+                //PRoses Sp
+                SqlDataReader rd = command.ExecuteReader();
+                while (rd.Read())
+                {
+                    empName = rd[0].ToString();
+                }
+                //Connection Close
+                command.Connection.Close();
+
+            }
+
+            return empName;
 
         }
     }

@@ -19,6 +19,7 @@ namespace MKT_POLOSYS_WEB.Models
         public IEnumerable<DropdownListViewModel> ddlSourceData { get; set; }
 
         public string empNo { get; set; }
+        public string empName { get; set; }
 
 
     }

@@ -15,19 +15,33 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
     public class UploadTaskInquiryController : Controller
     {
 
-        //public TaskInquiryController(TaskInquiryProvider taskInquiryProvider)
-        //{
-        //    this.taskInquiryProvider = taskInquiryProvider;
-
-
-        //}
         // GET: TaskInquiry
         public ActionResult Index(string emp_no)
         {
-            UpdateTaskInquiryProvider updateTaskInquiryProvider = new UpdateTaskInquiryProvider();
-            var model = new IndexViewModel();
-            model.empNo = emp_no;
-            return View(model);
+            try
+            {
+                UpdateTaskInquiryProvider updateTaskInquiryProvider = new UpdateTaskInquiryProvider();
+                Boolean isSucceed = true;
+                var model = new IndexViewModel();
+                var base64EncodedBytes = System.Convert.FromBase64String(emp_no);
+                var empNo = System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+                model.empNo = empNo;
+                isSucceed = updateTaskInquiryProvider.validasiUser(model.empNo);
+                model.empName = updateTaskInquiryProvider.getUser(model.empNo);
+                if (isSucceed)
+                {
+                    return View(model);
+                }
+                else
+                {
+
+                    return View("~/Views/Shared/Error.cshtml");
+                }
+            }
+            catch (Exception ex)
+            {
+                return View("~/Views/Shared/Error.cshtml");
+            }
         }
 
         public IActionResult ValidasiUpload(string pEmpNo)
@@ -44,6 +58,8 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
         {
             UpdateTaskInquiryProvider updateTaskInquiryProvider = new UpdateTaskInquiryProvider();
             var files = Request.Form.Files;
+            string guid = System.Guid.NewGuid().ToString().ToUpper();
+            bool isSucceed = true;
             foreach (var uploadFile in files)
             {
                 if (uploadFile != null)
@@ -122,7 +138,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                             model.ReasonNotProspek = workSheet.Cells[i, 60].Value == null ? "" : workSheet.Cells[i, 60].Value.ToString();
                             model.Notes = workSheet.Cells[i, 61].Value == null ? "" : workSheet.Cells[i, 61].Value.ToString();
                             model.EmpNo = empNo;
-                            var data = updateTaskInquiryProvider.UploadData(model);
+                            var data = updateTaskInquiryProvider.UploadData(model, guid);
                             DataList.Add(model);
                         }
 
@@ -137,12 +153,11 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
 
             }
 
-
-          
-
+            updateTaskInquiryProvider.SendApiCekDukcapil(guid);
             TaskInquiryProvider taskInquiryProvider = new TaskInquiryProvider();
-            Boolean isSucceed = true;
-            isSucceed = taskInquiryProvider.validasiDownload("a");
+            updateTaskInquiryProvider.SendApiToWiseMSS(guid);
+
+            var result = new { 'isSucceed': isSucceed}
             return Json(isSucceed);
 
         }

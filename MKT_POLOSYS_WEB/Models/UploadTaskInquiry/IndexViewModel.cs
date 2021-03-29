@@ -9,6 +9,7 @@ namespace MKT_POLOSYS_WEB.Models.UploadTaskInquiry
     public class IndexViewModel
     {
         public string empNo { get; set; }
+        public string empName { get; set; }
 
 
     }

@@ -3,6 +3,13 @@
 
 
 @Html.HiddenFor(m => m.empNo)
+@{
+    ViewData["Title"] = "Index asdadasd";
+    Layout = "~/Views/Shared/_LayoutUpload.cshtml";
+    ViewBag.PageModel = Model.empName;
+}
+
+
 
 
 <div class="wrapper">
@@ -15,32 +22,38 @@
         </div>
         <form id="frm" action="" method="POST" enctype="multipart/form-data">
             <div class="form-row">
-                <div class="form-group col-md-3">
-                    <label for="myFile">Nama File :</label>
+                <div>
+                    <label for="myFile">File Upload : </label>
+                </div>
+                <div class="col-6">
                     <div class="custom-file">
-                        <input type="file" id="myFileUpload" name="filename">
+                        <input type="file" id="myFile" name="filename">
                     </div>
                 </div>
+                <div class="col-1">
 
+                    <button type="submit" class="btn btn-md btn-primary">Upload</button>
+                </div>
+                <div class="col-1">
+                    <button type="submit" class="btn btn-md btn-warning" id="reset">Reset</button>
+                </div>
             </div>
-            <div id="wrapLoading">
-                <fieldset>
-                </fieldset>
-                <table>
+            @*<div id="wrapLoading">
+                    <fieldset>
+                    </fieldset>
+                    <table>
 
-                    <tr>
-                        <td>
-                            <button type="submit" class="btn btn-md btn-primary">Validate & Upload</button>
-                            <button type="submit" class="btn btn-md btn-warning" id="reset">Reset</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            &nbsp;
-                        </td>
-                    </tr>
-                </table>
-            </div>
+                        <tr>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                &nbsp;
+                            </td>
+                        </tr>
+                    </table>
+                </div>*@
         </form>
     </div>
 
@@ -50,23 +63,19 @@
 <script>
     $('#frm').submit(function (e) {
         e.preventDefault();
-        debugger;
         var form = new FormData(this)
-        var fileExtension = ['xlsx'];
-        var namaFile = $("#myFileUpload").val();
-        var userdecript = $("#userdecript").val()
+        var fileExtension = ['xlsx', 'xls'];
+        var namaFile = $("#myFile").val();
         if (namaFile == "" || namaFile == "Choose file...") {
-            swal("Information", "Format file extension yang diupload, hanya diperbolehkan xlsx", "info")
+            swal("Information", "Format file extension yang diupload, hanya diperbolehkan xlsx/xls", "info")
             return false;
         }
-        else if ($.inArray($("#myFileUpload").val().split('.').pop().toLowerCase(), fileExtension) == -1) {
-
-            swal("Information", "Format file extension yang diupload, hanya diperbolehkan xlsx", "info")
+        else if ($.inArray($("#myFile").val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+            swal("Information", "Format file extension yang diupload, hanya diperbolehkan xlsx/xls", "info")
             return false;
         } else {
-
             $.ajax({
-                url: 'UploadTaskInquiry/Upload?empNo='+$("#empNo").val(),
+                url: 'UploadTaskInquiry/Upload?empNo=' + $("#empNo").val(),
                 data: form,
                 type: 'POST',
                 contentType: false,
@@ -76,12 +85,6 @@
                 success: function (result) {
                     if (result.isSucced) {
                         swal("Information", result.message, "info")
-                        var jsonString = JSON.stringify(result.returnValue)
-                        myTables.clear();
-                        $.each(result.returnValue, function (index, value) {
-                            myTables.row.add(value);
-                        });
-                        myTables.draw();
                     }
                     else {
 
@@ -91,5 +94,10 @@
             });
         }
         return false;
+    });
+
+    $('#reset').click(function (e) {
+        e.preventDefault();
+        $("#myFile").val('');
     });
 </script>

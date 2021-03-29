@@ -23,20 +23,38 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
         // GET: TaskInquiry
         public ActionResult Index(string emp_no)
         {
-            TaskInquiryProvider taskInquiryProvider = new TaskInquiryProvider();
-            var model = new IndexViewModel();
-            model.empNo = emp_no;
-            model.ddlRegion = taskInquiryProvider.ddlRegion().ToList();
-            model.ddlBranch = taskInquiryProvider.ddlBranch().ToList();
-            model.ddlEmpPosition = taskInquiryProvider.ddlEmpPosition().ToList();
-            model.ddlStsProspek = taskInquiryProvider.ddlStsProspek().ToList();
-            model.ddlPriorityLevel = taskInquiryProvider.ddlPriorityLevel().ToList();
-            model.ddlStatusDukcapil = taskInquiryProvider.ddlStatusDukcapil().ToList();
-            model.ddlSourceData = taskInquiryProvider.ddlSourceData().ToList();
+            try
+            {
+                TaskInquiryProvider taskInquiryProvider = new TaskInquiryProvider();
+                Boolean isSucceed = true;
+                var model = new IndexViewModel();
+                model.ddlRegion = taskInquiryProvider.ddlRegion().ToList();
+                model.ddlBranch = taskInquiryProvider.ddlBranch().ToList();
+                model.ddlEmpPosition = taskInquiryProvider.ddlEmpPosition().ToList();
+                model.ddlStsProspek = taskInquiryProvider.ddlStsProspek().ToList();
+                model.ddlPriorityLevel = taskInquiryProvider.ddlPriorityLevel().ToList();
+                model.ddlStatusDukcapil = taskInquiryProvider.ddlStatusDukcapil().ToList();
+                model.ddlSourceData = taskInquiryProvider.ddlSourceData().ToList();
+                var base64EncodedBytes = System.Convert.FromBase64String(emp_no);
+                var empNo = System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+                model.empNo = empNo;
+                isSucceed = taskInquiryProvider.validasiUser(model.empNo);
+                model.empName = taskInquiryProvider.getUser(model.empNo);
+                if (isSucceed)
+                {
+                    return View(model);
+                }
+                else
+                {
 
-            //taskInquiryProvider.test("TASK0005");
+                    return View("~/Views/Shared/Error.cshtml");
+                }
+            }
+            catch(Exception ex)
+            {
+                return View("~/Views/Shared/Error.cshtml");
+            }
 
-            return View(model);
         }
 
 

@@ -15,8 +15,8 @@ namespace MKT_POLOSYS_WEB.Models
         public string CustID { get; set; }
 
         public string CustomerName { get; set; }
-        public DateTime? DistributedDate { get; set; }
-        public DateTime? StartedDate { get; set; }
+        public string DistributedDate { get; set; }
+        public string StartedDate { get; set; }
         public string StatusDukcapil { get; set; }
         public string FieldPersonName { get; set; }
         public string EmpPosition { get; set; }

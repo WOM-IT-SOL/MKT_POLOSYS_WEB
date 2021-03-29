@@ -7,6 +7,7 @@ using POLO_EXTENSION;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -118,8 +119,8 @@ namespace MKT_POLOSYS_WEB.Providers
                     data.JenisTask = rd[1].ToString();
                     data.CustID = rd[2].ToString();
                     data.CustomerName = rd[3].ToString();
-                    data.DistributedDate = null;
-                    data.StartedDate = null;
+                    data.DistributedDate = rd[4].ToString();
+                    data.StartedDate = rd[5].ToString();
                     data.StatusDukcapil = rd[6].ToString();
                     data.FieldPersonName = rd[7].ToString();
                     data.EmpPosition = rd[8].ToString();
@@ -132,7 +133,7 @@ namespace MKT_POLOSYS_WEB.Providers
 
                     //---
                     data.TempatLahir = rd[15].ToString();
-                    data.TglLahir = rd[16].ToString();
+                    data.TglLahir = Convert.ToDateTime(rd[16].ToString()).ToString("dd/MM/yyyy");
                     data.AlamatLeg = rd[17].ToString();
                     data.ProvLeg = rd[18].ToString();
                     data.KecLeg = rd[20].ToString();
@@ -151,13 +152,12 @@ namespace MKT_POLOSYS_WEB.Providers
                     data.Product = rd[33].ToString();
                     data.ItemType = rd[34].ToString();
                     data.ItemYear = rd[35].ToString();
-                    data.OtrPrice = rd[36].ToString();
-                    data.DP = rd[37].ToString();
+                    data.OtrPrice = Convert.ToDecimal(rd[36].ToString()).ToString("#,##0.00");
+                    data.DP = Convert.ToDecimal(rd[36].ToString()).ToString("#,##0.00"); 
                     data.LTV = rd[38].ToString();
-
                     data.Tenor = rd[39].ToString();
                     data.Plafond = rd[40].ToString();
-                    data.MonthInstallment = rd[41].ToString();
+                    data.MonthInstallment = Convert.ToDecimal(rd[41].ToString()).ToString("#,##0.00");
                     data.Notes = rd[42].ToString();
                 }
 
@@ -423,9 +423,7 @@ namespace MKT_POLOSYS_WEB.Providers
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 //Declare COnnection                
-                var querySstring = @"select ORX.OFFICE_REGION_NAME AS TEXT ,ORX.OFFICE_REGION_CODE AS VALUE
-FROM CONFINS.dbo.OFFICE_REGION_X ORX
-WHERE IS_aCTIVE=1";
+                var querySstring = "spMKT_POLO_DDL_REGION";
                 SqlCommand command = new SqlCommand(querySstring, connection);
                 //open Connection
                 command.Connection.Open();
@@ -438,6 +436,8 @@ WHERE IS_aCTIVE=1";
                     DropdownListViewModel data = new DropdownListViewModel();
                     data.Text = rd[0].ToString();
                     data.Value = rd[1].ToString();
+                    data.Filter = rd[2].ToString();
+                    data.Filter2 = rd[3].ToString();
                     ListData.Add(data);
                 }
 
@@ -456,11 +456,7 @@ WHERE IS_aCTIVE=1";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 //Declare COnnection                
-                var querySstring = @"SELECT  ro.OFFICE_NAME as TEXT,ro.REF_OFFICE_ID  VALUE,ORX.OFFICE_REGION_CODE FILTER FROM CONFINS.dbo.REF_OFFICE ro  
-					   JOIN CONFINS.dbo.REF_OFFICE_AREA roa on ro.REF_OFFICE_AREA_ID = roa.REF_OFFICE_AREA_ID
-					   JOIN CONFINS.dbo.OFFICE_REGION_MBR_X ormx on roa.REF_OFFICE_AREA_ID = ormx.REF_OFFICE_AREA_ID
-					   JOIN CONFINS.dbo.OFFICE_REGION_X orx on ormx.OFFICE_REGION_X_ID =orx.office_region_x_id
-					   WHERE ro.ORG_MDL_ID in ('6','7') and orx.is_active=1 order by filter,ro.OFFICE_NAME asc";
+                var querySstring = "spMKT_POLO_DDL_BRANCH";
                 SqlCommand command = new SqlCommand(querySstring, connection);
                 //open Connection
                 command.Connection.Open();
@@ -474,6 +470,7 @@ WHERE IS_aCTIVE=1";
                     data.Text = rd[0].ToString();
                     data.Value = rd[1].ToString();
                     data.Filter = rd[2].ToString();
+                    data.Filter2 = rd[3].ToString();
                     ListData.Add(data);
                 }
 
@@ -492,8 +489,7 @@ WHERE IS_aCTIVE=1";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 //Declare COnnection                
-                var querySstring = @"
-SELECT PARAMETER_VALUE AS TEXT,PARAMETER_VALUE AS VALUE FROM WISE_STAGING.DBO.M_MKT_POLO_PARAMETER WHERE PARAMETER_TYPE='EMP_POSITION'";
+                var querySstring = "spMKT_POLO_DDL_EMP_POSITION";
                 SqlCommand command = new SqlCommand(querySstring, connection);
                 //open Connection
                 command.Connection.Open();
@@ -506,6 +502,8 @@ SELECT PARAMETER_VALUE AS TEXT,PARAMETER_VALUE AS VALUE FROM WISE_STAGING.DBO.M_
                     DropdownListViewModel data = new DropdownListViewModel();
                     data.Text = rd[0].ToString();
                     data.Value = rd[1].ToString();
+                    data.Filter = rd[2].ToString();
+                    data.Filter2 = rd[3].ToString();
                     ListData.Add(data);
                 }
 
@@ -524,8 +522,7 @@ SELECT PARAMETER_VALUE AS TEXT,PARAMETER_VALUE AS VALUE FROM WISE_STAGING.DBO.M_
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 //Declare COnnection                
-                var querySstring = @"
-SELECT DESCR AS TEXT,MASTER_CODE AS VALUE FROM CONFINS.DBO.REF_MASTER where REF_MASTER_TYPE_CODE = 'STATUS_PROSPEK'";
+                var querySstring = "spMKT_POLO_DDL_STS_PROSPEK";
                 SqlCommand command = new SqlCommand(querySstring, connection);
                 //open Connection
                 command.Connection.Open();
@@ -538,6 +535,8 @@ SELECT DESCR AS TEXT,MASTER_CODE AS VALUE FROM CONFINS.DBO.REF_MASTER where REF_
                     DropdownListViewModel data = new DropdownListViewModel();
                     data.Text = rd[0].ToString();
                     data.Value = rd[1].ToString();
+                    data.Filter = rd[2].ToString();
+                    data.Filter2 = rd[3].ToString();
                     ListData.Add(data);
                 }
 
@@ -556,8 +555,7 @@ SELECT DESCR AS TEXT,MASTER_CODE AS VALUE FROM CONFINS.DBO.REF_MASTER where REF_
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 //Declare COnnection                
-                var querySstring = @"
-SELECT PRIORITY_LEVEL AS TEXT,PRIORITY_LEVEL AS VALUE FROM WISE_STAGING.DBO.M_MKT_POLO_PRIORITYLEVEL";
+                var querySstring = "spMKT_POLO_DDL_PRIORITY_LVL";
                 SqlCommand command = new SqlCommand(querySstring, connection);
                 //open Connection
                 command.Connection.Open();
@@ -570,6 +568,8 @@ SELECT PRIORITY_LEVEL AS TEXT,PRIORITY_LEVEL AS VALUE FROM WISE_STAGING.DBO.M_MK
                     DropdownListViewModel data = new DropdownListViewModel();
                     data.Text = rd[0].ToString();
                     data.Value = rd[1].ToString();
+                    data.Filter = rd[2].ToString();
+                    data.Filter2 = rd[3].ToString();
                     ListData.Add(data);
                 }
 
@@ -588,8 +588,7 @@ SELECT PRIORITY_LEVEL AS TEXT,PRIORITY_LEVEL AS VALUE FROM WISE_STAGING.DBO.M_MK
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 //Declare COnnection                
-                var querySstring = @"
-SELECT DESCR AS TEXT,MASTER_CODE AS VALUE FROM CONFINS.DBO.REF_MASTER where REF_MASTER_TYPE_CODE = 'STATUS_DUKCAPIL'";
+                var querySstring = "spMKT_POLO_DDL_STS_DUKCAPIL";
                 SqlCommand command = new SqlCommand(querySstring, connection);
                 //open Connection
                 command.Connection.Open();
@@ -602,6 +601,8 @@ SELECT DESCR AS TEXT,MASTER_CODE AS VALUE FROM CONFINS.DBO.REF_MASTER where REF_
                     DropdownListViewModel data = new DropdownListViewModel();
                     data.Text = rd[0].ToString();
                     data.Value = rd[1].ToString();
+                    data.Filter = rd[2].ToString();
+                    data.Filter2 = rd[3].ToString();
                     ListData.Add(data);
                 }
 
@@ -620,8 +621,7 @@ SELECT DESCR AS TEXT,MASTER_CODE AS VALUE FROM CONFINS.DBO.REF_MASTER where REF_
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 //Declare COnnection                
-                var querySstring = @"
-SELECT DESCR AS TEXT,MASTER_CODE AS VALUE FROM CONFINS.DBO.REF_MASTER where REF_MASTER_TYPE_CODE = 'SOURCE_DATA'";
+                var querySstring = "spMKT_POLO_DDL_SOURCE_DATA";
                 SqlCommand command = new SqlCommand(querySstring, connection);
                 //open Connection
                 command.Connection.Open();
@@ -634,6 +634,8 @@ SELECT DESCR AS TEXT,MASTER_CODE AS VALUE FROM CONFINS.DBO.REF_MASTER where REF_
                     DropdownListViewModel data = new DropdownListViewModel();
                     data.Text = rd[0].ToString();
                     data.Value = rd[1].ToString();
+                    data.Filter = rd[2].ToString();
+                    data.Filter2 = rd[3].ToString();
                     ListData.Add(data);
                 }
 
@@ -645,26 +647,6 @@ SELECT DESCR AS TEXT,MASTER_CODE AS VALUE FROM CONFINS.DBO.REF_MASTER where REF_
             return ListData;
 
         }
-
-        //public async Task test (string taskId)
-        //{
-        //    var result;
-        //    var connectionString = context.Database.GetDbConnection().ConnectionString;
-        //    SendDataPreparation send = new SendDataPreparation(connectionString);
-
-        //    for (let i = 0; i < List.length; i++)
-        //    {
-        //        await send.startProcess(taskId);
-        //    }
-
-        //    var result = send.startProcess(taskId);
-
-        //    foreach (KeyValuePair<string, string> item in result)
-        //    {
-        //        Console.WriteLine("key: " + item.Key + "; value: " + item.ToString());
-        //    }
-        //}
-
         public bool  validasiDownload(string empNo)
         {
             bool isSucceed = true;
@@ -690,6 +672,59 @@ SELECT DESCR AS TEXT,MASTER_CODE AS VALUE FROM CONFINS.DBO.REF_MASTER where REF_
             }
 
             return isSucceed;
+
+        }
+        public bool validasiUser(string empNo)
+        {
+            bool isSucceed = true;
+            var connectionString = context.Database.GetDbConnection().ConnectionString;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                //Declare COnnection                
+                var querySstring = @"select CASE WHEN COUNT(EMP_NO) > 0 THEN cast(1 as  bit) else cast(0 as  bit) end as validasi from confins.dbo.REF_EMP where EMP_NO='" + empNo + "'";
+                SqlCommand command = new SqlCommand(querySstring, connection);
+                //open Connection
+                command.Connection.Open();
+
+                //PRoses Sp
+                SqlDataReader rd = command.ExecuteReader();
+                while (rd.Read())
+                {
+                    isSucceed = Convert.ToBoolean(rd[0].ToString());
+                }
+                //Connection Close
+                command.Connection.Close();
+
+            }
+
+            return isSucceed;
+
+        }
+
+        public string getUser(string empNo)
+        {
+            string empName = string.Empty;
+            var connectionString = context.Database.GetDbConnection().ConnectionString;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                //Declare COnnection                
+                var querySstring = @"select EMP_NAME as name from confins.dbo.REF_EMP where EMP_NO='" + empNo + "'";
+                SqlCommand command = new SqlCommand(querySstring, connection);
+                //open Connection
+                command.Connection.Open();
+
+                //PRoses Sp
+                SqlDataReader rd = command.ExecuteReader();
+                while (rd.Read())
+                {
+                    empName = rd[0].ToString();
+                }
+                //Connection Close
+                command.Connection.Close();
+
+            }
+
+            return empName;
 
         }
     }

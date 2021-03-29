@@ -1,6 +1,10 @@
 ﻿@model MKT_POLOSYS_WEB.Models.IndexViewModel
 
 
+@{
+    ViewBag.PageModel = Model.empName;
+}
+
 
 @Html.HiddenFor(m => m.empNo)
 @*<script>
