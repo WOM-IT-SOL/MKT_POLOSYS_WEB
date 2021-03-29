@@ -13,18 +13,12 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
 {
     public class TaskInquiryController : Controller
     {
-
-        //public TaskInquiryController(TaskInquiryProvider taskInquiryProvider)
-        //{
-        //    this.taskInquiryProvider = taskInquiryProvider;
-
-
-        //}
         // GET: TaskInquiry
         public ActionResult Index(string emp_no)
         {
             try
             {
+                emp_no = emp_no.Remove(emp_no.Length - 1);
                 TaskInquiryProvider taskInquiryProvider = new TaskInquiryProvider();
                 Boolean isSucceed = true;
                 var model = new IndexViewModel();

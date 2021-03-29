@@ -268,6 +268,35 @@ $("#btnDownload").click(function (e) {
     });
 });
 
+$('#sdate').change(function (e) {
+    e.preventDefault();
+    var sdate = new Date(Date.parse($("#sdate").val()));
+    var edate = new Date(Date.parse($("#edate").val()));
+    if (sdate > edate) {
+        swal("Information", "Distributed Date >= tidak dapat diisi > dari Distributed Date <=", "info")
+        $("#sdate").val("");
+        return false;
+    }
+});
+
+$('#edate').change(function (e) {
+    e.preventDefault();
+    var date = new Date();
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+    var today = year + "-" + month + "-" + day;
+    var sdate = new Date(Date.parse($("#sdate").val()));
+    var edate = new Date(Date.parse($("#edate").val()));
+    if (edate < sdate) {
+        swal("Information", "Distributed Date <=  tidak dapat diisi < dari  Distributed Date >= ", "info")
+        $("#edate").val(today);
+        return false;
+    }
+});
+
 
 
 $('#btnReset').click(function (e) {
@@ -281,7 +310,7 @@ $('#btnReset').click(function (e) {
     var today = year + "-" + month + "-" + day;
     $("#ddlRegion").val("All");
     $("#txtFpName").val("");
-    $("#ddlBranch").val();
+    $("#ddlBranch").val("All");
     $("#ddlEmpPosition").val("All");
     $("#txtTaskID").val("");
     $("#ddlStsProspek").val("All");

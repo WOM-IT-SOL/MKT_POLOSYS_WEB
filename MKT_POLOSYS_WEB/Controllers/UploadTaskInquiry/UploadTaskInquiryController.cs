@@ -21,6 +21,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
         {
             try
             {
+                emp_no = emp_no.Remove(emp_no.Length - 1);
                 UpdateTaskInquiryProvider updateTaskInquiryProvider = new UpdateTaskInquiryProvider();
                 Boolean isSucceed = true;
                 var model = new IndexViewModel();
@@ -36,12 +37,12 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                 else
                 {
 
-                    return View("~/Views/Shared/Error.cshtml");
+                    return View("~/Views/Shared/ErrorUpload.cshtml");
                 }
             }
             catch (Exception ex)
             {
-                return View("~/Views/Shared/Error.cshtml");
+                return View("~/Views/Shared/ErrorUpload.cshtml");
             }
         }
 
@@ -155,7 +156,6 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
             }
 
             updateTaskInquiryProvider.SendApiCekDukcapil(guid);
-            TaskInquiryProvider taskInquiryProvider = new TaskInquiryProvider();
             updateTaskInquiryProvider.SendApiToWiseMSS(guid);
             var result = new { isSucceed = true, pguid = guid, message = "Upload Done"};
             return Json(result);
@@ -164,7 +164,22 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
 
 
 
+        public ActionResult ExportLog(string guid)
+        {
+            UpdateTaskInquiryProvider updateTaskInquiryProvider = new UpdateTaskInquiryProvider();
+            MemoryStream memoryStream = new MemoryStream();
+            TextWriter tw = new StreamWriter(memoryStream);
+            var data  = updateTaskInquiryProvider.getLog(guid);
 
+            foreach (var item in data)
+            {
+                tw.WriteLine("TASK ID : " + item.TASK_ID + ", UPLOAD_MESSAGE : " + item.UPLOAD_MESSAGE);
+            }
+            tw.Flush();
+            tw.Close();
+
+            return File(memoryStream.GetBuffer(), "text/plain", "Log_datagagalupload_" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
+        }
 
         //[HttpPost]
         //public async Task<IActionResult> ReadExcelFileAsync(IFormFile file)

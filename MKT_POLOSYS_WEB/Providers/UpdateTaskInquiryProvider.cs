@@ -252,6 +252,38 @@ namespace MKT_POLOSYS_WEB.Providers
             return empName;
 
         }
+
+        public List<ListLog> getLog(string pGuid)
+        {
+            List<ListLog> listData = new List<ListLog>();
+            bool isSucceed = true;
+            var connectionString = context.Database.GetDbConnection().ConnectionString;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                //Declare COnnection                
+                var querySstring = @"
+select TASK_ID,UPLOAD_MESSAGE from WISE_STAGING.dbo.T_MKT_POLO_UPLOAD where UPLOAD_STS=0 and QUEUE_UID='" + pGuid + "'";
+                SqlCommand command = new SqlCommand(querySstring, connection);
+                //open Connection
+                command.Connection.Open();
+
+                //PRoses Sp
+                SqlDataReader rd = command.ExecuteReader();
+                while (rd.Read())
+                {
+                    ListLog data = new ListLog();
+                    data.TASK_ID = rd[0].ToString();
+                    data.UPLOAD_MESSAGE = rd[1].ToString();
+                    listData.Add(data);
+                }
+                //Connection Close
+                command.Connection.Close();
+
+            }
+
+            return listData;
+
+        }
     }
 }
 

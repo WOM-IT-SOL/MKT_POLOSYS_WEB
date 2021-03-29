@@ -4,7 +4,6 @@
 
 @Html.HiddenFor(m => m.empNo)
 @{
-    ViewData["Title"] = "Index asdadasd";
     Layout = "~/Views/Shared/_LayoutUpload.cshtml";
     ViewBag.PageModel = Model.empName;
 }
@@ -74,6 +73,7 @@
             swal("Information", "Format file extension yang diupload, hanya diperbolehkan xlsx/xls", "info")
             return false;
         } else {
+            debugger;
             $.ajax({
                 url: 'UploadTaskInquiry/Upload?empNo=' + $("#empNo").val(),
                 data: form,
@@ -83,8 +83,11 @@
                 enctype: 'multipart/form-data',
                 dataType: 'json',
                 success: function (result) {
-                    if (result.isSucced) {
+                    if (result.isSucceed) {
                         swal("Information", result.message, "info")
+                        var href = '';
+                        href = 'UploadTaskInquiry/ExportLog?guid=' + result.pguid;
+                            window.location.href = href;
                     }
                     else {
 
