@@ -159,9 +159,6 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
             updateTaskInquiryProvider.SendApiToWiseMSS(guid);
             var result = new { isSucceed = true, pguid = guid, message = "Upload Done"};
             return Json(result);
-            Boolean isSucceed = true;
-            isSucceed = taskInquiryProvider.validasiDownload("a");
-            return Json(isSucceed);
 
         }
 
