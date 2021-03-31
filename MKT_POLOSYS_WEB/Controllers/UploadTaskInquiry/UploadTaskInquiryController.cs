@@ -75,11 +75,11 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
         }
 
         [HttpPost]
-        public ActionResult Upload(string empNo)
+        public async Task<ActionResult> Upload(string empNo)
         {
-
             Proccessresult result = new Proccessresult();
             string guid = System.Guid.NewGuid().ToString().ToUpper();
+
             try
             {
                 UpdateTaskInquiryProvider updateTaskInquiryProvider = new UpdateTaskInquiryProvider();
@@ -154,6 +154,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                         names.Add("labelName61", "Notes");
 
                         string sFileExtension = Path.GetExtension(uploadFile.FileName).ToLower();
+
                         //if (sFileExtension == ".xls")
                         //{
                         //    if (Request != null)
@@ -505,9 +506,10 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                     }
 
                 }
-                updateTaskInquiryProvider.SendApiCekDukcapil(guid);
-                updateTaskInquiryProvider.SendApiToWiseMSS(guid);
-                }
+
+                await updateTaskInquiryProvider.SendApiCekDukcapil(guid);
+                await updateTaskInquiryProvider.SendApiToWiseMSS(guid);
+            }
             catch
             {
                 result.isSucceed = true;
@@ -519,7 +521,6 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
             result.pguid = guid;
             result.message = "Upload Done";
             return Json(result);
-
         }
 
 

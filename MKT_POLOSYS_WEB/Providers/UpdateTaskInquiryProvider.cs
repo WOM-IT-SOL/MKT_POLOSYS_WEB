@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
-
+using System.Data;
 
 namespace MKT_POLOSYS_WEB.Providers
 {
@@ -115,27 +115,24 @@ namespace MKT_POLOSYS_WEB.Providers
         public async Task SendApiCekDukcapil(string sGUID)
         {
             var connectionString = context.Database.GetDbConnection().ConnectionString;
-            var url = string.Empty;
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            string url = "";
+
+            SqlCommand command = new SqlCommand();
+            command.Connection = new SqlConnection(connectionString);
+            command.CommandText = @"SELECT PARAMETER_VALUE FROM M_MKT_POLO_PARAMETER WHERE PARAMETER_ID = 'URL_MKT_POLO_API_DUKCAPIL_FROM POLO'";
+            command.CommandType = CommandType.Text;
+            command.Connection.Open();
+            SqlDataReader dr = command.ExecuteReader();
+
+            while (dr.Read())
             {
-                //Declare COnnection                
-                var querySstring = @"select PARAMETER_VALUE from WISE_STAGING.dbo.M_MKT_POLO_PARAMETER where PARAMETER_ID like 'URL_MKT_POLO_API_DUKCAPIL_FROM POLO'";
-                SqlCommand command = new SqlCommand(querySstring, connection);
-                //open Connection
-                command.Connection.Open();
-
-                //PRoses Sp
-                SqlDataReader rd = command.ExecuteReader();
-                while (rd.Read())
-                {
-                    url = rd[0].ToString();
-                }
-
-                //Connection Close
-                command.Connection.Close();
-
+                url = dr[0].ToString();
             }
-            string bodyJSON = JsonConvert.SerializeObject(new { dataSource = "UPLOAD", queueUID = sGUID }, Formatting.Indented);
+
+            dr.Close();
+            command.Connection.Close();
+
+            string bodyJSON = JsonConvert.SerializeObject(new { dataSource = "UPLOAD", queueUID = sGUID }, Formatting.None);
             var content = new StringContent(bodyJSON, Encoding.UTF8, "application/json");
             HttpClient client = new HttpClient();
             var response = await client.PostAsync(new Uri(url), content);
@@ -143,33 +140,24 @@ namespace MKT_POLOSYS_WEB.Providers
 
         public async Task SendApiToWiseMSS(string guid)
         {
-            var taskId = string.Empty;
             var connectionString = context.Database.GetDbConnection().ConnectionString;
-            using (SqlConnection connection = new SqlConnection(connectionString))
+
+            SqlCommand command = new SqlCommand();
+            command.Connection = new SqlConnection(connectionString);
+            command.CommandText = @"SELECT TASK_ID FROM T_MKT_POLO_UPLOAD WHERE UPLOAD_STS = 1 AND QUEUE_UID = '" + guid + "'";
+            command.CommandType = CommandType.Text;
+            command.Connection.Open();
+            SqlDataReader dr = command.ExecuteReader();
+
+            SendDataPreparation send = new SendDataPreparation(connectionString);
+            while (dr.Read())
             {
-                //Declare COnnection                
-                var querySstring = @"select TASK_ID from WISE_STAGING.dbo.T_MKT_POLO_UPLOAD where UPLOAD_STS=1 and QUEUE_UID='"+ guid + "'";
-                SqlCommand command = new SqlCommand(querySstring, connection);
-                //open Connection
-                command.Connection.Open();
-
-                //PRoses Sp
-                SqlDataReader rd = command.ExecuteReader();
-                while (rd.Read())
-                {
-                    taskId = rd[0].ToString();
-                    SendDataPreparation send = new SendDataPreparation(connectionString);
-                    await send.startProcess(taskId);
-                }
-
-                //Connection Close
-                command.Connection.Close();
-
+                await send.startProcess(dr[0].ToString());
             }
+
+            dr.Close();
+            command.Connection.Close();
         }
-        
-
-
 
         public bool  validasiUpload(string empNo)
         {
