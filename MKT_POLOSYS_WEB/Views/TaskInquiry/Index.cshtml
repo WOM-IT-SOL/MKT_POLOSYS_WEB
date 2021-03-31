@@ -6,7 +6,9 @@
 }
 
 
+
 @Html.HiddenFor(m => m.empNo)
+@Html.HiddenFor(m => m.empName)
 @*<script>
             $(document).ready(function () {
                 $('#ddlPriorityLevel').multiselect();
@@ -314,7 +316,7 @@
                     <option>All</option>
                     @foreach (var item in Model.ddlRegion)
                     {
-                        <option value="@item.Value"> @item.Text</option>
+                    <option value="@item.Value"> @item.Text</option>
                     }
                 </select>
             </div>
@@ -337,7 +339,7 @@
                     <option data-region="0">All</option>
                     @foreach (var item in Model.ddlBranch)
                     {
-                        <option data-region="@item.Filter" value="@item.Value"> @item.Text</option>
+                    <option data-region="@item.Filter" value="@item.Value"> @item.Text</option>
                     }
                 </select>
             </div>
@@ -350,7 +352,7 @@
                     @foreach (var item in Model.ddlEmpPosition)
                     {
 
-                        <option id="" value="@item.Value"> @item.Text</option>
+                    <option id="" value="@item.Value"> @item.Text</option>
                     }
                 </select>
             </div>
@@ -371,7 +373,7 @@
                     <option>All</option>
                     @foreach (var item in Model.ddlStsProspek)
                     {
-                        <option value="@item.Value"> @item.Text</option>
+                    <option value="@item.Value"> @item.Text</option>
                     }
                 </select>
             </div>
@@ -388,10 +390,10 @@
                 Priority Level
             </div>
             <div class="col">
-                <select id="ddlPriorityLevel" multiple="multiple">
+                <select id="ddlPriorityLevel" multiple="multiple" style="width:100px">
                     @foreach (var item in Model.ddlPriorityLevel)
                     {
-                        <option id="" value="@item.Value"> @item.Text</option>
+                        <option data-source="@item.Filter" data-position="@item.Filter2" data-prospek="@item.Filter3" value="@item.Value"> @item.Text</option>
                     }
                 </select>
             </div>
@@ -412,7 +414,7 @@
                     <option>All</option>
                     @foreach (var item in Model.ddlStatusDukcapil)
                     {
-                        <option id="" value="@item.Value"> @item.Text</option>
+                    <option id="" value="@item.Value"> @item.Text</option>
                     }
                 </select>
             </div>
@@ -446,7 +448,7 @@
                     <option>All</option>
                     @foreach (var item in Model.ddlSourceData)
                     {
-                        <option id="" value="@item.Value"> @item.Text</option>
+                    <option id="" value="@item.Value"> @item.Text</option>
                     }
                 </select>
             </div>

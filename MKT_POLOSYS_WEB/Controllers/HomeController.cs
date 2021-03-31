@@ -34,10 +34,17 @@ namespace MKT_POLOSYS_WEB.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        //public IActionResult Menu()
+        //{
+        //    MenuViewModel model = new MenuViewModel();
+        //    return PartialView("~/Shared/_LayoutUpload.cshtml",model);
+        //}
+
         public void hello()
         {
             Console.WriteLine("hello");
         }
+
 
         public string Getdata {get;set;}
     }

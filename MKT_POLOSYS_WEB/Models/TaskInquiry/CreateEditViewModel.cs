@@ -41,6 +41,7 @@ namespace MKT_POLOSYS_WEB.Models
         public string AlamatRes { get; set; }
         public string ProvRes { get; set; }
         public string KabRes { get; set; }
+        public string KecRes { get; set; }
         public string KelRes { get; set; }
         public string RTRes { get; set; }
         public string RWRes { get; set; }

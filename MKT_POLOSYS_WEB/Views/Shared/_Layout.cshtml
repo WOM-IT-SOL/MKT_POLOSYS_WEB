@@ -1,5 +1,6 @@
 ﻿
 
+
 <!DOCTYPE html>
 
 
@@ -17,6 +18,8 @@
 
     <link rel="stylesheet" href="~/css/datatables.min.css" />
     <link rel="stylesheet" href="~/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/bootstrap-multiselect.css" />
     <link rel="stylesheet" href="~/css/dataTables.bootstrap4.min.css" />
     <link rel="stylesheet" href="~/css/responsive.bootstrap4.min.css" />
 
@@ -89,7 +92,7 @@
                 <div class="navbar-collapse collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav float-right">
                         <span class="ml-2 d-none d-lg-inline-block">
-                            <span>Welcome, Model</span>
+                            <span>Welcome, @ViewData["empNames"]</span>
                             <input type="text" id="user_login" name="user_login" value="" style="background: transparent;border:none;">
 
                         </span>

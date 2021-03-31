@@ -148,7 +148,7 @@ namespace MKT_POLOSYS_WEB.Providers
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 //Declare COnnection                
-                var querySstring = @"select TASK_ID from WISE_STAGING.dbo.T_MKT_POLO_UPLOAD where UPLOAD_STS=1 and QUEUE_UID=''";
+                var querySstring = @"select TASK_ID from WISE_STAGING.dbo.T_MKT_POLO_UPLOAD where UPLOAD_STS=1 and QUEUE_UID='"+ guid + "'";
                 SqlCommand command = new SqlCommand(querySstring, connection);
                 //open Connection
                 command.Connection.Open();
@@ -171,30 +171,44 @@ namespace MKT_POLOSYS_WEB.Providers
 
 
 
-        public bool  validasiDownload(string empNo)
+        public bool  validasiUpload(string empNo)
         {
             bool isSucceed = true;
             var connectionString = context.Database.GetDbConnection().ConnectionString;
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            var userType = validasiUserType(empNo);
+            //validasi belum download 
+            if (userType == "TELESALES")
             {
-                //Declare COnnection                
-                var querySstring = @"select CASE WHEN COUNT(EMP_NO) > 0 THEN cast(1 as  bit) else cast(0 as  bit) end as validasi from WISE_STAGING.DBO.T_MKT_POLO_LOG_USER_DOWNLOAD where EMP_NO='" + empNo + "'AND FLAG_DOWNLOAD='T'";
-                SqlCommand command = new SqlCommand(querySstring, connection);
-                //open Connection
-                command.Connection.Open();
-
-                //PRoses Sp
-                SqlDataReader rd = command.ExecuteReader();
-                while (rd.Read())
+                var validDownload =true;
+                var validUpload = true;
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    isSucceed = Convert.ToBoolean(rd[0].ToString());
+                    //Declare COnnection                
+                    var querySstring = "spMKT_POLO_CHECK_VALIDASI_DOWNLOAD_UPLOAD";
+                    SqlCommand command = new SqlCommand(querySstring, connection);
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    //Define Query Parameter
+                    command.Parameters.AddWithValue("@pEmpNo", empNo);
+                    command.Parameters.AddWithValue("@type", "UPLOAD");
+                    //open Connection
+                    command.Connection.Open();
+
+                    //PRoses Sp
+                    SqlDataReader rd = command.ExecuteReader();
+                    while (rd.Read())
+                    {
+                        isSucceed = Convert.ToBoolean(rd[0].ToString());
+                    }
+
+                    //Connection Close
+                    command.Connection.Close();
+
                 }
-
-                //Connection Close
-                command.Connection.Close();
-
             }
-
+            else 
+            {
+                isSucceed = false;
+            }
             return isSucceed;
 
         }
@@ -223,6 +237,37 @@ namespace MKT_POLOSYS_WEB.Providers
             }
 
             return isSucceed;
+
+        }
+
+        public string validasiUserType(string empNo)
+        {
+            string typeUser = "";
+            var connectionString = context.Database.GetDbConnection().ConnectionString;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                //Declare COnnection                
+                var querySstring = "spMKT_POLO_CHECK_TYPE_USER";
+                SqlCommand command = new SqlCommand(querySstring, connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                //Define Query Parameter
+                command.Parameters.AddWithValue("@pEmpNo", empNo);
+                //open Connection
+                command.Connection.Open();
+
+                //PRoses Sp
+                SqlDataReader rd = command.ExecuteReader();
+                while (rd.Read())
+                {
+                    typeUser = rd[0].ToString();
+                }
+
+                //Connection Close
+                command.Connection.Close();
+
+            }
+
+            return typeUser;
 
         }
 

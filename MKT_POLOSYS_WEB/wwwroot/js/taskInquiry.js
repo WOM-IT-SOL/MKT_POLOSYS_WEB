@@ -1,4 +1,9 @@
-﻿$('#ddlPriorityLevel').multiselect();
+﻿$('#ddlPriorityLevel').multiselect({
+    buttonWidth: '180px'
+});
+
+$(".caret").css('float', 'right');
+$(".caret").css('margin', '8px 0');
 
 var myTable = $('#myTableList').DataTable({
     "paging": true,
@@ -166,20 +171,51 @@ function list() {
 
 
 $('#myTableList tbody').on('click', '.taskID', function (e) {
-    e.preventDefault();
-    var row = $(this).closest('tr');
-    var id = myTable.row(row).data().orderInID;
-    var href = '';
-    href = 'TaskInquiry/ExcelDetail?pID=' + id + "&pEmpNo=" + $("#empNo").val()
-    window.location.href = href;
+    e.preventDefault(); $.ajax({
+        url: 'TaskInquiry/ValidasiDownload',
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+        async: false,
+        dataType: 'json',
+        type: 'POST',
+        data: {
+            pEmpNo: $("#empNo").val()
+        },
+        success: function (isSucceed) {
+            if (isSucceed == true) {
+                swal("Information", "Proses Download tidak bisa dilakukan karena belum dilakukan Upload pada proses Download sebelumnya.", "info")
+                return false;
+            } else {
+                var row = $(this).closest('tr');
+                var id = myTable.row(row).data().orderInID;
+                var href = '';
+                href = 'TaskInquiry/ExcelDetail?pID=' + id + "&pEmpNo=" + $("#empNo").val()
+                window.location.href = href;
+            }
+        }
+    });
 });
 
 $('#myTableList tbody').on('click', '.rowClick', function (e) {
     e.preventDefault();
+    var param = "";
+    $.ajax({
+        url: 'TaskInquiry/DecriptUser',
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+        async: false,
+        dataType: 'json',
+        type: 'POST',
+        data: {
+            Id: myTable.row(row).data().orderInID,
+            userName: $("#empName").val()
+        },
+        success: function (result) {
+            param = result;
+        }
+    });
     var row = $(this).closest('tr');
     var href = '';
-    href = 'Taskinquiry/Views/' + myTable.row(row).data().orderInID;
-    window.location.href = href;
+    href = 'Taskinquiry/Views?Id=' + param
+    window.open(href, '_blank');
 });
 
 $('#btnSearch').click(function (e) {
@@ -207,7 +243,6 @@ $("#btnDownload").click(function (e) {
         swal("Information", "Distributed Date <=  harus diisi.", "info")
         return false;
     }
-
     $.ajax({
         url: 'TaskInquiry/ValidasiDownload',
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -219,7 +254,7 @@ $("#btnDownload").click(function (e) {
         },
         success: function (isSucceed) {
             if (isSucceed == true) {
-                swal("Information", "Proses Download tidak bisa dilakukan karena belum dilakukan Upload pada proses Download sebelumnyaProses Download tidak bisa dilakukan karena belum dilakukan Upload pada proses Download sebelumnya.", "info")
+                swal("Information", "Proses Download tidak bisa dilakukan karena belum dilakukan Upload pada proses Download sebelumnya.", "info")
                 return false;
             }
             else {
@@ -347,4 +382,130 @@ $(document).on("change", "#ddlRegion", function () {
         });
     }
     
+});
+
+$(document).on("change", "#ddlSourceData", function () {
+    debugger;
+    var selectedSource = $(this).val();
+    var psource = selectedSource;
+    var pemp = $("#ddlEmpPosition").val();
+    var pprospec = $("#ddlStsProspek").val();
+    if (psource == "")
+        psource = "All"
+    if (pemp == "")
+        pemp = "All"
+    if (pprospec == "")
+        pprospec = "All"
+    $.ajax({
+        url: 'TaskInquiry/DdlPriorityLvl',
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+        async: false,
+        dataType: 'json',
+        type: 'POST',
+        data: {
+            source: psource,
+            empPost: pemp,
+            prospect: pprospec
+        },
+        success: function (result) {
+            var jsonString = JSON.stringify(result);
+            $('#ddlPriorityLevel  option').each(function (index, option) {
+                $(option).remove();
+            });
+            //alert(result.Value);
+            $('#ddlPriorityLevel ').multiselect('rebuild');
+            $.each(result, function (i, a) {
+                $('#ddlPriorityLevel').append($('<option>', {
+                    value: result[i].value,
+                    text: result[i].text
+                }));
+            });
+            $('#ddlPriorityLevel ').multiselect('rebuild');
+        }
+    });
+
+});
+
+$(document).on("change", "#ddlEmpPosition", function () {
+    debugger;
+    var selectedSource = $(this).val();
+    var psource = $("#ddlSourceData").val();;
+    var pemp = selectedSource;
+    var pprospec = $("#ddlStsProspek").val();
+    if (psource == "")
+        psource = "All"
+    if (pemp == "")
+        pemp = "All"
+    if (pprospec == "")
+        pprospec = "All"
+    $.ajax({
+        url: 'TaskInquiry/DdlPriorityLvl',
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+        async: false,
+        dataType: 'json',
+        type: 'POST',
+        data: {
+            source: psource,
+            empPost: pemp,
+            prospect: pprospec
+        },
+        success: function (result) {
+            var jsonString = JSON.stringify(result);
+            $('#ddlPriorityLevel  option').each(function (index, option) {
+                $(option).remove();
+            });
+            //alert(result.Value);
+            $('#ddlPriorityLevel ').multiselect('rebuild');
+            $.each(result, function (i, a) {
+                $('#ddlPriorityLevel').append($('<option>', {
+                    value: result[i].value,
+                    text: result[i].text
+                }));
+            });
+            $('#ddlPriorityLevel ').multiselect('rebuild');
+        }
+    });
+
+});
+
+$(document).on("change", "#ddlStsProspek", function () {
+    debugger;
+    var selectedSource = $(this).val();
+    var psource = $("#ddlSourceData").val();
+    var pemp = $("#ddlEmpPosition").val();
+    var pprospec = selectedSource;
+    if (psource == "")
+        psource = "All"
+    if (pemp == "")
+        pemp = "All"
+    if (pprospec == "")
+        pprospec = "All"
+    $.ajax({
+        url: 'TaskInquiry/DdlPriorityLvl',
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+        async: false,
+        dataType: 'json',
+        type: 'POST',
+        data: {
+            source: psource,
+            empPost: pemp,
+            prospect: pprospec
+        },
+        success: function (result) {
+            var jsonString = JSON.stringify(result);
+            $('#ddlPriorityLevel  option').each(function (index, option) {
+                $(option).remove();
+            });
+            //alert(result.Value);
+            $('#ddlPriorityLevel ').multiselect('rebuild');
+            $.each(result, function (i, a) {
+                $('#ddlPriorityLevel').append($('<option>', {
+                    value: result[i].value,
+                    text: result[i].text
+                }));
+            });
+            $('#ddlPriorityLevel ').multiselect('rebuild');
+        }
+    });
+
 });

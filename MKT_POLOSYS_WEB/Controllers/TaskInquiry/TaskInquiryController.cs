@@ -18,7 +18,6 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
         {
             try
             {
-                emp_no = emp_no.Remove(emp_no.Length - 1);
                 TaskInquiryProvider taskInquiryProvider = new TaskInquiryProvider();
                 Boolean isSucceed = true;
                 var model = new IndexViewModel();
@@ -26,7 +25,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                 model.ddlBranch = taskInquiryProvider.ddlBranch().ToList();
                 model.ddlEmpPosition = taskInquiryProvider.ddlEmpPosition().ToList();
                 model.ddlStsProspek = taskInquiryProvider.ddlStsProspek().ToList();
-                model.ddlPriorityLevel = taskInquiryProvider.ddlPriorityLevel().ToList();
+                model.ddlPriorityLevel = taskInquiryProvider.ddlPriorityLevelFilter("All", "All", "All").ToList();
                 model.ddlStatusDukcapil = taskInquiryProvider.ddlStatusDukcapil().ToList();
                 model.ddlSourceData = taskInquiryProvider.ddlSourceData().ToList();
                 var base64EncodedBytes = System.Convert.FromBase64String(emp_no);
@@ -36,6 +35,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                 model.empName = taskInquiryProvider.getUser(model.empNo);
                 if (isSucceed)
                 {
+                    ViewData["empNames"] = model.empName;
                     return View(model);
                 }
                 else
@@ -53,58 +53,72 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
 
 
         // GET: TaskInquiry/Details/5
-        public ActionResult Views(int id)
+        public ActionResult Views(string Id)
         {
-            TaskInquiryProvider taskInquiryProvider = new TaskInquiryProvider();
-            CreateEditViewModel model = new CreateEditViewModel();
-            var data = taskInquiryProvider.getView(id);
-            model.TaskID = data.Value.TaskID;
-            model.JenisTask = data.Value.JenisTask;
-            model.CustID = data.Value.CustID;
-            model.CustomerName = data.Value.CustomerName;
-            model.DistributedDate = data.Value.DistributedDate;
-            model.StartedDate = data.Value.StartedDate;
-            model.StatusDukcapil = data.Value.StatusDukcapil;
-            model.FieldPersonName = data.Value.FieldPersonName;
-            model.EmpPosition = data.Value.EmpPosition;
-            model.StatusProspek = data.Value.StatusProspek;
-            model.PriorityLevel = data.Value.PriorityLevel;
-            model.AplikasiIA = data.Value.AplikasiIA;
-            model.AplicationID = data.Value.AplicationID;
-            model.SourceData = data.Value.SourceData;
 
-            model.SourceData = data.Value.SourceData;
-            model.NIK = data.Value.NIK;
+            try
+            {
+                var base64EncodedBytes = System.Convert.FromBase64String(Id);
+                var idDecrt = System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+                string authors = "Mahesh Chand, Henry He, Chris Love, Raj Beniwal, Praveen Kumar";
+                string[] paramList = idDecrt.Split("|");
+                int id = Convert.ToInt32(paramList[0].ToString());
+                ViewData["empNames"] = paramList[1].ToString();
+                TaskInquiryProvider taskInquiryProvider = new TaskInquiryProvider();
+                CreateEditViewModel model = new CreateEditViewModel();
+                var data = taskInquiryProvider.getView(id);
+                model.TaskID = data.Value.TaskID;
+                model.JenisTask = data.Value.JenisTask;
+                model.CustID = data.Value.CustID;
+                model.CustomerName = data.Value.CustomerName;
+                model.DistributedDate = data.Value.DistributedDate;
+                model.StartedDate = data.Value.StartedDate;
+                model.StatusDukcapil = data.Value.StatusDukcapil;
+                model.FieldPersonName = data.Value.FieldPersonName;
+                model.EmpPosition = data.Value.EmpPosition;
+                model.StatusProspek = data.Value.StatusProspek;
+                model.PriorityLevel = data.Value.PriorityLevel;
+                model.AplikasiIA = data.Value.AplikasiIA;
+                model.AplicationID = data.Value.AplicationID;
+                model.SourceData = data.Value.SourceData;
 
-            //---
-            model.TempatLahir = data.Value.TempatLahir;
-            model.TglLahir = data.Value.TglLahir;
-            model.AlamatLeg = data.Value.AlamatLeg;
-            model.ProvLeg = data.Value.ProvLeg;
-            model.KabLeg = data.Value.KabLeg;
-            model.KelLeg = data.Value.KelLeg;
-            model.RTLeg = data.Value.RTLeg;
-            model.RWLeg = data.Value.RWLeg;
-            model.AlamatRes = data.Value.AlamatRes;
-            model.ProvRes = data.Value.ProvRes;
-            model.KabRes = data.Value.KabRes;
-            model.KelRes = data.Value.KelRes;
-            model.RTRes = data.Value.RTRes;
-            model.RWRes = data.Value.RWRes;
-            model.KodePosRes = data.Value.KodePosRes;
-            model.SubZipcodeRes = data.Value.SubZipcodeRes;
-            model.Product = data.Value.Product;
-            model.ItemType = data.Value.ItemType;
-            model.ItemYear = data.Value.ItemYear;
-            model.OtrPrice = data.Value.OtrPrice;
-            model.DP = data.Value.DP;
-            model.LTV = data.Value.LTV;
+                model.SourceData = data.Value.SourceData;
+                model.NIK = data.Value.NIK;
 
-            model.Tenor = data.Value.Tenor;
-            model.Plafond = data.Value.Plafond;
-            model.MonthInstallment = data.Value.MonthInstallment;
-            model.Notes = data.Value.Notes;
-            return View("CreateEdit", model);
+                //---
+                model.TempatLahir = data.Value.TempatLahir;
+                model.TglLahir = data.Value.TglLahir;
+                model.AlamatLeg = data.Value.AlamatLeg;
+                model.ProvLeg = data.Value.ProvLeg;
+                model.KabLeg = data.Value.KabLeg;
+                model.KelLeg = data.Value.KelLeg;
+                model.RTLeg = data.Value.RTLeg;
+                model.RWLeg = data.Value.RWLeg;
+                model.AlamatRes = data.Value.AlamatRes;
+                model.ProvRes = data.Value.ProvRes;
+                model.KabRes = data.Value.KabRes;
+                model.KelRes = data.Value.KelRes;
+                model.RTRes = data.Value.RTRes;
+                model.RWRes = data.Value.RWRes;
+                model.KodePosRes = data.Value.KodePosRes;
+                model.SubZipcodeRes = data.Value.SubZipcodeRes;
+                model.Product = data.Value.Product;
+                model.ItemType = data.Value.ItemType;
+                model.ItemYear = data.Value.ItemYear;
+                model.OtrPrice = data.Value.OtrPrice;
+                model.DP = data.Value.DP;
+                model.LTV = data.Value.LTV;
+
+                model.Tenor = data.Value.Tenor;
+                model.Plafond = data.Value.Plafond;
+                model.MonthInstallment = data.Value.MonthInstallment;
+                model.Notes = data.Value.Notes;
+                return View("CreateEdit", model);
+            }
+            catch (Exception ex)
+            {
+                return View("~/Views/Shared/Error.cshtml");
+            }
         }
 
         public ActionResult ListDetail(ParamListDetail model)
@@ -121,6 +135,13 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
             return Json(result);
         }
 
+        public ActionResult DdlPriorityLvl(string source,string empPost,string prospect)
+        {
+            TaskInquiryProvider taskInquiryProvider = new TaskInquiryProvider();
+            var result = taskInquiryProvider.ddlPriorityLevelFilter(source, empPost,prospect);
+            return Json(result);
+        }
+
         public IActionResult Excel(string pRegion,
             string pFPName, string pBranchName, string pEmpPosition,
             string pTaskID, string pStatProspek, string pAppID, string[] pPriorityLevel,
@@ -130,7 +151,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
             using (var workbook = new XLWorkbook())
             {
                 TaskInquiryProvider taskInquiryProvider = new TaskInquiryProvider();
-                var worksheet = workbook.Worksheets.Add("TARK INQUIRY");
+                var worksheet = workbook.Worksheets.Add("TASK INQUIRY");
                 var currentRow = 1;
                 worksheet.Cell(currentRow, 1).Value = "No";
                 worksheet.Cell(currentRow, 2).Value = "Branch Name";
@@ -216,7 +237,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                     worksheet.Cell(currentRow, 13).Value = item.RegionalId;
                     worksheet.Cell(currentRow, 14).Value = item.Product;
                     worksheet.Cell(currentRow, 15).Value = item.CabId;
-                    worksheet.Cell(currentRow, 16).Value = item.NIK;
+                    worksheet.Cell(currentRow, 16).Value = "'"+item.NIK;
                     worksheet.Cell(currentRow, 17).Value = item.TempatLahir;
                     worksheet.Cell(currentRow, 18).Value = item.TglLahir;
                     worksheet.Cell(currentRow, 19).Value = item.RWLeg;
@@ -264,6 +285,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                     worksheet.Cell(currentRow, 61).Value = item.Notes;
                 }
 
+                var type = taskInquiryProvider.validasiUserType(pEmpNo);
                 using (var stream = new MemoryStream())
                 {
                     workbook.SaveAs(stream);
@@ -272,7 +294,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                     return File(
                         content,
                         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                       pEmpNo + "_FL_" + DateTime.Now.ToString("yyyyMMdd") + ".xlsx");
+                       pEmpNo + "_"+ type + "_" + DateTime.Now.ToString("yyyyMMdd") + ".xlsx");
                 }
             }
         }
@@ -364,7 +386,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                     worksheet.Cell(currentRow, 13).Value = item.RegionalId;
                     worksheet.Cell(currentRow, 14).Value = item.Product;
                     worksheet.Cell(currentRow, 15).Value = item.CabId;
-                    worksheet.Cell(currentRow, 16).Value = item.NIK;
+                    worksheet.Cell(currentRow, 16).Value = "'"+item.NIK;
                     worksheet.Cell(currentRow, 17).Value = item.TempatLahir;
                     worksheet.Cell(currentRow, 18).Value = item.TglLahir;
                     worksheet.Cell(currentRow, 19).Value = item.RWLeg;
@@ -383,12 +405,12 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                     worksheet.Cell(currentRow, 32).Value = item.NoRangka;
                     worksheet.Cell(currentRow, 33).Value = item.ItemType;
                     worksheet.Cell(currentRow, 34).Value = item.ItemDescription;
-                    worksheet.Cell(currentRow, 35).Value = item.Mobile1;
-                    worksheet.Cell(currentRow, 36).Value = item.Mobile2;
-                    worksheet.Cell(currentRow, 37).Value = item.Phone1;
-                    worksheet.Cell(currentRow, 38).Value = item.Phone2;
-                    worksheet.Cell(currentRow, 39).Value = item.OfficePhone1;
-                    worksheet.Cell(currentRow, 40).Value = item.OfficePhone2;
+                    worksheet.Cell(currentRow, 35).Value = "'" + item.Mobile1;
+                    worksheet.Cell(currentRow, 36).Value = "'" + item.Mobile2;
+                    worksheet.Cell(currentRow, 37).Value = "'" + item.Phone1;
+                    worksheet.Cell(currentRow, 38).Value = "'" + item.Phone2;
+                    worksheet.Cell(currentRow, 39).Value = "'" + item.OfficePhone1;
+                    worksheet.Cell(currentRow, 40).Value = "'" + item.OfficePhone2;
                     worksheet.Cell(currentRow, 41).Value = item.OtrPrice;
                     worksheet.Cell(currentRow, 42).Value = item.ItemYear;
                     worksheet.Cell(currentRow, 43).Value = item.MonthlyIncome;
@@ -411,7 +433,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                     worksheet.Cell(currentRow, 60).Value = item.ReasonNotProspek;
                     worksheet.Cell(currentRow, 61).Value = item.Notes;
                 }
-
+                var type = taskInquiryProvider.validasiUserType(pEmpNo);
                 using (var stream = new MemoryStream())
                 {
                     workbook.SaveAs(stream);
@@ -420,7 +442,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                     return File(
                         content,
                         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                       pEmpNo + "_FL_" + DateTime.Now.ToString("yyyyMMdd") + ".xlsx");
+                       pEmpNo + "_"+ type + "_" + DateTime.Now.ToString("yyyyMMdd") + ".xlsx");
                 }
             }
         }
@@ -433,5 +455,18 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
             return Json(isSucceed);
 
         }
+
+        public IActionResult DecriptUser(string Id, string userName)
+        {
+            TaskInquiryProvider taskInquiryProvider = new TaskInquiryProvider();
+            Boolean isSucceed = true;
+            var idDecript = Id + "|" + userName;
+            var idDecriptEncrypt = System.Text.Encoding.UTF8.GetBytes(idDecript);
+            var idDecriptEncrypt64 = Convert.ToBase64String(idDecriptEncrypt);
+            var result = idDecriptEncrypt64;
+            return Json(result);
+
+        }
+
     }
 }

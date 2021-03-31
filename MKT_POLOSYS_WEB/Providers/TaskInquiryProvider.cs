@@ -114,7 +114,6 @@ namespace MKT_POLOSYS_WEB.Providers
                 SqlDataReader rd = command.ExecuteReader();
                 while (rd.Read())
                 {
-
                     data.TaskID = rd[0].ToString();
                     data.JenisTask = rd[1].ToString();
                     data.CustID = rd[2].ToString();
@@ -133,17 +132,18 @@ namespace MKT_POLOSYS_WEB.Providers
 
                     //---
                     data.TempatLahir = rd[15].ToString();
-                    data.TglLahir = Convert.ToDateTime(rd[16].ToString()).ToString("dd/MM/yyyy");
+                    data.TglLahir = Convert.ToDateTime(rd[16].ToString()).ToString("dd MMM yyyy");
                     data.AlamatLeg = rd[17].ToString();
                     data.ProvLeg = rd[18].ToString();
+                    data.KabLeg = rd[19].ToString();
                     data.KecLeg = rd[20].ToString();
-                    data.KabLeg = rd[21].ToString();
-                    data.KelLeg = rd[22].ToString();
-                    data.RTLeg = rd[23].ToString();
-                    data.RWLeg = rd[24].ToString();
-                    data.AlamatRes = rd[25].ToString();
-                    data.ProvRes = rd[26].ToString();
-                    data.KabRes = rd[27].ToString();
+                    data.KelLeg = rd[21].ToString();
+                    data.RTLeg = rd[22].ToString();
+                    data.RWLeg = rd[23].ToString();
+                    data.AlamatRes = rd[24].ToString();
+                    data.ProvRes = rd[25].ToString();
+                    data.KabRes = rd[26].ToString();
+                    data.KecRes = rd[27].ToString();
                     data.KelRes = rd[28].ToString();
                     data.RTRes = rd[29].ToString();
                     data.RWRes = rd[30].ToString();
@@ -152,12 +152,12 @@ namespace MKT_POLOSYS_WEB.Providers
                     data.Product = rd[33].ToString();
                     data.ItemType = rd[34].ToString();
                     data.ItemYear = rd[35].ToString();
-                    data.OtrPrice = Convert.ToDecimal(rd[36].ToString()).ToString("#,##0.00");
-                    data.DP = Convert.ToDecimal(rd[36].ToString()).ToString("#,##0.00"); 
+                    data.OtrPrice =  Convert.ToDecimal(rd[36].ToString()).ToString("#,##0.00");
+                    data.DP =  rd[37].ToString() == "" ? "-" : Convert.ToDecimal(rd[37].ToString()).ToString("#,##0.00");
                     data.LTV = rd[38].ToString();
                     data.Tenor = rd[39].ToString();
-                    data.Plafond = rd[40].ToString();
-                    data.MonthInstallment = Convert.ToDecimal(rd[41].ToString()).ToString("#,##0.00");
+                    data.Plafond = rd[40].ToString() == "" ? "-" : Convert.ToDecimal(rd[40].ToString()).ToString("#,##0.00");
+                    data.MonthInstallment = rd[41].ToString() == "" ? "-" :  Convert.ToDecimal(rd[41].ToString()).ToString("#,##0.00");
                     data.Notes = rd[42].ToString();
                 }
 
@@ -172,7 +172,6 @@ namespace MKT_POLOSYS_WEB.Providers
 
         public List<ListTaskDetailViewModel> getDetail(string taskID)
         { 
-
             List<ListTaskDetailViewModel> ListData = new List<ListTaskDetailViewModel>();
             var connectionString = context.Database.GetDbConnection().ConnectionString;
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -449,6 +448,8 @@ namespace MKT_POLOSYS_WEB.Providers
             return ListData;
 
         }
+
+
         public List<DropdownListViewModel> ddlBranch()
         {
             List<DropdownListViewModel> ListData = new List<DropdownListViewModel>();
@@ -570,6 +571,46 @@ namespace MKT_POLOSYS_WEB.Providers
                     data.Value = rd[1].ToString();
                     data.Filter = rd[2].ToString();
                     data.Filter2 = rd[3].ToString();
+                    data.Filter3 = rd[4].ToString();
+                    ListData.Add(data);
+                }
+
+                //Connection Close
+                command.Connection.Close();
+
+            }
+
+            return ListData;
+
+        }
+        public List<DropdownListViewModel> ddlPriorityLevelFilter(string source,string emp, string prospec)
+        {
+            List<DropdownListViewModel> ListData = new List<DropdownListViewModel>();
+            var connectionString = context.Database.GetDbConnection().ConnectionString;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                //Declare COnnection                
+                var querySstring = "spMKT_POLO_DDL_PRIORITY_LVL_TEST";
+                //Define Query Parameter
+                SqlCommand command = new SqlCommand(querySstring, connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@pSource", source);
+                command.Parameters.AddWithValue("@pEmp", emp);
+                command.Parameters.AddWithValue("@pProspec", prospec);
+                //open Connection
+                command.Connection.Open();
+
+                //PRoses Sp
+                SqlDataReader rd = command.ExecuteReader();
+                while (rd.Read())
+                {
+
+                    DropdownListViewModel data = new DropdownListViewModel();
+                    data.Text = rd[0].ToString();
+                    data.Value = rd[1].ToString();
+                    data.Filter = rd[2].ToString();
+                    data.Filter2 = rd[3].ToString();
+                    data.Filter3 = rd[4].ToString();
                     ListData.Add(data);
                 }
 
@@ -650,12 +691,55 @@ namespace MKT_POLOSYS_WEB.Providers
         public bool  validasiDownload(string empNo)
         {
             bool isSucceed = true;
+            var connectionString = context.Database.GetDbConnection().ConnectionString; var userType = validasiUserType(empNo);
+            //validasi belum download 
+            if (userType == "TELESALES")
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    //Declare COnnection                
+                    var querySstring = "spMKT_POLO_CHECK_VALIDASI_DOWNLOAD_UPLOAD";
+                    SqlCommand command = new SqlCommand(querySstring, connection);
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    //Define Query Parameter
+                    command.Parameters.AddWithValue("@pEmpNo", empNo);
+                    command.Parameters.AddWithValue("@type", "DOWNLOAD");
+                    //open Connection
+                    command.Connection.Open();
+
+                    //PRoses Sp
+                    SqlDataReader rd = command.ExecuteReader();
+                    while (rd.Read())
+                    {
+                        isSucceed = Convert.ToBoolean(rd[0].ToString());
+                    }
+
+                    //Connection Close
+                    command.Connection.Close();
+
+                }
+            }
+            else
+            {
+                isSucceed = false;
+            }
+
+            return isSucceed;
+
+        }
+
+        public string validasiUserType(string empNo)
+        {
+            string typeUser = "";
             var connectionString = context.Database.GetDbConnection().ConnectionString;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 //Declare COnnection                
-                var querySstring = @"select CASE WHEN COUNT(EMP_NO) > 0 THEN cast(1 as  bit) else cast(0 as  bit) end as validasi from WISE_STAGING.DBO.T_MKT_POLO_LOG_USER_DOWNLOAD where EMP_NO='" + empNo + "'AND FLAG_DOWNLOAD='T'";
+                var querySstring = "spMKT_POLO_CHECK_TYPE_USER";
                 SqlCommand command = new SqlCommand(querySstring, connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                //Define Query Parameter
+                command.Parameters.AddWithValue("@pEmpNo", empNo);
                 //open Connection
                 command.Connection.Open();
 
@@ -663,7 +747,7 @@ namespace MKT_POLOSYS_WEB.Providers
                 SqlDataReader rd = command.ExecuteReader();
                 while (rd.Read())
                 {
-                    isSucceed = Convert.ToBoolean(rd[0].ToString());
+                    typeUser = rd[0].ToString();
                 }
 
                 //Connection Close
@@ -671,7 +755,7 @@ namespace MKT_POLOSYS_WEB.Providers
 
             }
 
-            return isSucceed;
+            return typeUser;
 
         }
         public bool validasiUser(string empNo)

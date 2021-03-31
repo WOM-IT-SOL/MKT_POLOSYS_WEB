@@ -3,6 +3,7 @@
 
 
 @Html.HiddenFor(m => m.empNo)
+@Html.HiddenFor(m => m.empName)
 @{
     Layout = "~/Views/Shared/_LayoutUpload.cshtml";
     ViewBag.PageModel = Model.empName;
@@ -13,55 +14,42 @@
 
 <div class="wrapper">
     <div class="container-fluid">
-        <div>
-        </div>
-        <div class="container-fluid mx-auto mt-3 mb-2" style="width: 100%;">
-            <div class="text-align:left">
+            <div class="form-group">
+
             </div>
-        </div>
-        <form id="frm" action="" method="POST" enctype="multipart/form-data">
-            <div class="form-row">
-                <div>
-                    <label for="myFile">File Upload : </label>
+            <div class="container-fluid mx-auto mt-3 mb-2" style="width: 100%;">
+                <div class="text-align:left">
                 </div>
-                <div class="col-6">
-                    <div class="custom-file">
-                        <input type="file" id="myFile" name="filename">
+            </div>
+            <form id="frm" action="" method="POST" enctype="multipart/form-data">
+                <div class="form-row">
+                    <div>
+                        <label for="myFile">File Upload : </label>
+                    </div>
+                    <div class="col-6">
+                        <div class="custom-file">
+                            <input type="file" id="myFile" name="filename">
+                        </div>
+                    </div>
+                    <div class="col-1">
+
+                        <button type="submit" class="btn btn-md btn-primary">Upload</button>
+                    </div>
+                    <div class="col-1">
+                        <button type="submit" class="btn btn-md btn-warning" id="reset">Reset</button>
                     </div>
                 </div>
-                <div class="col-1">
-
-                    <button type="submit" class="btn btn-md btn-primary">Upload</button>
-                </div>
-                <div class="col-1">
-                    <button type="submit" class="btn btn-md btn-warning" id="reset">Reset</button>
-                </div>
-            </div>
-            @*<div id="wrapLoading">
-                    <fieldset>
-                    </fieldset>
-                    <table>
-
-                        <tr>
-                            <td>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                &nbsp;
-                            </td>
-                        </tr>
-                    </table>
-                </div>*@
-        </form>
-    </div>
+            </form>
+        </div>
 
 </div>
 
 
 <script>
+
     $('#frm').submit(function (e) {
         e.preventDefault();
+        debugger;
         var form = new FormData(this)
         var fileExtension = ['xlsx', 'xls'];
         var namaFile = $("#myFile").val();
@@ -73,28 +61,48 @@
             swal("Information", "Format file extension yang diupload, hanya diperbolehkan xlsx/xls", "info")
             return false;
         } else {
-            debugger;
             $.ajax({
-                url: 'UploadTaskInquiry/Upload?empNo=' + $("#empNo").val(),
-                data: form,
-                type: 'POST',
-                contentType: false,
-                processData: false,
-                enctype: 'multipart/form-data',
+                url: 'UploadTaskInquiry/ValidasiUpload',
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                async: false,
                 dataType: 'json',
-                success: function (result) {
-                    if (result.isSucceed) {
-                        swal("Information", result.message, "info")
-                        var href = '';
-                        href = 'UploadTaskInquiry/ExportLog?guid=' + result.pguid;
-                            window.location.href = href;
+                type: 'POST',
+                data: {
+                    pEmpNo: $("#empNo").val()
+                },
+                success: function (isSucceed) {
+                    if (isSucceed == true) {
+                        swal("Information", $("#empName").val() + " belum menjalankan proses Download,sehingga Proses Upload tidak bisa dilanjutkan.", "info")
+                        return false;
                     }
                     else {
+                        $.ajax({
+                            url: 'UploadTaskInquiry/Upload?empNo=' + $("#empNo").val(),
+                            data: form,
+                            type: 'POST',
+                            contentType: false,
+                            processData: false,
+                            enctype: 'multipart/form-data',
+                            dataType: 'json',
+                            success: function (result) {
+                                if (result.isSucceed) {
+                                    swal("Information", result.message, "info")
+                                    var href = '';
+                                    href = 'UploadTaskInquiry/ExportLog?guid=' + result.pguid;
+                                    window.location.href = href;
+                                }
+                                else {
 
-                        swal("Information", result.message, "info")
+                                    swal("Information", result.message, "info")
+                                }
+                            }
+                        });
                     }
                 }
             });
+
+
+
         }
         return false;
     });
