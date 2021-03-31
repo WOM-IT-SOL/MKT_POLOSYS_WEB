@@ -549,7 +549,7 @@ namespace MKT_POLOSYS_WEB.Providers
             return ListData;
 
         }
-        public List<DropdownListViewModel> ddlPriorityLevel()
+        public List<DropdownListViewModel> ddlPriorityLevel(string source,string emp, string prospec)
         {
             List<DropdownListViewModel> ListData = new List<DropdownListViewModel>();
             var connectionString = context.Database.GetDbConnection().ConnectionString;
@@ -557,40 +557,6 @@ namespace MKT_POLOSYS_WEB.Providers
             {
                 //Declare COnnection                
                 var querySstring = "spMKT_POLO_DDL_PRIORITY_LVL";
-                SqlCommand command = new SqlCommand(querySstring, connection);
-                //open Connection
-                command.Connection.Open();
-
-                //PRoses Sp
-                SqlDataReader rd = command.ExecuteReader();
-                while (rd.Read())
-                {
-
-                    DropdownListViewModel data = new DropdownListViewModel();
-                    data.Text = rd[0].ToString();
-                    data.Value = rd[1].ToString();
-                    data.Filter = rd[2].ToString();
-                    data.Filter2 = rd[3].ToString();
-                    data.Filter3 = rd[4].ToString();
-                    ListData.Add(data);
-                }
-
-                //Connection Close
-                command.Connection.Close();
-
-            }
-
-            return ListData;
-
-        }
-        public List<DropdownListViewModel> ddlPriorityLevelFilter(string source,string emp, string prospec)
-        {
-            List<DropdownListViewModel> ListData = new List<DropdownListViewModel>();
-            var connectionString = context.Database.GetDbConnection().ConnectionString;
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                //Declare COnnection                
-                var querySstring = "spMKT_POLO_DDL_PRIORITY_LVL_TEST";
                 //Define Query Parameter
                 SqlCommand command = new SqlCommand(querySstring, connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
