@@ -25,7 +25,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                 model.ddlBranch = taskInquiryProvider.ddlBranch().ToList();
                 model.ddlEmpPosition = taskInquiryProvider.ddlEmpPosition().ToList();
                 model.ddlStsProspek = taskInquiryProvider.ddlStsProspek().ToList();
-                model.ddlPriorityLevel = taskInquiryProvider.ddlPriorityLevelFilter("All", "All", "All").ToList();
+                model.ddlPriorityLevel = taskInquiryProvider.ddlPriorityLevel("All", "All", "All").ToList();
                 model.ddlStatusDukcapil = taskInquiryProvider.ddlStatusDukcapil().ToList();
                 model.ddlSourceData = taskInquiryProvider.ddlSourceData().ToList();
                 var base64EncodedBytes = System.Convert.FromBase64String(emp_no);
@@ -138,7 +138,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
         public ActionResult DdlPriorityLvl(string source,string empPost,string prospect)
         {
             TaskInquiryProvider taskInquiryProvider = new TaskInquiryProvider();
-            var result = taskInquiryProvider.ddlPriorityLevelFilter(source, empPost,prospect);
+            var result = taskInquiryProvider.ddlPriorityLevel(source, empPost,prospect);
             return Json(result);
         }
 

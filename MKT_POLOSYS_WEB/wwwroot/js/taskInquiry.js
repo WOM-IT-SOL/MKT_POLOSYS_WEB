@@ -171,7 +171,11 @@ function list() {
 
 
 $('#myTableList tbody').on('click', '.taskID', function (e) {
-    e.preventDefault(); $.ajax({
+    e.preventDefault();
+    var row = $(this).closest('tr');
+    var id = myTable.row(row).data().orderInID;
+    debugger;
+    $.ajax({
         url: 'TaskInquiry/ValidasiDownload',
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
         async: false,
@@ -185,8 +189,6 @@ $('#myTableList tbody').on('click', '.taskID', function (e) {
                 swal("Information", "Proses Download tidak bisa dilakukan karena belum dilakukan Upload pada proses Download sebelumnya.", "info")
                 return false;
             } else {
-                var row = $(this).closest('tr');
-                var id = myTable.row(row).data().orderInID;
                 var href = '';
                 href = 'TaskInquiry/ExcelDetail?pID=' + id + "&pEmpNo=" + $("#empNo").val()
                 window.location.href = href;
