@@ -54,11 +54,11 @@
         var fileExtension = ['xlsx', 'xls'];
         var namaFile = $("#myFile").val();
         if (namaFile == "" || namaFile == "Choose file...") {
-            swal("Information", "Format file extension yang diupload, hanya diperbolehkan xlsx/xls", "info")
+            swal("Information", "Format file extension yang diupload tidak sesuai", "info")
             return false;
         }
         else if ($.inArray($("#myFile").val().split('.').pop().toLowerCase(), fileExtension) == -1) {
-            swal("Information", "Format file extension yang diupload, hanya diperbolehkan xlsx/xls", "info")
+            swal("Information", "Format file extension yang diupload tidak sesuai", "info")
             return false;
         } else {
             $.ajax({

@@ -80,9 +80,9 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
             Proccessresult result = new Proccessresult();
             string guid = System.Guid.NewGuid().ToString().ToUpper();
 
+            UpdateTaskInquiryProvider updateTaskInquiryProvider = new UpdateTaskInquiryProvider();
             try
             {
-                UpdateTaskInquiryProvider updateTaskInquiryProvider = new UpdateTaskInquiryProvider();
                 var files = Request.Form.Files;
                 bool isSucceed = true;
 
@@ -199,15 +199,15 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                                     model.CustomerName = dtTable.Tables[0].Rows[i][6].ToString();
                                     try
                                     {
-                                        model.DistributedDate = dtTable.Tables[0].Rows[i][7].ToString();
+                                        model.DistributedDate = Convert.ToDateTime(dtTable.Tables[0].Rows[i][7].ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
                                     }
                                     catch {
                                         model.DistributedDate = "";
                                     }
                                     try
                                     {
-                                        model.StartedDate = dtTable.Tables[0].Rows[i][8].ToString();
-                                    }
+                                        model.StartedDate = Convert.ToDateTime(dtTable.Tables[0].Rows[i][8].ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
+                                }
                                     catch
                                     {
                                         model.StartedDate = "";
@@ -222,8 +222,8 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                                     model.TempatLahir = dtTable.Tables[0].Rows[i][16].ToString();
                                     try
                                     {
-                                        model.TglLahir = FromExcelDate(Convert.ToDouble(dtTable.Tables[0].Rows[i][17].ToString())).ToString();
-                                    }
+                                        model.TglLahir = Convert.ToDateTime(FromExcelDate(Convert.ToDouble(dtTable.Tables[0].Rows[i][17].ToString())).ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
+                        }
                                     catch {
                                         model.TglLahir = "";
                                     }
@@ -261,7 +261,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                                     model.TenorId = dtTable.Tables[0].Rows[i][49].ToString();
                                     try
                                     {
-                                        model.ReleaseDateBpkb = FromExcelDate(Convert.ToDouble(dtTable.Tables[0].Rows[i][50].ToString())).ToString();
+                                        model.ReleaseDateBpkb = Convert.ToDateTime(FromExcelDate(Convert.ToDouble(dtTable.Tables[0].Rows[i][50].ToString())).ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
                                     }
                                     catch
                                     {
@@ -269,7 +269,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                                     }
                                     try
                                     {
-                                        model.MaxPastDueDt = FromExcelDate(Convert.ToDouble(dtTable.Tables[0].Rows[i][51].ToString())).ToString();
+                                        model.MaxPastDueDt = dtTable.Tables[0].Rows[i][51].ToString();
                                     }
                                     catch
                                     {
@@ -279,16 +279,16 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                                         model.CustomerRating = dtTable.Tables[0].Rows[i][53].ToString();
                                     try
                                     {
-                                        model.TanggalJatuhTempo = FromExcelDate(Convert.ToDouble(dtTable.Tables[0].Rows[i][54].ToString())).ToString();
-                                    }
+                                        model.TanggalJatuhTempo = Convert.ToDateTime(FromExcelDate(Convert.ToDouble(dtTable.Tables[0].Rows[i][54].ToString())).ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
+            }
                                     catch
                                     {
                                         model.TanggalJatuhTempo = "";
                                     }
                                     try
                                     {
-                                        model.MaturityDt = FromExcelDate(Convert.ToDouble(dtTable.Tables[0].Rows[i][55].ToString())).ToString();
-                                    }
+                                        model.MaturityDt = Convert.ToDateTime(FromExcelDate(Convert.ToDouble(dtTable.Tables[0].Rows[i][55].ToString())).ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
+            }
                                     catch
                                     {
                                         model.MaturityDt = "";
@@ -309,11 +309,21 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
 
                 }
 
-                await updateTaskInquiryProvider.SendApiCekDukcapil(guid);
-                await updateTaskInquiryProvider.SendApiToWiseMSS(guid);
+
             }
             catch
             {
+                result.isSucceed = true;
+                result.pguid = guid;
+                result.message = "Upload Error";
+                return Json(result);
+            }
+            try
+            {
+                await updateTaskInquiryProvider.SendApiCekDukcapil(guid);
+                await updateTaskInquiryProvider.SendApiToWiseMSS(guid);
+            }
+            catch {
                 result.isSucceed = true;
                 result.pguid = guid;
                 result.message = "Upload Done";

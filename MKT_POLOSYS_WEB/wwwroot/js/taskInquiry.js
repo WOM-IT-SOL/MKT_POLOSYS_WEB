@@ -338,13 +338,6 @@ $('#edate').change(function (e) {
 
 $('#btnReset').click(function (e) {
     e.preventDefault();
-    var date = new Date();
-    var day = date.getDate();
-    var month = date.getMonth() + 1;
-    var year = date.getFullYear();
-    if (month < 10) month = "0" + month;
-    if (day < 10) day = "0" + day;
-    var today = year + "-" + month + "-" + day;
     $("#ddlRegion").val("All");
     $("#txtFpName").val("");
     $("#ddlBranch").val("All");
@@ -356,11 +349,41 @@ $('#btnReset').click(function (e) {
     $('#ddlPriorityLevel').multiselect('rebuild');
     $("#txtCustName").val("");
     $("#ddlStatusDukcapil").val("All");
-    $("#sdate").val(today);
-    $("#edate").val(today);
+    $("#sdate").val("");
+    $("#edate").val("");
     $("#ddlSourceData").val("All");
     myTable.clear();
     myTable.draw();
+    var psource = "All";
+    var pemp = "All";
+    var pprospec = "All";
+    $.ajax({
+        url: 'TaskInquiry/DdlPriorityLvl',
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+        async: false,
+        dataType: 'json',
+        type: 'POST',
+        data: {
+            source: psource,
+            empPost: pemp,
+            prospect: pprospec
+        },
+        success: function (result) {
+            var jsonString = JSON.stringify(result);
+            $('#ddlPriorityLevel  option').each(function (index, option) {
+                $(option).remove();
+            });
+            //alert(result.Value);
+            $('#ddlPriorityLevel ').multiselect('rebuild');
+            $.each(result, function (i, a) {
+                $('#ddlPriorityLevel').append($('<option>', {
+                    value: result[i].value,
+                    text: result[i].text
+                }));
+            });
+            $('#ddlPriorityLevel ').multiselect('rebuild');
+        }
+    });
 });
 
 $(document).on("change", "#ddlRegion", function () {
@@ -387,7 +410,6 @@ $(document).on("change", "#ddlRegion", function () {
 });
 
 $(document).on("change", "#ddlSourceData", function () {
-    debugger;
     var selectedSource = $(this).val();
     var psource = selectedSource;
     var pemp = $("#ddlEmpPosition").val();
