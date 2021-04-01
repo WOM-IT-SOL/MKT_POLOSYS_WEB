@@ -60,7 +60,6 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
             {
                 var base64EncodedBytes = System.Convert.FromBase64String(Id);
                 var idDecrt = System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
-                string authors = "Mahesh Chand, Henry He, Chris Love, Raj Beniwal, Praveen Kumar";
                 string[] paramList = idDecrt.Split("|");
                 int id = Convert.ToInt32(paramList[0].ToString());
                 ViewData["empNames"] = paramList[1].ToString();
@@ -225,19 +224,33 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                     worksheet.Cell(currentRow, 1).Value = item.Number;
                     worksheet.Cell(currentRow, 2).Value = item.BranchName;
                     worksheet.Cell(currentRow, 3).Value = "'" + item.Region;
-                    worksheet.Cell(currentRow, 4).Value = "'" + item.TaskID;
+                    worksheet.Cell(currentRow, 4).Value = item.TaskID;
                     worksheet.Cell(currentRow, 5).Value = item.JenisTask;
                     worksheet.Cell(currentRow, 6).Value = "'" + item.CustID;
                     worksheet.Cell(currentRow, 7).Value = item.CustomerName;
-                    worksheet.Cell(currentRow, 8).Value = item.DistributedDate;
-                    worksheet.Cell(currentRow, 9).Value = item.StartedDate;
+                    try
+                    {
+                        worksheet.Cell(currentRow, 8).Value = Convert.ToDateTime(item.DistributedDate).ToString("dd/MM/yyyy HH:mm:ss.mmm");
+                    }
+                    catch
+                    {
+                        worksheet.Cell(currentRow, 8).Value = item.DistributedDate;
+                    }
+                    try
+                    {
+                        worksheet.Cell(currentRow, 9).Value = Convert.ToDateTime(item.StartedDate).ToString("dd/MM/yyyy HH:mm:ss.mmm");
+                    }
+                    catch
+                    {
+                        worksheet.Cell(currentRow, 9).Value = item.StartedDate;
+                    }
                     worksheet.Cell(currentRow, 10).Value = item.EmpPosition;
                     worksheet.Cell(currentRow, 11).Value = item.soa;
                     worksheet.Cell(currentRow, 12).Value = "'" + item.Referentor1;
                     worksheet.Cell(currentRow, 13).Value = "'" + item.RegionalId;
                     worksheet.Cell(currentRow, 14).Value = item.Product;
                     worksheet.Cell(currentRow, 15).Value = "'" + item.CabId;
-                    worksheet.Cell(currentRow, 16).Value = "'"+item.NIK;
+                    worksheet.Cell(currentRow, 16).Value = "'" + item.NIK;
                     worksheet.Cell(currentRow, 17).Value = item.TempatLahir;
                     worksheet.Cell(currentRow, 18).Value = item.TglLahir;
                     worksheet.Cell(currentRow, 19).Value = "'" + item.RWLeg;
@@ -271,13 +284,34 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                     worksheet.Cell(currentRow, 47).Value = item.Plafond;
                     worksheet.Cell(currentRow, 48).Value = item.Pekerjaan;
                     worksheet.Cell(currentRow, 49).Value = item.SisaTenor;
-                    worksheet.Cell(currentRow, 50).Value = item.TenorId;
-                    worksheet.Cell(currentRow, 51).Value = item.ReleaseDateBpkb;
-                    worksheet.Cell(currentRow, 52).Value = item.MaxPastDueDt;
+                    worksheet.Cell(currentRow, 50).Value = "'" + item.TenorId;
+                    try
+                    {
+                        worksheet.Cell(currentRow, 51).Value = "'" + Convert.ToDateTime(item.ReleaseDateBpkb).ToString("dd/MM/yyyy");
+                    }
+                    catch
+                    {
+                        worksheet.Cell(currentRow, 51).Value = "'" + item.ReleaseDateBpkb;
+                    }
+                    worksheet.Cell(currentRow, 52).Value = "'" + item.MaxPastDueDt;
                     worksheet.Cell(currentRow, 53).Value = item.Religion;
                     worksheet.Cell(currentRow, 54).Value = item.CustomerRating;
-                    worksheet.Cell(currentRow, 55).Value = item.TanggalJatuhTempo;
-                    worksheet.Cell(currentRow, 56).Value = item.MaturityDt;
+                    try
+                    {
+                        worksheet.Cell(currentRow, 55).Value = "'" + Convert.ToDateTime(item.TanggalJatuhTempo).ToString("dd/MM/yyyy");
+                    }
+                    catch
+                    {
+                        worksheet.Cell(currentRow, 55).Value = "'" + item.TanggalJatuhTempo;
+                    }
+                    try
+                    {
+                        worksheet.Cell(currentRow, 56).Value = "'" + Convert.ToDateTime(item.MaturityDt).ToString("dd/MM/yyyy");
+                    }
+                    catch
+                    {
+                        worksheet.Cell(currentRow, 56).Value = "'" + item.MaturityDt;
+                    }
                     worksheet.Cell(currentRow, 57).Value = item.StatusCall;
                     worksheet.Cell(currentRow, 58).Value = item.AnswerCall;
                     worksheet.Cell(currentRow, 59).Value = item.StatusProspek;
@@ -374,12 +408,26 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                     worksheet.Cell(currentRow, 1).Value = item.Number;
                     worksheet.Cell(currentRow, 2).Value = item.BranchName;
                     worksheet.Cell(currentRow, 3).Value = "'" + item.Region;
-                    worksheet.Cell(currentRow, 4).Value = "'" + item.TaskID;
+                    worksheet.Cell(currentRow, 4).Value = item.TaskID;
                     worksheet.Cell(currentRow, 5).Value = item.JenisTask;
                     worksheet.Cell(currentRow, 6).Value = "'" + item.CustID;
                     worksheet.Cell(currentRow, 7).Value = item.CustomerName;
-                    worksheet.Cell(currentRow, 8).Value = item.DistributedDate;
-                    worksheet.Cell(currentRow, 9).Value = item.StartedDate;
+                    try
+                    {
+                        worksheet.Cell(currentRow, 8).Value = Convert.ToDateTime(item.DistributedDate).ToString("dd/MM/yyyy HH:mm:ss.mmm");
+                    }
+                    catch
+                    {
+                        worksheet.Cell(currentRow, 8).Value = item.DistributedDate;
+                    }
+                    try
+                    {
+                        worksheet.Cell(currentRow, 9).Value = Convert.ToDateTime(item.StartedDate).ToString("dd/MM/yyyy HH:mm:ss.mmm");
+                    }
+                    catch
+                    {
+                        worksheet.Cell(currentRow, 9).Value = item.StartedDate;
+                    }
                     worksheet.Cell(currentRow, 10).Value = item.EmpPosition;
                     worksheet.Cell(currentRow, 11).Value = item.soa;
                     worksheet.Cell(currentRow, 12).Value = "'" + item.Referentor1;
@@ -420,13 +468,34 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                     worksheet.Cell(currentRow, 47).Value = item.Plafond;
                     worksheet.Cell(currentRow, 48).Value = item.Pekerjaan;
                     worksheet.Cell(currentRow, 49).Value = item.SisaTenor;
-                    worksheet.Cell(currentRow, 50).Value = item.TenorId;
-                    worksheet.Cell(currentRow, 51).Value = item.ReleaseDateBpkb;
-                    worksheet.Cell(currentRow, 52).Value = item.MaxPastDueDt;
+                    worksheet.Cell(currentRow, 50).Value = "'" + item.TenorId;
+                    try
+                    {
+                        worksheet.Cell(currentRow, 51).Value = "'" + Convert.ToDateTime(item.ReleaseDateBpkb).ToString("dd/MM/yyyy");
+                    }
+                    catch
+                    {
+                        worksheet.Cell(currentRow, 51).Value = "'" + item.ReleaseDateBpkb;
+                    }
+                    worksheet.Cell(currentRow, 52).Value = "'" + item.MaxPastDueDt;
                     worksheet.Cell(currentRow, 53).Value = item.Religion;
                     worksheet.Cell(currentRow, 54).Value = item.CustomerRating;
-                    worksheet.Cell(currentRow, 55).Value = item.TanggalJatuhTempo;
-                    worksheet.Cell(currentRow, 56).Value = item.MaturityDt;
+                    try
+                    {
+                        worksheet.Cell(currentRow, 55).Value = "'" + Convert.ToDateTime(item.TanggalJatuhTempo).ToString("dd/MM/yyyy");
+                    }
+                    catch
+                    {
+                        worksheet.Cell(currentRow, 55).Value = "'" + item.TanggalJatuhTempo;
+                    }
+                    try
+                    {
+                        worksheet.Cell(currentRow, 56).Value = "'" + Convert.ToDateTime(item.MaturityDt).ToString("dd/MM/yyyy");
+                    }
+                    catch
+                    {
+                        worksheet.Cell(currentRow, 56).Value = "'" + item.MaturityDt;
+                    }
                     worksheet.Cell(currentRow, 57).Value = item.StatusCall;
                     worksheet.Cell(currentRow, 58).Value = item.AnswerCall;
                     worksheet.Cell(currentRow, 59).Value = item.StatusProspek;

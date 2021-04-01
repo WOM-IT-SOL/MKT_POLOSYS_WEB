@@ -62,8 +62,8 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
 
         }
 
-        public class Proccessresult 
-        { 
+        public class Proccessresult
+        {
             public bool isSucceed { get; set; }
             public string pguid { get; set; }
             public string message { get; set; }
@@ -72,6 +72,12 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
         public static DateTime FromExcelDate(double value)
         {
             return new DateTime(1899, 12, 30).AddDays(value);
+        }
+
+        public static DateTime FromExcelDateElse(double value)
+        {
+
+            return new DateTime(1899, 30, 12).AddDays(value);
         }
 
         [HttpPost]
@@ -154,7 +160,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                         names.Add("labelName61", "Notes");
 
                         string sFileExtension = Path.GetExtension(uploadFile.FileName).ToLower();
-                        
+
                         if ((uploadFile != null) && !string.IsNullOrEmpty(uploadFile.FileName))
                         {
                             string fileName = uploadFile.FileName;
@@ -162,145 +168,176 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                             var stream = files[0].OpenReadStream();
                             //if (fileExtension == ".xls")
                             //{
-                                IExcelDataReader excelReader;
-                                if (fileExtension == ".xls")
-                                {
-                                    excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
-                                }
-                                else
-                                {
-                                    excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
-                                }
-                                DataSet dtTable = excelReader.AsDataSet();
+                            IExcelDataReader excelReader;
+                            if (fileExtension == ".xls")
+                            {
+                                excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
+                            }
+                            else
+                            {
+                                excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
+                            }
+                            DataSet dtTable = excelReader.AsDataSet();
 
-                                var totalRows = dtTable.Tables[0].Rows.Count;
-                                var maxColumn = dtTable.Tables[0].Columns.Count;
-                                for (int j = 0; j <= 60; j++)
+                            var totalRows = dtTable.Tables[0].Rows.Count;
+                            var maxColumn = dtTable.Tables[0].Columns.Count;
+                            for (int j = 0; j <= 60; j++)
+                            {
+                                int i = j + 1;
+                                var data1 = names["labelName" + i].ToString();
+                                var data2 = dtTable.Tables[0].Rows[0][j].ToString();
+                                if (data1 != data2)
                                 {
-                                    int i = j + 1;
-                                    var data1 = names["labelName" + i].ToString();
-                                    var data2 = dtTable.Tables[0].Rows[0][j].ToString();
-                                    if (data1 != data2)
-                                    {
-                                        result.isSucceed = false;
-                                        result.message = "Template format file yang diupload tidak sesuai ketentuan";
-                                        return Json(result);
-                                    }
+                                    result.isSucceed = false;
+                                    result.message = "Template format file yang diupload tidak sesuai ketentuan";
+                                    return Json(result);
                                 }
-                                for (int i = 1; i < totalRows; i++)
+                            }
+                            for (int i = 1; i < totalRows; i++)
+                            {
+                                UploadViewModel model = new UploadViewModel();
+                                model.Number = dtTable.Tables[0].Rows[i][0].ToString();
+                                model.BranchName = dtTable.Tables[0].Rows[i][1].ToString();
+                                model.Region = dtTable.Tables[0].Rows[i][2].ToString();
+                                model.TaskID = dtTable.Tables[0].Rows[i][3].ToString();
+                                model.JenisTask = dtTable.Tables[0].Rows[i][4].ToString();
+                                model.CustID = dtTable.Tables[0].Rows[i][5].ToString();
+                                model.CustomerName = dtTable.Tables[0].Rows[i][6].ToString();
+                                try
                                 {
-                                    UploadViewModel model = new UploadViewModel();
-                                    model.Number = dtTable.Tables[0].Rows[i][0].ToString();
-                                    model.BranchName = dtTable.Tables[0].Rows[i][1].ToString();
-                                    model.Region = dtTable.Tables[0].Rows[i][2].ToString();
-                                    model.TaskID = dtTable.Tables[0].Rows[i][3].ToString();
-                                    model.JenisTask = dtTable.Tables[0].Rows[i][4].ToString();
-                                    model.CustID = dtTable.Tables[0].Rows[i][5].ToString();
-                                    model.CustomerName = dtTable.Tables[0].Rows[i][6].ToString();
-                                    try
-                                    {
-                                        model.DistributedDate = Convert.ToDateTime(dtTable.Tables[0].Rows[i][7].ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
-                                    }
-                                    catch {
-                                        model.DistributedDate = "";
-                                    }
-                                    try
-                                    {
-                                        model.StartedDate = Convert.ToDateTime(dtTable.Tables[0].Rows[i][8].ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
+                                    model.DistributedDate = Convert.ToDateTime(dtTable.Tables[0].Rows[i][7].ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
                                 }
-                                    catch
+                                catch
+                                {
+                                    model.DistributedDate = dtTable.Tables[0].Rows[i][7].ToString();
+                                }
+                                try
+                                {
+                                    model.StartedDate = Convert.ToDateTime(dtTable.Tables[0].Rows[i][7].ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
+                                }
+                                catch
+                                {
+                                    model.StartedDate = dtTable.Tables[0].Rows[i][7].ToString();
+                                }
+                                model.EmpPosition = dtTable.Tables[0].Rows[i][9].ToString();
+                                model.soa = dtTable.Tables[0].Rows[i][10].ToString();
+                                model.Referentor1 = dtTable.Tables[0].Rows[i][11].ToString();
+                                model.RegionalId = dtTable.Tables[0].Rows[i][12].ToString();
+                                model.Product = dtTable.Tables[0].Rows[i][13].ToString();
+                                model.CabId = dtTable.Tables[0].Rows[i][14].ToString();
+                                model.NIK = dtTable.Tables[0].Rows[i][15].ToString();
+                                model.TempatLahir = dtTable.Tables[0].Rows[i][16].ToString();
+                                try
+                                {
+                                    model.TglLahir = Convert.ToDateTime(FromExcelDate(Convert.ToDouble(dtTable.Tables[0].Rows[i][17].ToString())).ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
+                                }
+                                catch
+                                {
+                                    if (dtTable.Tables[0].Rows[i][17].ToString() == null || dtTable.Tables[0].Rows[i][17].ToString() == "")
                                     {
-                                        model.StartedDate = "";
-                                    }
-                                    model.EmpPosition = dtTable.Tables[0].Rows[i][9].ToString();
-                                    model.soa = dtTable.Tables[0].Rows[i][10].ToString();
-                                    model.Referentor1 = dtTable.Tables[0].Rows[i][11].ToString();
-                                    model.RegionalId = dtTable.Tables[0].Rows[i][12].ToString();
-                                    model.Product = dtTable.Tables[0].Rows[i][13].ToString();
-                                    model.CabId = dtTable.Tables[0].Rows[i][14].ToString();
-                                    model.NIK = dtTable.Tables[0].Rows[i][15].ToString();
-                                    model.TempatLahir = dtTable.Tables[0].Rows[i][16].ToString();
-                                    try
-                                    {
-                                        model.TglLahir = Convert.ToDateTime(FromExcelDate(Convert.ToDouble(dtTable.Tables[0].Rows[i][17].ToString())).ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
-                        }
-                                    catch {
                                         model.TglLahir = "";
                                     }
-                                    model.RWLeg = dtTable.Tables[0].Rows[i][18].ToString();
-                                    model.ProvLeg = dtTable.Tables[0].Rows[i][19].ToString();
-                                    model.KabLeg = dtTable.Tables[0].Rows[i][20].ToString();
-                                    model.KecLeg = dtTable.Tables[0].Rows[i][21].ToString();
-                                    model.KelLeg = dtTable.Tables[0].Rows[i][22].ToString();
-                                    model.AlamatRes = dtTable.Tables[0].Rows[i][23].ToString();
-                                    model.RTRes = dtTable.Tables[0].Rows[i][24].ToString();
-                                    model.RWRes = dtTable.Tables[0].Rows[i][25].ToString();
-                                    model.ProvRes = dtTable.Tables[0].Rows[i][26].ToString();
-                                    model.KabRes = dtTable.Tables[0].Rows[i][27].ToString();
-                                    model.KecRes = dtTable.Tables[0].Rows[i][28].ToString();
-                                    model.KelRes = dtTable.Tables[0].Rows[i][29].ToString();
-                                    model.NoMesin = dtTable.Tables[0].Rows[i][30].ToString();
-                                    model.NoRangka = dtTable.Tables[0].Rows[i][31].ToString();
-                                    model.ItemType = dtTable.Tables[0].Rows[i][32].ToString();
-                                    model.ItemDescription = dtTable.Tables[0].Rows[i][33].ToString();
-                                    model.Mobile1 = dtTable.Tables[0].Rows[i][34].ToString();
-                                    model.Mobile2 = dtTable.Tables[0].Rows[i][35].ToString();
-                                    model.Phone1 = dtTable.Tables[0].Rows[i][36].ToString();
-                                    model.Phone2 = dtTable.Tables[0].Rows[i][37].ToString();
-                                    model.OfficePhone1 = dtTable.Tables[0].Rows[i][38].ToString();
-                                    model.OfficePhone2 = dtTable.Tables[0].Rows[i][39].ToString();
-                                    model.OtrPrice = dtTable.Tables[0].Rows[i][40].ToString();
-                                    model.ItemYear = dtTable.Tables[0].Rows[i][41].ToString();
-                                    model.MonthlyIncome = dtTable.Tables[0].Rows[i][42].ToString();
-                                    model.MonthInstallment = dtTable.Tables[0].Rows[i][43].ToString();
-                                    model.DP = dtTable.Tables[0].Rows[i][44].ToString();
-                                    model.LTV = dtTable.Tables[0].Rows[i][45].ToString();
-                                    model.Plafond = dtTable.Tables[0].Rows[i][46].ToString();
-                                    model.Pekerjaan = dtTable.Tables[0].Rows[i][47].ToString();
-                                    model.SisaTenor = dtTable.Tables[0].Rows[i][48].ToString();
-                                    model.TenorId = dtTable.Tables[0].Rows[i][49].ToString();
-                                    try
+                                    else
                                     {
-                                        model.ReleaseDateBpkb = Convert.ToDateTime(FromExcelDate(Convert.ToDouble(dtTable.Tables[0].Rows[i][50].ToString())).ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
+                                        model.TglLahir = Convert.ToDateTime(dtTable.Tables[0].Rows[i][17].ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
                                     }
-                                    catch
+                                }
+                                model.RWLeg = dtTable.Tables[0].Rows[i][18].ToString();
+                                model.ProvLeg = dtTable.Tables[0].Rows[i][19].ToString();
+                                model.KabLeg = dtTable.Tables[0].Rows[i][20].ToString();
+                                model.KecLeg = dtTable.Tables[0].Rows[i][21].ToString();
+                                model.KelLeg = dtTable.Tables[0].Rows[i][22].ToString();
+                                model.AlamatRes = dtTable.Tables[0].Rows[i][23].ToString();
+                                model.RTRes = dtTable.Tables[0].Rows[i][24].ToString();
+                                model.RWRes = dtTable.Tables[0].Rows[i][25].ToString();
+                                model.ProvRes = dtTable.Tables[0].Rows[i][26].ToString();
+                                model.KabRes = dtTable.Tables[0].Rows[i][27].ToString();
+                                model.KecRes = dtTable.Tables[0].Rows[i][28].ToString();
+                                model.KelRes = dtTable.Tables[0].Rows[i][29].ToString();
+                                model.NoMesin = dtTable.Tables[0].Rows[i][30].ToString();
+                                model.NoRangka = dtTable.Tables[0].Rows[i][31].ToString();
+                                model.ItemType = dtTable.Tables[0].Rows[i][32].ToString();
+                                model.ItemDescription = dtTable.Tables[0].Rows[i][33].ToString();
+                                model.Mobile1 = dtTable.Tables[0].Rows[i][34].ToString();
+                                model.Mobile2 = dtTable.Tables[0].Rows[i][35].ToString();
+                                model.Phone1 = dtTable.Tables[0].Rows[i][36].ToString();
+                                model.Phone2 = dtTable.Tables[0].Rows[i][37].ToString();
+                                model.OfficePhone1 = dtTable.Tables[0].Rows[i][38].ToString();
+                                model.OfficePhone2 = dtTable.Tables[0].Rows[i][39].ToString();
+                                model.OtrPrice = dtTable.Tables[0].Rows[i][40].ToString();
+                                model.ItemYear = dtTable.Tables[0].Rows[i][41].ToString();
+                                model.MonthlyIncome = dtTable.Tables[0].Rows[i][42].ToString();
+                                model.MonthInstallment = dtTable.Tables[0].Rows[i][43].ToString();
+                                model.DP = dtTable.Tables[0].Rows[i][44].ToString();
+                                model.LTV = dtTable.Tables[0].Rows[i][45].ToString();
+                                model.Plafond = dtTable.Tables[0].Rows[i][46].ToString();
+                                model.Pekerjaan = dtTable.Tables[0].Rows[i][47].ToString();
+                                model.SisaTenor = dtTable.Tables[0].Rows[i][48].ToString();
+                                model.TenorId = dtTable.Tables[0].Rows[i][49].ToString();
+                                try
+                                {
+                                    model.ReleaseDateBpkb = Convert.ToDateTime(FromExcelDate(Convert.ToDouble(dtTable.Tables[0].Rows[i][50].ToString())).ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
+                                }
+                                catch
+                                {
+                                    if (dtTable.Tables[0].Rows[i][50].ToString() == null || dtTable.Tables[0].Rows[i][50].ToString() == "")
                                     {
                                         model.ReleaseDateBpkb = "";
                                     }
-                                    try
+                                    else
                                     {
-                                        model.MaxPastDueDt = dtTable.Tables[0].Rows[i][51].ToString();
+                                        model.ReleaseDateBpkb = Convert.ToDateTime(dtTable.Tables[0].Rows[i][50].ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
                                     }
-                                    catch
-                                    {
-                                        model.MaxPastDueDt = "";
-                                    }
-                                        model.Religion = dtTable.Tables[0].Rows[i][52].ToString();
-                                        model.CustomerRating = dtTable.Tables[0].Rows[i][53].ToString();
-                                    try
-                                    {
-                                        model.TanggalJatuhTempo = Convert.ToDateTime(FromExcelDate(Convert.ToDouble(dtTable.Tables[0].Rows[i][54].ToString())).ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
-            }
-                                    catch
+                                }
+
+                                try
+                                {
+                                    model.MaxPastDueDt = dtTable.Tables[0].Rows[i][51].ToString();
+                                }
+                                catch
+                                {
+                                    model.MaxPastDueDt = "";
+                                }
+                                model.Religion = dtTable.Tables[0].Rows[i][52].ToString();
+                                model.CustomerRating = dtTable.Tables[0].Rows[i][53].ToString();
+                                try
+                                {
+                                    model.TanggalJatuhTempo = Convert.ToDateTime(FromExcelDate(Convert.ToDouble(dtTable.Tables[0].Rows[i][54].ToString())).ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
+                                }
+                                catch
+                                {
+                                    if (dtTable.Tables[0].Rows[i][54].ToString() == null || dtTable.Tables[0].Rows[i][54].ToString() == "")
                                     {
                                         model.TanggalJatuhTempo = "";
                                     }
-                                    try
+                                    else
                                     {
-                                        model.MaturityDt = Convert.ToDateTime(FromExcelDate(Convert.ToDouble(dtTable.Tables[0].Rows[i][55].ToString())).ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
-            }
-                                    catch
+                                        model.TanggalJatuhTempo = Convert.ToDateTime(dtTable.Tables[0].Rows[i][54].ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
+                                    }
+                                }
+                                try
+                                {
+                                    model.MaturityDt = Convert.ToDateTime(FromExcelDate(Convert.ToDouble(dtTable.Tables[0].Rows[i][55].ToString())).ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
+                                }
+                                catch
+                                {
+                                    if (dtTable.Tables[0].Rows[i][55].ToString() == null || dtTable.Tables[0].Rows[i][55].ToString() == "")
                                     {
                                         model.MaturityDt = "";
                                     }
-                                    model.StatusCall = dtTable.Tables[0].Rows[i][56].ToString();
-                                    model.AnswerCall = dtTable.Tables[0].Rows[i][57].ToString();
-                                    model.StatusProspek = dtTable.Tables[0].Rows[i][58].ToString();
-                                    model.ReasonNotProspek = dtTable.Tables[0].Rows[i][59].ToString();
-                                    model.Notes = dtTable.Tables[0].Rows[i][60].ToString();
-                                    model.EmpNo = empNo;
-                                    var data = updateTaskInquiryProvider.UploadData(model, guid);
+                                    else
+                                    {
+                                        model.MaturityDt = Convert.ToDateTime(dtTable.Tables[0].Rows[i][55].ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
+                                    }
                                 }
+                                model.StatusCall = dtTable.Tables[0].Rows[i][56].ToString();
+                                model.AnswerCall = dtTable.Tables[0].Rows[i][57].ToString();
+                                model.StatusProspek = dtTable.Tables[0].Rows[i][58].ToString();
+                                model.ReasonNotProspek = dtTable.Tables[0].Rows[i][59].ToString();
+                                model.Notes = dtTable.Tables[0].Rows[i][60].ToString();
+                                model.EmpNo = empNo;
+                                var data = updateTaskInquiryProvider.UploadData(model, guid);
+                            }
 
                             //}
                         }
@@ -323,7 +360,8 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                 await updateTaskInquiryProvider.SendApiCekDukcapil(guid);
                 await updateTaskInquiryProvider.SendApiToWiseMSS(guid);
             }
-            catch {
+            catch
+            {
                 result.isSucceed = true;
                 result.pguid = guid;
                 result.message = "Upload Done";
@@ -342,7 +380,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
             UpdateTaskInquiryProvider updateTaskInquiryProvider = new UpdateTaskInquiryProvider();
             MemoryStream memoryStream = new MemoryStream();
             TextWriter tw = new StreamWriter(memoryStream);
-            var data  = updateTaskInquiryProvider.getLog(guid);
+            var data = updateTaskInquiryProvider.getLog(guid);
 
             foreach (var item in data)
             {
@@ -354,45 +392,6 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
             return File(memoryStream.GetBuffer(), "text/plain", "Log_datagagalupload_" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> ReadExcelFileAsync(IFormFile file)
-        //{
-        //    if (file == null || file.Length == 0)
-        //        return Content("File Not Selected");
-
-        //    string fileExtension = Path.GetExtension(file.FileName);
-        //    if (fileExtension != ".xls" && fileExtension != ".xlsx")
-        //        return Content("File Not Selected");
-
-        //    var rootFolder = @"D:\Files";
-        //    var fileName = file.FileName;
-        //    var filePath = Path.Combine(rootFolder, fileName);
-        //    var fileLocation = new FileInfo(filePath);
-
-        //    using (var fileStream = new FileStream(filePath, FileMode.Create))
-        //    {
-        //        await file.CopyToAsync(fileStream);
-        //    }
-
-
-        //    using (ExcelPackage package = new ExcelPackage(fileLocation))
-        //    {
-        //        ExcelWorksheet workSheet = package.Workbook.Worksheets["TASK INQUIRY"];
-        //        //var workSheet = package.Workbook.Worksheets.First();
-        //        int totalRows = workSheet.Dimension.Rows;
-
-        //        var DataList = new List<DownloadViewModel>();
-
-        //        for (int i = 2; i <= totalRows; i++)
-        //        {
-        //            DataList.Add(new DownloadViewModel
-        //            {
-        //                Number = workSheet.Cells[i, 1].Value.ToString(),
-        //            });
-        //        }
-        //    }
-        //    return Ok();
-        //}
 
 
     }
