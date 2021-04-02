@@ -136,6 +136,13 @@ function list() {
     if (pEdate == null || pEdate == "")
         pEdate = "All";
 
+    swal({
+        title: "Checking...",
+        text: "Please wait",
+        imageUrl: "css/jax-loader.gif",
+        showConfirmButton: false,
+        allowOutsideClick: false
+    });
     $.ajax({
         url: 'TaskInquiry/ListDetail',
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -165,6 +172,11 @@ function list() {
                 myTable.row.add(value);
             });
             myTable.draw();
+             swal({
+                      title: "Finished!",
+                      showConfirmButton: false,
+                      timer: 500
+                    });
         }
     });
 }
