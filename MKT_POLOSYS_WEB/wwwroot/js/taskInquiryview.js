@@ -132,7 +132,7 @@ function list() {
     if (pEdate == null || pEdate == "")
         pEdate = "All";
 
-    swal({
+    Swal.fire({
         title: "Checking...",
         text: "Please wait",
         imageUrl: "css/jax-loader.gif",
@@ -168,11 +168,7 @@ function list() {
                 myTable.row.add(value);
             });
             myTable.draw();
-            swal({
-                title: "Finished!",
-                showConfirmButton: false,
-                timer: 500
-            });
+            Swal.close();
         }
     });
 }
@@ -203,11 +199,11 @@ $('#myTableList tbody').on('click', '.rowClick', function (e) {
 $('#btnSearch').click(function (e) {
     e.preventDefault();
     if ($("#sdate").val() == "") {
-        swal("Information", "Distributed Date >=  Date harus diisi.", "info")
+        Swal.fire("Information", "Distributed Date >=  Date harus diisi.", "info")
         return false;
     }
     if ($("#edate").val() == "") {
-        swal("Information", "Distributed Date <=  harus diisi.", "info")
+        Swal.fire("Information", "Distributed Date <=  harus diisi.", "info")
         return false;
     }
     list();
@@ -218,7 +214,7 @@ $('#sdate').change(function (e) {
     var sdate = new Date(Date.parse($("#sdate").val()));
     var edate = new Date(Date.parse($("#edate").val()));
     if (sdate > edate) {
-        swal("Information", "Distributed Date >= tidak dapat diisi > dari Distributed Date <=", "info")
+        Swal.fire("Information", "Distributed Date >= tidak dapat diisi > dari Distributed Date <=", "info")
         $("#sdate").val("");
         return false;
     }
@@ -236,7 +232,7 @@ $('#edate').change(function (e) {
     var sdate = new Date(Date.parse($("#sdate").val()));
     var edate = new Date(Date.parse($("#edate").val()));
     if (edate < sdate) {
-        swal("Information", "Distributed Date <=  tidak dapat diisi < dari  Distributed Date >= ", "info")
+        Swal.fire("Information", "Distributed Date <=  tidak dapat diisi < dari  Distributed Date >= ", "info")
         $("#edate").val(today);
         return false;
     }

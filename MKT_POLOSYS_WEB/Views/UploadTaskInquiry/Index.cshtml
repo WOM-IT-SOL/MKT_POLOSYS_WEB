@@ -54,11 +54,11 @@
         var fileExtension = ['xlsx', 'xls'];
         var namaFile = $("#myFile").val();
         if (namaFile == "" || namaFile == "Choose file...") {
-            swal("Information", "Format file extension yang diupload tidak sesuai", "info")
+            Swal.fire("Information", "Format file extension yang diupload tidak sesuai", "info")
             return false;
         }
         else if ($.inArray($("#myFile").val().split('.').pop().toLowerCase(), fileExtension) == -1) {
-            swal("Information", "Format file extension yang diupload tidak sesuai", "info")
+            Swal.fire("Information", "Format file extension yang diupload tidak sesuai", "info")
             return false;
         } else {
             $.ajax({
@@ -72,7 +72,7 @@
                 },
                 success: function (isSucceed) {
                     if (isSucceed == true) {
-                        swal("Information", $("#empName").val() + " belum menjalankan proses Download,sehingga Proses Upload tidak bisa dilanjutkan.", "info")
+                        Swal.fire("Information", $("#empName").val() + " belum menjalankan proses Download,sehingga Proses Upload tidak bisa dilanjutkan.", "info")
                         return false;
                     }
                     else {
@@ -86,14 +86,14 @@
                             dataType: 'json',
                             success: function (result) {
                                 if (result.isSucceed) {
-                                    swal("Information", result.message, "info")
+                                    Swal.fire("Information", result.message, "info")
                                     var href = '';
                                     href = 'UploadTaskInquiry/ExportLog?guid=' + result.pguid;
                                     window.location.href = href;
                                 }
                                 else {
 
-                                    swal("Information", result.message, "info")
+                                    Swal.fire("Information", result.message, "info")
                                 }
                             }
                         });
