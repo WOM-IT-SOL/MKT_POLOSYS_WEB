@@ -200,7 +200,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                 worksheet.Cell(currentRow, 44).Value = "Monthly_Installament";
                 worksheet.Cell(currentRow, 45).Value = "Down Payment";
                 worksheet.Cell(currentRow, 46).Value = "LTV";
-                worksheet.Cell(currentRow, 47).Value = "Plafond Maks";
+                worksheet.Cell(currentRow, 47).Value = "Plafond Max";
                 worksheet.Cell(currentRow, 48).Value = "Pekerjaan";
                 worksheet.Cell(currentRow, 49).Value = "Sisa_Tenor";
                 worksheet.Cell(currentRow, 50).Value = "Tenor";
@@ -395,7 +395,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                 worksheet.Cell(currentRow, 44).Value = "Monthly_Installament";
                 worksheet.Cell(currentRow, 45).Value = "Down Payment";
                 worksheet.Cell(currentRow, 46).Value = "LTV";
-                worksheet.Cell(currentRow, 47).Value = "Plafond Maks";
+                worksheet.Cell(currentRow, 47).Value = "Plafond Max";
                 worksheet.Cell(currentRow, 48).Value = "Pekerjaan";
                 worksheet.Cell(currentRow, 49).Value = "Sisa_Tenor";
                 worksheet.Cell(currentRow, 50).Value = "Tenor";

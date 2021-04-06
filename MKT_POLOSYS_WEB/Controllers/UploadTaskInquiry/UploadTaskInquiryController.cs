@@ -143,7 +143,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                         names.Add("labelName44", "Monthly_Installament");
                         names.Add("labelName45", "Down Payment");
                         names.Add("labelName46", "LTV");
-                        names.Add("labelName47", "Plafond Maks");
+                        names.Add("labelName47", "Plafond Max");
                         names.Add("labelName48", "Pekerjaan");
                         names.Add("labelName49", "Sisa_Tenor");
                         names.Add("labelName50", "Tenor");
