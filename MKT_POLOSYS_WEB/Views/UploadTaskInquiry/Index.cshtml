@@ -14,101 +14,114 @@
 
 <div class="wrapper">
     <div class="container-fluid">
-            <div class="form-group">
+        <div class="form-group">
 
-            </div>
-            <div class="container-fluid mx-auto mt-3 mb-2" style="width: 100%;">
-                <div class="text-align:left">
-                </div>
-            </div>
-            <form id="frm" action="" method="POST" enctype="multipart/form-data">
-                <div class="form-row">
-                    <div>
-                        <label for="myFile">File Upload : </label>
-                    </div>
-                    <div class="col-6">
-                        <div class="custom-file">
-                            <input type="file" id="myFile" name="filename">
-                        </div>
-                    </div>
-                    <div class="col-1">
-
-                        <button type="submit" class="btn btn-md btn-primary">Upload</button>
-                    </div>
-                    <div class="col-1">
-                        <button type="submit" class="btn btn-md btn-warning" id="reset">Reset</button>
-                    </div>
-                </div>
-            </form>
         </div>
+        <div class="container-fluid mx-auto mt-3 mb-2" style="width: 100%;">
+            <div class="text-align:left">
+            </div>
+        </div>
+        <form id="frm" action="" method="POST" enctype="multipart/form-data">
+            <div class="form-row">
+                <div>
+                    <label for="myFile">File Upload : </label>
+                </div>
+                <div class="col-6">
+                    <div class="custom-file">
+                        <input type="file" id="myFile" name="filename">
+                    </div>
+                </div>
+                <div class="col-1">
+
+                    <button type="submit" class="btn btn-md btn-primary">Upload</button>
+                </div>
+                <div class="col-1">
+                    <button type="submit" class="btn btn-md btn-warning" id="reset">Reset</button>
+                </div>
+            </div>
+        </form>
+    </div>
 
 </div>
 
 
 <script>
-
-    $('#frm').submit(function (e) {
-        e.preventDefault();
-        debugger;
-        var form = new FormData(this)
-        var fileExtension = ['xlsx', 'xls'];
-        var namaFile = $("#myFile").val();
-        if (namaFile == "" || namaFile == "Choose file...") {
-            Swal.fire("Information", "Format file extension yang diupload tidak sesuai", "info")
-            return false;
-        }
-        else if ($.inArray($("#myFile").val().split('.').pop().toLowerCase(), fileExtension) == -1) {
-            Swal.fire("Information", "Format file extension yang diupload tidak sesuai", "info")
-            return false;
-        } else {
-            $.ajax({
-                url: 'UploadTaskInquiry/ValidasiUpload',
-                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                async: false,
-                dataType: 'json',
-                type: 'POST',
-                data: {
-                    pEmpNo: $("#empNo").val()
-                },
-                success: function (isSucceed) {
-                    if (isSucceed == true) {
-                        Swal.fire("Information", $("#empName").val() + " belum menjalankan proses Download,sehingga Proses Upload tidak bisa dilanjutkan.", "info")
-                        return false;
-                    }
-                    else {
-                        $.ajax({
-                            url: 'UploadTaskInquiry/Upload?empNo=' + $("#empNo").val(),
-                            data: form,
-                            type: 'POST',
-                            contentType: false,
-                            processData: false,
-                            enctype: 'multipart/form-data',
-                            dataType: 'json',
-                            success: function (result) {
-                                if (result.isSucceed) {
-                                    Swal.fire("Information", result.message, "info")
-                                    var href = '';
-                                    href = 'UploadTaskInquiry/ExportLog?guid=' + result.pguid;
-                                    window.location.href = href;
+    $(document).ready(function () {
+        $('#frm').submit(function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $(this).prop('disabled', true);
+            debugger;
+            var form = new FormData(this)
+            var fileExtension = ['xlsx', 'xls'];
+            var namaFile = $("#myFile").val();
+            if (namaFile == "" || namaFile == "Choose file...") {
+                $(this).prop('disabled', false);
+                Swal.fire("Information", "Format file extension yang diupload tidak sesuai", "info")
+                return false;
+            }
+            else if ($.inArray($("#myFile").val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+                $(this).prop('disabled', false);
+                Swal.fire("Information", "Format file extension yang diupload tidak sesuai", "info")
+                return false;
+            } else {
+                Swal.fire({
+                    title: "Uploaded...",
+                    text: "Please wait",
+                    imageUrl: "css/jax-loader.gif",
+                    showConfirmButton: false,
+                    allowOutsideClick: false
+                });
+                $.ajax({
+                    url: 'UploadTaskInquiry/ValidasiUpload',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    async: false,
+                    dataType: 'json',
+                    type: 'POST',
+                    data: {
+                        pEmpNo: $("#empNo").val()
+                    },
+                    success: function (isSucceed) {
+                        if (isSucceed == true) {
+                            $(this).prop('disabled', false);
+                            Swal.close();
+                            Swal.fire("Information", $("#empName").val() + " belum menjalankan proses Download,sehingga Proses Upload tidak bisa dilanjutkan.", "info")
+                            return false;
+                        }
+                        else {
+                            $.ajax({
+                                url: 'UploadTaskInquiry/Upload?empNo=' + $("#empNo").val(),
+                                data: form,
+                                type: 'POST',
+                                contentType: false,
+                                processData: false,
+                                enctype: 'multipart/form-data',
+                                dataType: 'json',
+                                async: false,
+                                success: function (result) {
+                                    Swal.close();
+                                    $(this).prop('disabled', false);
+                                    if (result.isSucceed) {
+                                        Swal.fire("Information", result.message, "info")
+                                        var href = '';
+                                        href = 'UploadTaskInquiry/ExportLog?guid=' + result.pguid;
+                                        window.location.href = href;
+                                    }
+                                    else {
+                                        Swal.fire("Information", result.message, "info")
+                                    }
                                 }
-                                else {
-
-                                    Swal.fire("Information", result.message, "info")
-                                }
-                            }
-                        });
+                            });
+                        }
                     }
-                }
-            });
+                });
+            }
+            return false;
+        });
 
-
-
-        }
-        return false;
-    });
-
-    $('#reset').click(function (e) {
-        e.preventDefault();
-        $("#myFile").val('');
+        $('#reset').click(function (e) {
+            e.preventDefault();
+            $("#myFile").val('');
+        });
     });
 </script>

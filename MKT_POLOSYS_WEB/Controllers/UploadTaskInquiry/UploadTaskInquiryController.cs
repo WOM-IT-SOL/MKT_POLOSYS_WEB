@@ -143,7 +143,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                         names.Add("labelName44", "Monthly_Installament");
                         names.Add("labelName45", "Down Payment");
                         names.Add("labelName46", "LTV");
-                        names.Add("labelName47", "Plafond");
+                        names.Add("labelName47", "Plafond Maks");
                         names.Add("labelName48", "Pekerjaan");
                         names.Add("labelName49", "Sisa_Tenor");
                         names.Add("labelName50", "Tenor");
@@ -213,11 +213,11 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                                 }
                                 try
                                 {
-                                    model.StartedDate = Convert.ToDateTime(dtTable.Tables[0].Rows[i][7].ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
+                                    model.StartedDate = Convert.ToDateTime(dtTable.Tables[0].Rows[i][8].ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
                                 }
                                 catch
                                 {
-                                    model.StartedDate = dtTable.Tables[0].Rows[i][7].ToString();
+                                    model.StartedDate = dtTable.Tables[0].Rows[i][8].ToString();
                                 }
                                 model.EmpPosition = dtTable.Tables[0].Rows[i][9].ToString();
                                 model.soa = dtTable.Tables[0].Rows[i][10].ToString();
@@ -229,18 +229,11 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                                 model.TempatLahir = dtTable.Tables[0].Rows[i][16].ToString();
                                 try
                                 {
-                                    model.TglLahir = Convert.ToDateTime(FromExcelDate(Convert.ToDouble(dtTable.Tables[0].Rows[i][17].ToString())).ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
+                                    model.TglLahir = Convert.ToDateTime(dtTable.Tables[0].Rows[i][17].ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
                                 }
                                 catch
                                 {
-                                    if (dtTable.Tables[0].Rows[i][17].ToString() == null || dtTable.Tables[0].Rows[i][17].ToString() == "")
-                                    {
-                                        model.TglLahir = "";
-                                    }
-                                    else
-                                    {
-                                        model.TglLahir = Convert.ToDateTime(dtTable.Tables[0].Rows[i][17].ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
-                                    }
+                                    model.TglLahir = dtTable.Tables[0].Rows[i][17].ToString();
                                 }
                                 model.RWLeg = dtTable.Tables[0].Rows[i][18].ToString();
                                 model.ProvLeg = dtTable.Tables[0].Rows[i][19].ToString();
@@ -276,20 +269,12 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                                 model.TenorId = dtTable.Tables[0].Rows[i][49].ToString();
                                 try
                                 {
-                                    model.ReleaseDateBpkb = Convert.ToDateTime(FromExcelDate(Convert.ToDouble(dtTable.Tables[0].Rows[i][50].ToString())).ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
+                                    model.ReleaseDateBpkb = Convert.ToDateTime(dtTable.Tables[0].Rows[i][50].ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
                                 }
                                 catch
                                 {
-                                    if (dtTable.Tables[0].Rows[i][50].ToString() == null || dtTable.Tables[0].Rows[i][50].ToString() == "")
-                                    {
-                                        model.ReleaseDateBpkb = "";
-                                    }
-                                    else
-                                    {
-                                        model.ReleaseDateBpkb = Convert.ToDateTime(dtTable.Tables[0].Rows[i][50].ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
-                                    }
+                                    model.ReleaseDateBpkb = dtTable.Tables[0].Rows[i][50].ToString();
                                 }
-
                                 try
                                 {
                                     model.MaxPastDueDt = dtTable.Tables[0].Rows[i][51].ToString();
@@ -302,33 +287,19 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                                 model.CustomerRating = dtTable.Tables[0].Rows[i][53].ToString();
                                 try
                                 {
-                                    model.TanggalJatuhTempo = Convert.ToDateTime(FromExcelDate(Convert.ToDouble(dtTable.Tables[0].Rows[i][54].ToString())).ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
+                                    model.TanggalJatuhTempo = Convert.ToDateTime(dtTable.Tables[0].Rows[i][54].ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
                                 }
                                 catch
                                 {
-                                    if (dtTable.Tables[0].Rows[i][54].ToString() == null || dtTable.Tables[0].Rows[i][54].ToString() == "")
-                                    {
-                                        model.TanggalJatuhTempo = "";
-                                    }
-                                    else
-                                    {
-                                        model.TanggalJatuhTempo = Convert.ToDateTime(dtTable.Tables[0].Rows[i][54].ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
-                                    }
+                                    model.TanggalJatuhTempo = dtTable.Tables[0].Rows[i][54].ToString();
                                 }
                                 try
                                 {
-                                    model.MaturityDt = Convert.ToDateTime(FromExcelDate(Convert.ToDouble(dtTable.Tables[0].Rows[i][55].ToString())).ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
+                                    model.MaturityDt = Convert.ToDateTime(dtTable.Tables[0].Rows[i][55].ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
                                 }
                                 catch
                                 {
-                                    if (dtTable.Tables[0].Rows[i][55].ToString() == null || dtTable.Tables[0].Rows[i][55].ToString() == "")
-                                    {
-                                        model.MaturityDt = "";
-                                    }
-                                    else
-                                    {
-                                        model.MaturityDt = Convert.ToDateTime(dtTable.Tables[0].Rows[i][55].ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
-                                    }
+                                    model.MaturityDt = dtTable.Tables[0].Rows[i][55].ToString();
                                 }
                                 model.StatusCall = dtTable.Tables[0].Rows[i][56].ToString();
                                 model.AnswerCall = dtTable.Tables[0].Rows[i][57].ToString();

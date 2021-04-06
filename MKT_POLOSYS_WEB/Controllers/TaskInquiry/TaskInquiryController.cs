@@ -90,12 +90,14 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                 model.AlamatLeg = data.Value.AlamatLeg;
                 model.ProvLeg = data.Value.ProvLeg;
                 model.KabLeg = data.Value.KabLeg;
+                model.KecLeg = data.Value.KecLeg;
                 model.KelLeg = data.Value.KelLeg;
                 model.RTLeg = data.Value.RTLeg;
                 model.RWLeg = data.Value.RWLeg;
                 model.AlamatRes = data.Value.AlamatRes;
                 model.ProvRes = data.Value.ProvRes;
                 model.KabRes = data.Value.KabRes;
+                model.KecRes = data.Value.KecRes;
                 model.KelRes = data.Value.KelRes;
                 model.RTRes = data.Value.RTRes;
                 model.RWRes = data.Value.RWRes;
@@ -198,7 +200,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                 worksheet.Cell(currentRow, 44).Value = "Monthly_Installament";
                 worksheet.Cell(currentRow, 45).Value = "Down Payment";
                 worksheet.Cell(currentRow, 46).Value = "LTV";
-                worksheet.Cell(currentRow, 47).Value = "Plafond";
+                worksheet.Cell(currentRow, 47).Value = "Plafond Maks";
                 worksheet.Cell(currentRow, 48).Value = "Pekerjaan";
                 worksheet.Cell(currentRow, 49).Value = "Sisa_Tenor";
                 worksheet.Cell(currentRow, 50).Value = "Tenor";
@@ -252,7 +254,14 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                     worksheet.Cell(currentRow, 15).Value = "'" + item.CabId;
                     worksheet.Cell(currentRow, 16).Value = "'" + item.NIK;
                     worksheet.Cell(currentRow, 17).Value = item.TempatLahir;
-                    worksheet.Cell(currentRow, 18).Value = item.TglLahir;
+                    try
+                    {
+                        worksheet.Cell(currentRow, 18).Value = "'" + Convert.ToDateTime(item.TglLahir).ToString("dd/MM/yyyy");
+                    }
+                    catch
+                    {
+                        worksheet.Cell(currentRow, 18).Value = "'" + item.TglLahir;
+                    }
                     worksheet.Cell(currentRow, 19).Value = "'" + item.RWLeg;
                     worksheet.Cell(currentRow, 20).Value = item.ProvLeg;
                     worksheet.Cell(currentRow, 21).Value = item.KabLeg;
@@ -386,7 +395,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                 worksheet.Cell(currentRow, 44).Value = "Monthly_Installament";
                 worksheet.Cell(currentRow, 45).Value = "Down Payment";
                 worksheet.Cell(currentRow, 46).Value = "LTV";
-                worksheet.Cell(currentRow, 47).Value = "Plafond";
+                worksheet.Cell(currentRow, 47).Value = "Plafond Maks";
                 worksheet.Cell(currentRow, 48).Value = "Pekerjaan";
                 worksheet.Cell(currentRow, 49).Value = "Sisa_Tenor";
                 worksheet.Cell(currentRow, 50).Value = "Tenor";
@@ -436,7 +445,14 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                     worksheet.Cell(currentRow, 15).Value = "'" + item.CabId;
                     worksheet.Cell(currentRow, 16).Value = "'" + item.NIK;
                     worksheet.Cell(currentRow, 17).Value = item.TempatLahir;
-                    worksheet.Cell(currentRow, 18).Value = item.TglLahir;
+                    try
+                    {
+                        worksheet.Cell(currentRow, 18).Value = "'" + Convert.ToDateTime(item.TglLahir).ToString("dd/MM/yyyy");
+                    }
+                    catch
+                    {
+                        worksheet.Cell(currentRow, 18).Value = "'" + item.TglLahir;
+                    } 
                     worksheet.Cell(currentRow, 19).Value = "'" + item.RWLeg;
                     worksheet.Cell(currentRow, 20).Value = item.ProvLeg;
                     worksheet.Cell(currentRow, 21).Value = item.KabLeg;

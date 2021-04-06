@@ -116,7 +116,6 @@ namespace MKT_POLOSYS_WEB.Providers
         {
             var connectionString = context.Database.GetDbConnection().ConnectionString;
             string url = "";
-
             SqlCommand command = new SqlCommand();
             command.Connection = new SqlConnection(connectionString);
             command.CommandText = @"SELECT PARAMETER_VALUE FROM M_MKT_POLO_PARAMETER WHERE PARAMETER_ID = 'URL_MKT_POLO_API_DUKCAPIL_FROM POLO'";

@@ -207,6 +207,8 @@ $('#myTableList tbody').on('click', '.taskID', function (e) {
 
 $('#myTableList tbody').on('click', '.rowClick', function (e) {
     e.preventDefault();
+    var row = $(this).closest('tr');
+    var id = myTable.row(row).data().orderInID;
     var param = "";
     $.ajax({
         url: 'TaskInquiry/DecriptUser',
@@ -215,14 +217,13 @@ $('#myTableList tbody').on('click', '.rowClick', function (e) {
         dataType: 'json',
         type: 'POST',
         data: {
-            Id: myTable.row(row).data().orderInID,
+            Id: id,
             userName: $("#empName").val()
         },
         success: function (result) {
             param = result;
         }
     });
-    var row = $(this).closest('tr');
     var href = '';
     href = 'Taskinquiry/Views?Id=' + param
     window.open(href, '_blank');
