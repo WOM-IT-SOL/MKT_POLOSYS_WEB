@@ -93,7 +93,11 @@ namespace MKT_POLOSYS_WEB.Providers
                 command.Parameters.AddWithValue("@pNotes", model.Notes);
                 command.Parameters.AddWithValue("@pQueueUid", guid);
                 command.Parameters.AddWithValue("@pEmpNo", model.EmpNo);
-                    //open Connection
+                command.Parameters.AddWithValue("@pZipcodeLeg", model.KodePosLeg);
+                command.Parameters.AddWithValue("@pSubZipcodeLeg", model.SubZipcodeLeg);
+                command.Parameters.AddWithValue("@pZipcodeRes", model.KodePosRes);
+                command.Parameters.AddWithValue("@pSubZipcodeRes", model.SubZipcodeRes);
+                //open Connection
                 command.Connection.Open();
 
                 //PRoses Sp

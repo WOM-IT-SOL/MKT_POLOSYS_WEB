@@ -120,44 +120,52 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                         names.Add("labelName21", "Kabupaten (Legal)");
                         names.Add("labelName22", "Kecamatan (Legal)");
                         names.Add("labelName23", "Kelurahan (Legal)");
-                        names.Add("labelName24", "Alamat (Survey)");
-                        names.Add("labelName25", "Rt (Survey)");
-                        names.Add("labelName26", "Rw (Survey)");
-                        names.Add("labelName27", "Provinsi (Survey)");
-                        names.Add("labelName28", "Kabupaten (Survey)");
-                        names.Add("labelName29", "Kecamatan (Survey)");
-                        names.Add("labelName30", "Kelurahan (Survey)");
-                        names.Add("labelName31", "No_Mesin");
-                        names.Add("labelName32", "No_Rangka");
-                        names.Add("labelName33", "Item_Type");
-                        names.Add("labelName34", "Item_Description");
-                        names.Add("labelName35", "Mobile1");
-                        names.Add("labelName36", "Mobile2");
-                        names.Add("labelName37", "Phone1");
-                        names.Add("labelName38", "Phone2");
-                        names.Add("labelName39", "Office_Phone1");
-                        names.Add("labelName40", "Office_Phone2");
-                        names.Add("labelName41", "Otr_Price");
-                        names.Add("labelName42", "Item_Year");
-                        names.Add("labelName43", "Monthly_Income");
-                        names.Add("labelName44", "Monthly_Installament");
-                        names.Add("labelName45", "Down Payment");
-                        names.Add("labelName46", "LTV");
-                        names.Add("labelName47", "Plafond Max");
-                        names.Add("labelName48", "Pekerjaan");
-                        names.Add("labelName49", "Sisa_Tenor");
-                        names.Add("labelName50", "Tenor");
-                        names.Add("labelName51", "Realease_Date_Bpkb");
-                        names.Add("labelName52", "Max_Past_Due_Dt");
-                        names.Add("labelName53", "Religion");
-                        names.Add("labelName54", "Customer_Rating");
-                        names.Add("labelName55", "Tanggal_Jatuh_Tempo");
-                        names.Add("labelName56", "Maturity_Dt");
-                        names.Add("labelName57", "Status Call");
-                        names.Add("labelName58", "Answer Call");
-                        names.Add("labelName59", "Status Prospek");
-                        names.Add("labelName60", "Reason Not Prospek");
-                        names.Add("labelName61", "Notes");
+                        /////////////////////////////////////////////////
+                        names.Add("labelName24", "Kode Pos (Legal)");
+                        names.Add("labelName25", "SubZipcode (Legal)");
+                        /////////////////////////////////////////////////
+                        names.Add("labelName26", "Alamat (Survey)");
+                        names.Add("labelName27", "Rt (Survey)");
+                        names.Add("labelName28", "Rw (Survey)");
+                        names.Add("labelName29", "Provinsi (Survey)");
+                        names.Add("labelName30", "Kabupaten (Survey)");
+                        names.Add("labelName31", "Kecamatan (Survey)");
+                        names.Add("labelName32", "Kelurahan (Survey)");
+                        /////////////////////////////////////////////////
+                        names.Add("labelName33", "Kode Pos (Survey)");
+                        names.Add("labelName34", "SubZipcode (Survey)");
+                        /////////////////////////////////////////////////
+                        names.Add("labelName35", "No_Mesin");
+                        names.Add("labelName36", "No_Rangka");
+                        names.Add("labelName37", "Item_Type");
+                        names.Add("labelName38", "Item_Description");
+                        names.Add("labelName39", "Mobile1");
+                        names.Add("labelName40", "Mobile2");
+                        names.Add("labelName41", "Phone1");
+                        names.Add("labelName42", "Phone2");
+                        names.Add("labelName43", "Office_Phone1");
+                        names.Add("labelName44", "Office_Phone2");
+                        names.Add("labelName45", "Otr_Price");
+                        names.Add("labelName46", "Item_Year");
+                        names.Add("labelName47", "Monthly_Income");
+                        names.Add("labelName48", "Monthly_Installament");
+                        names.Add("labelName49", "Down Payment Pengajuan");
+                        names.Add("labelName50", "LTV Pengajuan");
+                        names.Add("labelName51", "Tenor Pengajuan");
+                        names.Add("labelName52", "Plafond Max");
+                        names.Add("labelName53", "Pekerjaan");
+                        names.Add("labelName54", "Sisa_Tenor");
+                        names.Add("labelName55", "Realease_Date_Bpkb");
+                        names.Add("labelName56", "Max_Past_Due_Dt");
+                        names.Add("labelName57", "Religion");
+                        names.Add("labelName58", "Customer_Rating");
+                        names.Add("labelName59", "Tanggal_Jatuh_Tempo");
+                        names.Add("labelName60", "Maturity_Dt");
+                        names.Add("labelName61", "Status Call");
+                        names.Add("labelName62", "Answer Call");
+                        names.Add("labelName63", "Status Prospek");
+                        names.Add("labelName64", "Reason Not Prospek");
+                        names.Add("labelName65", "Notes");
 
                         string sFileExtension = Path.GetExtension(uploadFile.FileName).ToLower();
 
@@ -205,7 +213,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                                 model.CustomerName = dtTable.Tables[0].Rows[i][6].ToString();
                                 try
                                 {
-                                    model.DistributedDate = Convert.ToDateTime(dtTable.Tables[0].Rows[i][7].ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
+                                    model.StartedDate = Convert.ToDateTime(dtTable.Tables[0].Rows[i][8].ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
                                 }
                                 catch
                                 {
@@ -229,7 +237,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                                 model.TempatLahir = dtTable.Tables[0].Rows[i][16].ToString();
                                 try
                                 {
-                                    model.TglLahir = Convert.ToDateTime(dtTable.Tables[0].Rows[i][17].ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
+                                    model.TglLahir = Convert.ToDateTime(dtTable.Tables[0].Rows[i][17].ToString()).ToString("dd/MM/yyyy");
                                 }
                                 catch
                                 {
@@ -240,72 +248,81 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                                 model.KabLeg = dtTable.Tables[0].Rows[i][20].ToString();
                                 model.KecLeg = dtTable.Tables[0].Rows[i][21].ToString();
                                 model.KelLeg = dtTable.Tables[0].Rows[i][22].ToString();
-                                model.AlamatRes = dtTable.Tables[0].Rows[i][23].ToString();
-                                model.RTRes = dtTable.Tables[0].Rows[i][24].ToString();
-                                model.RWRes = dtTable.Tables[0].Rows[i][25].ToString();
-                                model.ProvRes = dtTable.Tables[0].Rows[i][26].ToString();
-                                model.KabRes = dtTable.Tables[0].Rows[i][27].ToString();
-                                model.KecRes = dtTable.Tables[0].Rows[i][28].ToString();
-                                model.KelRes = dtTable.Tables[0].Rows[i][29].ToString();
-                                model.NoMesin = dtTable.Tables[0].Rows[i][30].ToString();
-                                model.NoRangka = dtTable.Tables[0].Rows[i][31].ToString();
-                                model.ItemType = dtTable.Tables[0].Rows[i][32].ToString();
-                                model.ItemDescription = dtTable.Tables[0].Rows[i][33].ToString();
-                                model.Mobile1 = dtTable.Tables[0].Rows[i][34].ToString();
-                                model.Mobile2 = dtTable.Tables[0].Rows[i][35].ToString();
-                                model.Phone1 = dtTable.Tables[0].Rows[i][36].ToString();
-                                model.Phone2 = dtTable.Tables[0].Rows[i][37].ToString();
-                                model.OfficePhone1 = dtTable.Tables[0].Rows[i][38].ToString();
-                                model.OfficePhone2 = dtTable.Tables[0].Rows[i][39].ToString();
-                                model.OtrPrice = dtTable.Tables[0].Rows[i][40].ToString();
-                                model.ItemYear = dtTable.Tables[0].Rows[i][41].ToString();
-                                model.MonthlyIncome = dtTable.Tables[0].Rows[i][42].ToString();
-                                model.MonthInstallment = dtTable.Tables[0].Rows[i][43].ToString();
-                                model.DP = dtTable.Tables[0].Rows[i][44].ToString();
-                                model.LTV = dtTable.Tables[0].Rows[i][45].ToString();
-                                model.Plafond = dtTable.Tables[0].Rows[i][46].ToString();
-                                model.Pekerjaan = dtTable.Tables[0].Rows[i][47].ToString();
-                                model.SisaTenor = dtTable.Tables[0].Rows[i][48].ToString();
-                                model.TenorId = dtTable.Tables[0].Rows[i][49].ToString();
+                                //////////////////////////////////////////////////////////
+                                model.KodePosLeg = dtTable.Tables[0].Rows[i][23].ToString();
+                                model.SubZipcodeLeg = dtTable.Tables[0].Rows[i][24].ToString();
+                                //////////////////////////////////////////////////////////
+                                model.AlamatRes = dtTable.Tables[0].Rows[i][25].ToString();
+                                model.RTRes = dtTable.Tables[0].Rows[i][26].ToString();
+                                model.RWRes = dtTable.Tables[0].Rows[i][27].ToString();
+                                model.ProvRes = dtTable.Tables[0].Rows[i][28].ToString();
+                                model.KabRes = dtTable.Tables[0].Rows[i][29].ToString();
+                                model.KecRes = dtTable.Tables[0].Rows[i][30].ToString();
+                                model.KelRes = dtTable.Tables[0].Rows[i][31].ToString();
+                                //////////////////////////////////////////////////////////
+                                model.KodePosRes = dtTable.Tables[0].Rows[i][32].ToString();
+                                model.SubZipcodeRes = dtTable.Tables[0].Rows[i][33].ToString();
+                                //////////////////////////////////////////////////////////
+                                model.NoMesin = dtTable.Tables[0].Rows[i][34].ToString();
+                                model.NoRangka = dtTable.Tables[0].Rows[i][35].ToString();
+                                model.ItemType = dtTable.Tables[0].Rows[i][36].ToString();
+                                model.ItemDescription = dtTable.Tables[0].Rows[i][37].ToString();
+                                model.Mobile1 = dtTable.Tables[0].Rows[i][38].ToString();
+                                model.Mobile2 = dtTable.Tables[0].Rows[i][39].ToString();
+                                model.Phone1 = dtTable.Tables[0].Rows[i][40].ToString();
+                                model.Phone2 = dtTable.Tables[0].Rows[i][41].ToString();
+                                model.OfficePhone1 = dtTable.Tables[0].Rows[i][42].ToString();
+                                model.OfficePhone2 = dtTable.Tables[0].Rows[i][43].ToString();
+                                model.OtrPrice = dtTable.Tables[0].Rows[i][44].ToString();
+                                model.ItemYear = dtTable.Tables[0].Rows[i][45].ToString();
+                                model.MonthlyIncome = dtTable.Tables[0].Rows[i][46].ToString();
+                                model.MonthInstallment = dtTable.Tables[0].Rows[i][47].ToString();
+                                model.DP = dtTable.Tables[0].Rows[i][48].ToString();
+                                model.LTV = dtTable.Tables[0].Rows[i][49].ToString();
+                                model.TenorId = dtTable.Tables[0].Rows[i][50].ToString();
+                                model.Plafond = dtTable.Tables[0].Rows[i][51].ToString();
+                                model.Pekerjaan = dtTable.Tables[0].Rows[i][52].ToString();
+                                model.SisaTenor = dtTable.Tables[0].Rows[i][53].ToString();
                                 try
                                 {
-                                    model.ReleaseDateBpkb = Convert.ToDateTime(dtTable.Tables[0].Rows[i][50].ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
+                                    model.ReleaseDateBpkb = Convert.ToDateTime(dtTable.Tables[0].Rows[i][54].ToString()).ToString("dd/MM/yyyy");
                                 }
                                 catch
                                 {
-                                    model.ReleaseDateBpkb = dtTable.Tables[0].Rows[i][50].ToString();
+                                    model.ReleaseDateBpkb = dtTable.Tables[0].Rows[i][54].ToString();
                                 }
                                 try
                                 {
-                                    model.MaxPastDueDt = dtTable.Tables[0].Rows[i][51].ToString();
+                                    model.MaxPastDueDt = dtTable.Tables[0].Rows[i][55].ToString();
                                 }
                                 catch
                                 {
                                     model.MaxPastDueDt = "";
                                 }
-                                model.Religion = dtTable.Tables[0].Rows[i][52].ToString();
-                                model.CustomerRating = dtTable.Tables[0].Rows[i][53].ToString();
+                                model.Religion = dtTable.Tables[0].Rows[i][56].ToString();
+                                model.CustomerRating = dtTable.Tables[0].Rows[i][57].ToString();
                                 try
                                 {
-                                    model.TanggalJatuhTempo = Convert.ToDateTime(dtTable.Tables[0].Rows[i][54].ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
+                                    
+                                    model.TanggalJatuhTempo = Convert.ToDateTime(dtTable.Tables[0].Rows[i][58].ToString()).ToString("dd/MM/yyyy");
                                 }
                                 catch
                                 {
-                                    model.TanggalJatuhTempo = dtTable.Tables[0].Rows[i][54].ToString();
+                                    model.TanggalJatuhTempo = dtTable.Tables[0].Rows[i][58].ToString();
                                 }
                                 try
                                 {
-                                    model.MaturityDt = Convert.ToDateTime(dtTable.Tables[0].Rows[i][55].ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
+                                    model.MaturityDt = Convert.ToDateTime(dtTable.Tables[0].Rows[i][59].ToString()).ToString("dd/MM/yyyy");
                                 }
                                 catch
                                 {
-                                    model.MaturityDt = dtTable.Tables[0].Rows[i][55].ToString();
+                                    model.MaturityDt = dtTable.Tables[0].Rows[i][59].ToString();
                                 }
-                                model.StatusCall = dtTable.Tables[0].Rows[i][56].ToString();
-                                model.AnswerCall = dtTable.Tables[0].Rows[i][57].ToString();
-                                model.StatusProspek = dtTable.Tables[0].Rows[i][58].ToString();
-                                model.ReasonNotProspek = dtTable.Tables[0].Rows[i][59].ToString();
-                                model.Notes = dtTable.Tables[0].Rows[i][60].ToString();
+                                model.StatusCall = dtTable.Tables[0].Rows[i][60].ToString();
+                                model.AnswerCall = dtTable.Tables[0].Rows[i][61].ToString();
+                                model.StatusProspek = dtTable.Tables[0].Rows[i][62].ToString();
+                                model.ReasonNotProspek = dtTable.Tables[0].Rows[i][63].ToString();
+                                model.Notes = dtTable.Tables[0].Rows[i][64].ToString();
                                 model.EmpNo = empNo;
                                 var data = updateTaskInquiryProvider.UploadData(model, guid);
                             }

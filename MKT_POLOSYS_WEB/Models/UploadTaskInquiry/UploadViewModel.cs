@@ -34,6 +34,10 @@ namespace MKT_POLOSYS_WEB.Models.UploadTaskInquiry
         public string KabLeg { get; set; }
         public string KecLeg { get; set; }
         public string KelLeg { get; set; }
+        public string KodePosLeg { get; set; }
+        public string SubZipcodeLeg { get; set; }
+        public string KodePosRes { get; set; }
+        public string SubZipcodeRes { get; set; }
         public string RTLeg { get; set; }
         public string RWLeg { get; set; }
         public string AlamatRes { get; set; }

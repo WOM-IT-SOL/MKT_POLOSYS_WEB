@@ -193,7 +193,7 @@ $('#myTableList tbody').on('click', '.rowClick', function (e) {
         }
     });
     var href = '';
-    href = 'Taskinquiry/Views?Id=' + param
+    href = 'Taskinquiry/ViewsTask?Id=' + param
     window.open(href, '_blank');
 });
 

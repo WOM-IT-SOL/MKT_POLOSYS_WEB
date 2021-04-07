@@ -38,6 +38,8 @@ namespace MKT_POLOSYS_WEB.Models
         public string KelLeg { get; set; }
         public string RTLeg { get; set; }
         public string RWLeg { get; set; }
+        public string KodePosLeg { get; set; }
+        public string SubZipcodeLeg { get; set; }
         public string AlamatRes { get; set; }
         public string ProvRes { get; set; }
         public string KabRes { get; set; }

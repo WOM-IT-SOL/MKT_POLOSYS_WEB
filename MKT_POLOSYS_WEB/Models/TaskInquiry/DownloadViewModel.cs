@@ -34,6 +34,8 @@ namespace MKT_POLOSYS_WEB.Models
         public string KabLeg { get; set; }
         public string KecLeg { get; set; }
         public string KelLeg { get; set; }
+        public string KodeposLeg { get; set; }
+        public string SubZipcodeLeg { get; set; }
         public string RTLeg { get; set; }
         public string RWLeg { get; set; }
         public string AlamatRes { get; set; }
@@ -41,6 +43,8 @@ namespace MKT_POLOSYS_WEB.Models
         public string KabRes { get; set; }
         public string KecRes { get; set; }
         public string KelRes { get; set; }
+        public string KodeposRes { get; set; }
+        public string SubZipcodeRes { get; set; }
         public string RTRes { get; set; }
         public string RWRes { get; set; }
         public string NoMesin { get; set; }
