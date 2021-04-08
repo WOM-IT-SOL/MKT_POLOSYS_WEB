@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -213,7 +214,8 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                                 model.CustomerName = dtTable.Tables[0].Rows[i][6].ToString();
                                 try
                                 {
-                                    model.StartedDate = Convert.ToDateTime(dtTable.Tables[0].Rows[i][8].ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
+                                    var locDate = dtTable.Tables[0].Rows[i][7].ToString();
+                                    model.DistributedDate = Convert.ToDateTime(locDate).ToString("yyyy-MM-dd HH:mm:ss.mmm");
                                 }
                                 catch
                                 {
@@ -221,7 +223,8 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                                 }
                                 try
                                 {
-                                    model.StartedDate = Convert.ToDateTime(dtTable.Tables[0].Rows[i][8].ToString()).ToString("yyyy-MM-dd HH:mm:ss.mmm");
+                                    var locDate = dtTable.Tables[0].Rows[i][8].ToString();
+                                    model.StartedDate = Convert.ToDateTime(locDate).ToString("yyyy-MM-dd HH:mm:ss.mmm");
                                 }
                                 catch
                                 {
@@ -237,7 +240,9 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                                 model.TempatLahir = dtTable.Tables[0].Rows[i][16].ToString();
                                 try
                                 {
-                                    model.TglLahir = Convert.ToDateTime(dtTable.Tables[0].Rows[i][17].ToString()).ToString("dd/MM/yyyy");
+
+                                    var locDate = dtTable.Tables[0].Rows[i][17].ToString();
+                                    model.TglLahir = Convert.ToDateTime(locDate).ToString("yyyy-MM-dd HH:mm:ss.mmm");
                                 }
                                 catch
                                 {
@@ -285,7 +290,8 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                                 model.SisaTenor = dtTable.Tables[0].Rows[i][53].ToString();
                                 try
                                 {
-                                    model.ReleaseDateBpkb = Convert.ToDateTime(dtTable.Tables[0].Rows[i][54].ToString()).ToString("dd/MM/yyyy");
+                                    var locDate = dtTable.Tables[0].Rows[i][54].ToString();
+                                    model.ReleaseDateBpkb = Convert.ToDateTime(locDate).ToString("yyyy-MM-dd HH:mm:ss.mmm");
                                 }
                                 catch
                                 {
@@ -303,8 +309,8 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                                 model.CustomerRating = dtTable.Tables[0].Rows[i][57].ToString();
                                 try
                                 {
-                                    
-                                    model.TanggalJatuhTempo = Convert.ToDateTime(dtTable.Tables[0].Rows[i][58].ToString()).ToString("dd/MM/yyyy");
+                                    var locDate = dtTable.Tables[0].Rows[i][58].ToString();
+                                    model.TanggalJatuhTempo = Convert.ToDateTime(locDate).ToString("yyyy-MM-dd HH:mm:ss.mmm");
                                 }
                                 catch
                                 {
@@ -312,7 +318,8 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                                 }
                                 try
                                 {
-                                    model.MaturityDt = Convert.ToDateTime(dtTable.Tables[0].Rows[i][59].ToString()).ToString("dd/MM/yyyy");
+                                    var locDate = dtTable.Tables[0].Rows[i][59].ToString();
+                                    model.MaturityDt = Convert.ToDateTime(locDate).ToString("yyyy-MM-dd HH:mm:ss.mmm");
                                 }
                                 catch
                                 {
