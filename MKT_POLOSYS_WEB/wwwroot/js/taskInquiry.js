@@ -121,21 +121,27 @@ function list() {
         pEdate = $("#edate").val(),
         pSourceData = $("#ddlSourceData").val()
 
-    if (pFPName == null || pFPName == "")
+    if (pFPName == null || pFPName == "") {
         pFPName = "All";
-    if (pTaskID == null || pTaskID == "")
+    }
+    if (pTaskID == null || pTaskID == "") {
         pTaskID = "All";
-    if (pAppID == null || pAppID == "")
+    }
+    if (pAppID == null || pAppID == "") {
         pAppID = "All";
-    if (pCustName == null || pCustName == "")
+    }
+    if (pCustName == null || pCustName == "") {
         pCustName = "All";
-    if (pPriorityLevel == null || pPriorityLevel == "")
+    }
+    if (pPriorityLevel == null || pPriorityLevel == "") {
         pPriorityLevel = "All";
-    if (pSdate == null || pSdate == "")
+    }
+    if (pSdate == null || pSdate == "") {
         pSdate = "All";
-    if (pEdate == null || pEdate == "")
+    }
+    if (pEdate == null || pEdate == "") {
         pEdate = "All";
-
+    }
     Swal.fire({
         title: "Checking...",
         text: "Please wait",
@@ -172,7 +178,7 @@ function list() {
                 myTable.row.add(value);
             });
             myTable.draw();
-             Swal.close();
+            Swal.close();
         }
     });
 }

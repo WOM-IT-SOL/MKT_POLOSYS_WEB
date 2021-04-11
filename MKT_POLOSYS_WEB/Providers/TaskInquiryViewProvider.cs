@@ -64,8 +64,24 @@ namespace MKT_POLOSYS_WEB.Providers
                     data.jenisTask = rd[4].ToString();
                     data.customerID = rd[5].ToString();
                     data.customerName = rd[6].ToString();
-                    data.distributedDT = rd[7].ToString();
-                    data.startedDT = rd[8].ToString();
+                    try
+                    {
+
+                        data.distributedDT = Convert.ToDateTime(rd[7].ToString()).ToString("dd/MM/yyyy HH:mm:ss.mmm");
+                    }
+                    catch
+                    {
+                        data.distributedDT = rd[7].ToString();
+                    }
+                    try
+                    {
+
+                        data.startedDT = Convert.ToDateTime(rd[8].ToString()).ToString("dd/MM/yyyy HH:mm:ss.mmm");
+                    }
+                    catch
+                    {
+                        data.startedDT = rd[8].ToString();
+                    }
                     data.slaRemaining = rd[9].ToString();
                     data.fieldPersonName = rd[10].ToString();
                     data.empPosition = rd[11].ToString();

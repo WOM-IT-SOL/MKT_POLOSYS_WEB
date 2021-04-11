@@ -109,7 +109,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                         names.Add("labelName9", "Started Date");
                         names.Add("labelName10", "Emp Position");
                         names.Add("labelName11", "SOA");
-                        names.Add("labelName12", "Referentor 1");
+                        names.Add("labelName12", "Referantor 1");
                         names.Add("labelName13", "Regional_id");
                         names.Add("labelName14", "Product");
                         names.Add("labelName15", "Cab_Id");

@@ -238,7 +238,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                 worksheet.Cell(currentRow, 9).Value = "Started Date";
                 worksheet.Cell(currentRow, 10).Value = "Emp Position";
                 worksheet.Cell(currentRow, 11).Value = "SOA";
-                worksheet.Cell(currentRow, 12).Value = "Referentor 1";
+                worksheet.Cell(currentRow, 12).Value = "Referantor 1";
                 worksheet.Cell(currentRow, 13).Value = "Regional_id";
                 worksheet.Cell(currentRow, 14).Value = "Product";
                 worksheet.Cell(currentRow, 15).Value = "Cab_Id";
@@ -315,19 +315,19 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                     worksheet.Cell(currentRow, 7).Value = item.CustomerName;
                     try
                     {
-                        worksheet.Cell(currentRow, 8).Value = Convert.ToDateTime(item.DistributedDate).ToString("dd/MM/yyyy HH:mm:ss.mmm");
+                        worksheet.Cell(currentRow, 8).Value = "'" + Convert.ToDateTime(item.DistributedDate).ToString("dd/MM/yyyy HH:mm:ss.mmm");
                     }
                     catch
                     {
-                        worksheet.Cell(currentRow, 8).Value = item.DistributedDate;
+                        worksheet.Cell(currentRow, 8).Value = "'" + item.DistributedDate;
                     }
                     try
                     {
-                        worksheet.Cell(currentRow, 9).Value = Convert.ToDateTime(item.StartedDate).ToString("dd/MM/yyyy HH:mm:ss.mmm");
+                        worksheet.Cell(currentRow, 9).Value = "'" + Convert.ToDateTime(item.StartedDate).ToString("dd/MM/yyyy HH:mm:ss.mmm");
                     }
                     catch
                     {
-                        worksheet.Cell(currentRow, 9).Value = item.StartedDate;
+                        worksheet.Cell(currentRow, 9).Value = "'" + item.StartedDate;
                     }
                     worksheet.Cell(currentRow, 10).Value = item.EmpPosition;
                     worksheet.Cell(currentRow, 11).Value = item.soa;
@@ -447,7 +447,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                 worksheet.Cell(currentRow, 9).Value = "Started Date";
                 worksheet.Cell(currentRow, 10).Value = "Emp Position";
                 worksheet.Cell(currentRow, 11).Value = "SOA";
-                worksheet.Cell(currentRow, 12).Value = "Referentor 1";
+                worksheet.Cell(currentRow, 12).Value = "Referantor 1";
                 worksheet.Cell(currentRow, 13).Value = "Regional_id";
                 worksheet.Cell(currentRow, 14).Value = "Product";
                 worksheet.Cell(currentRow, 15).Value = "Cab_Id";
@@ -520,19 +520,19 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                     worksheet.Cell(currentRow, 7).Value = item.CustomerName;
                     try
                     {
-                        worksheet.Cell(currentRow, 8).Value = Convert.ToDateTime(item.DistributedDate).ToString("dd/MM/yyyy HH:mm:ss.mmm");
+                        worksheet.Cell(currentRow, 8).Value = "'" + Convert.ToDateTime(item.DistributedDate).ToString("dd/MM/yyyy HH:mm:ss.mmm");
                     }
                     catch
                     {
-                        worksheet.Cell(currentRow, 8).Value = item.DistributedDate;
+                        worksheet.Cell(currentRow, 8).Value = "'" + item.DistributedDate;
                     }
                     try
                     {
-                        worksheet.Cell(currentRow, 9).Value = Convert.ToDateTime(item.StartedDate).ToString("dd/MM/yyyy HH:mm:ss.mmm");
+                        worksheet.Cell(currentRow, 9).Value = "'" + Convert.ToDateTime(item.StartedDate).ToString("dd/MM/yyyy HH:mm:ss.mmm");
                     }
                     catch
                     {
-                        worksheet.Cell(currentRow, 9).Value = item.StartedDate;
+                        worksheet.Cell(currentRow, 9).Value = "'" + item.StartedDate;
                     }
                     worksheet.Cell(currentRow, 10).Value = item.EmpPosition;
                     worksheet.Cell(currentRow, 11).Value = item.soa;

@@ -64,8 +64,24 @@ namespace MKT_POLOSYS_WEB.Providers
                     data.jenisTask = rd[4].ToString();
                     data.customerID = rd[5].ToString();
                     data.customerName = rd[6].ToString();
-                    data.distributedDT = rd[7].ToString();
-                    data.startedDT = rd[8].ToString();
+                    try
+                    {
+
+                        data.distributedDT = Convert.ToDateTime(rd[7].ToString()).ToString("dd/MM/yyyy HH:mm:ss.mmm");
+                    }
+                    catch 
+                    {
+                        data.distributedDT = rd[7].ToString();
+                    }
+                    try
+                    {
+
+                        data.startedDT = Convert.ToDateTime(rd[8].ToString()).ToString("dd/MM/yyyy HH:mm:ss.mmm");
+                    }
+                    catch
+                    {
+                        data.startedDT = rd[8].ToString();
+                    }
                     data.slaRemaining = rd[9].ToString();
                     data.fieldPersonName = rd[10].ToString();
                     data.empPosition = rd[11].ToString();
@@ -118,8 +134,24 @@ namespace MKT_POLOSYS_WEB.Providers
                     data.JenisTask = rd[1].ToString();
                     data.CustID = rd[2].ToString();
                     data.CustomerName = rd[3].ToString();
-                    data.DistributedDate = rd[4].ToString();
-                    data.StartedDate = rd[5].ToString();
+                    try
+                    {
+
+                        data.DistributedDate = Convert.ToDateTime(rd[4].ToString()).ToString("dd/MM/yyyy HH:mm:ss.mmm");
+                    }
+                    catch
+                    {
+                        data.DistributedDate = rd[4].ToString();
+                    }
+                    try
+                    {
+
+                        data.StartedDate = Convert.ToDateTime(rd[5].ToString()).ToString("dd/MM/yyyy HH:mm:ss.mmm");
+                    }
+                    catch
+                    {
+                        data.StartedDate = rd[5].ToString();
+                    }
                     data.StatusDukcapil = rd[6].ToString();
                     data.FieldPersonName = rd[7].ToString();
                     data.EmpPosition = rd[8].ToString();
@@ -132,7 +164,15 @@ namespace MKT_POLOSYS_WEB.Providers
 
                     //---
                     data.TempatLahir = rd[15].ToString();
-                    data.TglLahir = Convert.ToDateTime(rd[16].ToString()).ToString("dd MMM yyyy");
+                    try
+                    {
+
+                        data.TglLahir = Convert.ToDateTime(rd[16].ToString()).ToString("dd MMM yyyy");
+                    }
+                    catch
+                    {
+                        data.TglLahir = rd[16].ToString();
+                    }
                     data.AlamatLeg = rd[17].ToString();
                     data.ProvLeg = rd[18].ToString();
                     data.KabLeg = rd[19].ToString();
@@ -196,8 +236,24 @@ namespace MKT_POLOSYS_WEB.Providers
                     ListTaskDetailViewModel data = new ListTaskDetailViewModel();
                     data.sourceProspek = rd[0].ToString();
                     data.fieldPersonName = rd[1].ToString();
-                    data.startedDate = rd[2].ToString();
-                    data.submittedDate = rd[3].ToString();
+                    try
+                    {
+
+                        data.startedDate = Convert.ToDateTime(rd[2].ToString()).ToString("dd/MM/yyyy HH:mm:ss.mmm");
+                    }
+                    catch
+                    {
+                        data.startedDate = rd[2].ToString();
+                    }
+                    try
+                    {
+
+                        data.submittedDate = Convert.ToDateTime(rd[3].ToString()).ToString("dd/MM/yyyy HH:mm:ss.mmm");
+                    }
+                    catch
+                    {
+                        data.submittedDate = rd[3].ToString();
+                    }
                     data.priorityLevel = rd[4].ToString();
                     ListData.Add(data);
                 }
