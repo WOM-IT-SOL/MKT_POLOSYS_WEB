@@ -103,7 +103,32 @@ var myTable = $('#myTableList').DataTable({
 });
 
 
-
+var myTableDukcapil = $('#myTableListDukcapil').DataTable({
+    "paging": true,
+    "lengthChange": true,
+    "searching": false,
+    "ordering": true,
+    "info": true,
+    "autoWidth": true,
+    "data": [],
+    "columns": [
+        {
+            "title": "Task ID",
+            "data": "taskID"
+        }, {
+            "title": "Customer Name",
+            "data": "customerName"
+        }, {
+            "title": "Nik Ktp",
+            "data": "nikId"
+        }, {
+            "title": "Tempat Lahir",
+            "data": "tempatLahir"
+        }, {
+            "title": "Tanggal Lahir",
+            "data": "tglLahir"
+        }]
+});
 
 
 function list() {
@@ -150,7 +175,85 @@ function list() {
         allowOutsideClick: false
     });
     $.ajax({
-        url: 'TaskInquiry/ListDetail',
+        url: 'ChangeDukcapil/ListDetail',
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+        async: false,
+        dataType: 'json',
+        type: 'POST',
+        data: {
+            pRegion: $("#ddlRegion").val(),
+            pFPName: pFPName,
+            pBranchName: $("#ddlBranch").val(),
+            pEmpPosition: $("#ddlEmpPosition").val(),
+            pTaskID: pTaskID,
+            pStatProspek: $("#ddlStsProspek").val(),
+            pAppID: pAppID,
+            pPriorityLevel: pPriorityLevel,
+            pCustName: pCustName,
+            pStatDukcapil: $("#ddlStatusDukcapil").val(),
+            pSdate: pSdate,
+            pEdate: pEdate,
+            pSourceData: $("#ddlSourceData").val(),
+            pEmpNo: $("#empNo").val()
+        },
+        success: function (result) {
+            var jsonString = JSON.stringify(result);
+            myTable.clear();
+            $.each(result, function (index, value) {
+                myTable.row.add(value);
+            });
+            myTable.draw();
+            Swal.close();
+        }
+    });
+}
+
+
+function list() {
+    var pRegion = $("#ddlRegion").val(),
+        pFPName = $("#txtFpName").val(),
+        pBranchName = $("#ddlBranch").val(),
+        pEmpPosition = $("#ddlEmpPosition").val(),
+        pTaskID = $("#txtTaskID").val(),
+        pStatProspek = $("#ddlStsProspek").val(),
+        pAppID = $("#txtAppID").val(),
+        pPriorityLevel = $("#ddlPriorityLevel").val(),
+        pCustName = $("#txtCustName").val(),
+        pStatDukcapil = $("#ddlStatusDukcapil").val(),
+        pSdate = $("#sdate").val(),
+        pEdate = $("#edate").val(),
+        pSourceData = $("#ddlSourceData").val()
+
+    if (pFPName == null || pFPName == "") {
+        pFPName = "All";
+    }
+    if (pTaskID == null || pTaskID == "") {
+        pTaskID = "All";
+    }
+    if (pAppID == null || pAppID == "") {
+        pAppID = "All";
+    }
+    if (pCustName == null || pCustName == "") {
+        pCustName = "All";
+    }
+    if (pPriorityLevel == null || pPriorityLevel == "") {
+        pPriorityLevel = "All";
+    }
+    if (pSdate == null || pSdate == "") {
+        pSdate = "All";
+    }
+    if (pEdate == null || pEdate == "") {
+        pEdate = "All";
+    }
+    Swal.fire({
+        title: "Checking...",
+        text: "Please wait",
+        imageUrl: "css/jax-loader.gif",
+        showConfirmButton: false,
+        allowOutsideClick: false
+    });
+    $.ajax({
+        url: 'ChangeDukcapil/ListDetail',
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
         async: false,
         dataType: 'json',
@@ -188,53 +291,10 @@ $('#myTableList tbody').on('click', '.taskID', function (e) {
     e.preventDefault();
     var row = $(this).closest('tr');
     var id = myTable.row(row).data().orderInID;
-    debugger;
-    $.ajax({
-        url: 'TaskInquiry/ValidasiDownload',
-        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-        async: false,
-        dataType: 'json',
-        type: 'POST',
-        data: {
-            pEmpNo: $("#empNo").val()
-        },
-        success: function (isSucceed) {
-            if (isSucceed == true) {
-                Swal.fire("Information", "Proses Download tidak bisa dilakukan karena belum dilakukan Upload pada proses Download sebelumnya.", "info")
-                return false;
-            } else {
-                var href = '';
-                href = 'TaskInquiry/ExcelDetail?pID=' + id + "&pEmpNo=" + $("#empNo").val()
-                window.location.href = href;
-            }
-        }
-    });
-});
-
-$('#myTableList tbody').on('click', '.rowClick', function (e) {
-    e.preventDefault();
-    var row = $(this).closest('tr');
-    var id = myTable.row(row).data().orderInID;
-    var param = "";
-    $.ajax({
-        url: 'TaskInquiry/DecriptUser',
-        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-        async: false,
-        dataType: 'json',
-        type: 'POST',
-        data: {
-            Id: id,
-            userName: $("#empName").val()
-        },
-        success: function (result) {
-            param = result;
-        }
-    });
     var href = '';
-    href = 'Taskinquiry/Views?Id=' + param
-    window.open(href, '_blank');
+    href = 'ChangeDukcapil/ExcelDetail?pID=' + id + "&pEmpNo=" + $("#empNo").val()
+    window.location.href = href;
 });
-
 $('#btnSearch').click(function (e) {
     e.preventDefault();
     if ($("#sdate").val() == "") {
@@ -263,64 +323,47 @@ $("#btnDownload").click(function (e) {
     else if (myTable.rows().count() == 0) {
         Swal.fire("Information", "Tidak ada data yang didownload.", "info")
     } else {
-            $.ajax({
-                url: 'TaskInquiry/ValidasiDownload',
-                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                async: false,
-                dataType: 'json',
-                type: 'POST',
-                data: {
-                    pEmpNo: $("#empNo").val()
-                },
-                success: function (isSucceed) {
-                    if (isSucceed == true) {
-                        Swal.fire("Information", "Proses Download tidak bisa dilakukan karena belum dilakukan Upload pada proses Download sebelumnya.", "info")
-                        return false;
-                    }
-                    else {
-                        var pRegion = $("#ddlRegion").val(),
-                            pFPName = $("#txtFpName").val(),
-                            pBranchName = $("#ddlBranch").val(),
-                            pEmpPosition = $("#ddlEmpPosition").val(),
-                            pTaskID = $("#txtTaskID").val(),
-                            pStatProspek = $("#ddlStsProspek").val(),
-                            pAppID = $("#txtAppID").val(),
-                            pPriorityLevel = $("#ddlPriorityLevel").val(),
-                            pCustName = $("#txtCustName").val(),
-                            pStatDukcapil = $("#ddlStatusDukcapil").val(),
-                            pSdate = $("#sdate").val(),
-                            pEdate = $("#edate").val(),
-                            pSourceData = $("#ddlSourceData").val(),
-                            pEmpNo = $("#empNo").val()
+        var pRegion = $("#ddlRegion").val(),
+            pFPName = $("#txtFpName").val(),
+            pBranchName = $("#ddlBranch").val(),
+            pEmpPosition = $("#ddlEmpPosition").val(),
+            pTaskID = $("#txtTaskID").val(),
+            pStatProspek = $("#ddlStsProspek").val(),
+            pAppID = $("#txtAppID").val(),
+            pPriorityLevel = $("#ddlPriorityLevel").val(),
+            pCustName = $("#txtCustName").val(),
+            pStatDukcapil = $("#ddlStatusDukcapil").val(),
+            pSdate = $("#sdate").val(),
+            pEdate = $("#edate").val(),
+            pSourceData = $("#ddlSourceData").val(),
+            pEmpNo = $("#empNo").val()
 
-                        if (pFPName == null || pFPName == "")
-                            pFPName = "All";
-                        if (pTaskID == null || pTaskID == "")
-                            pTaskID = "All";
-                        if (pAppID == null || pAppID == "")
-                            pAppID = "All";
-                        if (pCustName == null || pCustName == "")
-                            pCustName = "All";
-                        if (pPriorityLevel == null || pPriorityLevel == "")
-                            pPriorityLevel = "All";
-                        if (pSdate == null || pSdate == "")
-                            pSdate = "All";
-                        if (pEdate == null || pEdate == "")
-                            pEdate = "All";
-                        var href = '';
-                        href = 'TaskInquiry/Excel?pRegion=' + pRegion + "&pFPName="
-                            + pFPName + "&pBranchName=" + pBranchName + "&pEmpPosition="
-                            + pEmpPosition + "&pTaskID=" + pTaskID + "&pStatProspek="
-                            + pStatProspek + "&pAppID=" + pAppID + "&pPriorityLevel="
-                            + pPriorityLevel + "&pCustName=" + pCustName + "&pStatDukcapil="
-                            + pStatDukcapil + "&pSdate=" + pSdate + "&pEdate="
-                            + pEdate + "&pSourceData=" + pSourceData + "&pEmpNo="
-                            + pEmpNo
+        if (pFPName == null || pFPName == "")
+            pFPName = "All";
+        if (pTaskID == null || pTaskID == "")
+            pTaskID = "All";
+        if (pAppID == null || pAppID == "")
+            pAppID = "All";
+        if (pCustName == null || pCustName == "")
+            pCustName = "All";
+        if (pPriorityLevel == null || pPriorityLevel == "")
+            pPriorityLevel = "All";
+        if (pSdate == null || pSdate == "")
+            pSdate = "All";
+        if (pEdate == null || pEdate == "")
+            pEdate = "All";
+        var href = '';
+        href = 'ChangeDukcapil/Excel?pRegion=' + pRegion + "&pFPName="
+            + pFPName + "&pBranchName=" + pBranchName + "&pEmpPosition="
+            + pEmpPosition + "&pTaskID=" + pTaskID + "&pStatProspek="
+            + pStatProspek + "&pAppID=" + pAppID + "&pPriorityLevel="
+            + pPriorityLevel + "&pCustName=" + pCustName + "&pStatDukcapil="
+            + pStatDukcapil + "&pSdate=" + pSdate + "&pEdate="
+            + pEdate + "&pSourceData=" + pSourceData + "&pEmpNo="
+            + pEmpNo
 
-                        window.location.href = href;
-                    }
-                }
-            });
+        window.location.href = href;
+            
     }
 });
 
@@ -377,7 +420,7 @@ $('#btnReset').click(function (e) {
     var pemp = "All";
     var pprospec = "All";
     $.ajax({
-        url: 'TaskInquiry/DdlPriorityLvl',
+        url: 'ChangeDukcapil/DdlPriorityLvl',
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
         async: false,
         dataType: 'json',
@@ -392,7 +435,6 @@ $('#btnReset').click(function (e) {
             $('#ddlPriorityLevel  option').each(function (index, option) {
                 $(option).remove();
             });
-            //alert(result.Value);
             $('#ddlPriorityLevel ').multiselect('rebuild');
             $.each(result, function (i, a) {
                 $('#ddlPriorityLevel').append($('<option>', {
@@ -440,7 +482,7 @@ $(document).on("change", "#ddlSourceData", function () {
     if (pprospec == "")
         pprospec = "All"
     $.ajax({
-        url: 'TaskInquiry/DdlPriorityLvl',
+        url: 'ChangeDukcapil/DdlPriorityLvl',
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
         async: false,
         dataType: 'json',
@@ -482,7 +524,7 @@ $(document).on("change", "#ddlEmpPosition", function () {
     if (pprospec == "")
         pprospec = "All"
     $.ajax({
-        url: 'TaskInquiry/DdlPriorityLvl',
+        url: 'ChangeDukcapil/DdlPriorityLvl',
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
         async: false,
         dataType: 'json',
@@ -524,7 +566,7 @@ $(document).on("change", "#ddlStsProspek", function () {
     if (pprospec == "")
         pprospec = "All"
     $.ajax({
-        url: 'TaskInquiry/DdlPriorityLvl',
+        url: 'ChangeDukcapil/DdlPriorityLvl',
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
         async: false,
         dataType: 'json',

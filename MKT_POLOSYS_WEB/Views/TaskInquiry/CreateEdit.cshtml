@@ -1,7 +1,6 @@
 ﻿@model MKT_POLOSYS_WEB.Models.CreateEditViewModel
 
 @{
-    ViewData["Title"] = "Index asdadasd";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -15,7 +14,7 @@
             "searching": true,
             "ordering": true,
             "info": true,
-            "autoWidth": true,
+            "autoWidth": false,
             "data": [],
             "columns": [
                 {
@@ -65,7 +64,7 @@
     }
 </style>
 
-<h1 style="background-color:aqua">
+<h1 style="background-color:#5f76e8;color:white;height:40px;border-radius:2px;text-align:center">
     TASK DETAIL
 </h1>
 
@@ -73,7 +72,7 @@
 <button id="btnHistoryPenanganan" class="btn btn-primary" style="background-color:#f1f1f1;color:black">HISTORY PENANGANAN</button>
 <form method="post" id="frm">
     <div class="container">
-        <div class="row">
+        <div class="row" style="margin-top:10px">
             <div class="col spasi" style="background-color:gainsboro;border-bottom:solid;">
                 Task ID
             </div>
@@ -208,18 +207,21 @@
     </div>
 
     <div class="container" id="taskHistory" style="display:none">
-        <div class="col" style="background-color:aqua">
+        <div class="row" style="background-color:#5f76e8;color:white;height:20px;border-radius:2px;text-align:center;margin-top:15px;margin-bottom:5px">
             Task History
         </div>
-        <div class="col">
-            <div class="card ex1">
-                <div class="container-fluid" style="padding: 30px;">
-                    <table id="myTableDetailTask" class="table table-striped table-bordered" style="width:100%">
-                        <thead class="font_header">
-                        </thead>
-                        <tbody class="font_detail">
-                        </tbody>
-                    </table>
+        <div class="row">
+
+            <div class="col">
+                <div class="card ex1">
+                    <div class="container-fluid" style="padding: 30px;">
+                        <table id="myTableDetailTask" class="table table-striped table-bordered" style="width:100%">
+                            <thead class="font_header">
+                            </thead>
+                            <tbody class="font_detail">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -227,7 +229,7 @@
     </div>
 
     <div class="container" id="detailQuestion">
-        <div class="col" style="background-color:aqua">
+        <div class="row" style="background-color:#5f76e8;color:white;height:20px;border-radius:2px;text-align:center;margin-top:15px;margin-bottom:5px">
             Detail Question
         </div>
         <div class="row">
@@ -237,7 +239,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.NIK
             </div>
         </div>
@@ -248,7 +250,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.TempatLahir
             </div>
         </div>
@@ -259,7 +261,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.TglLahir
             </div>
         </div>
@@ -270,7 +272,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.AlamatLeg
             </div>
         </div>
@@ -281,7 +283,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.ProvLeg
             </div>
         </div>
@@ -292,7 +294,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.KabLeg
             </div>
         </div>
@@ -303,7 +305,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.KecLeg
             </div>
         </div>
@@ -314,7 +316,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.KelLeg
             </div>
         </div>
@@ -325,7 +327,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.RTLeg
             </div>
         </div>
@@ -336,7 +338,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.RWLeg
             </div>
         </div>
@@ -347,7 +349,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.KodePosLeg
             </div>
         </div>
@@ -358,7 +360,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.SubZipcodeLeg
             </div>
         </div>
@@ -369,7 +371,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.AlamatRes
             </div>
         </div>
@@ -380,7 +382,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.ProvRes
             </div>
         </div>
@@ -391,7 +393,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.KabRes
             </div>
         </div>
@@ -402,7 +404,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.KecRes
             </div>
         </div>
@@ -413,7 +415,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.KelRes
             </div>
         </div>
@@ -424,7 +426,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.RTRes
             </div>
         </div>
@@ -435,7 +437,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.RWRes
             </div>
         </div>
@@ -446,7 +448,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.KodePosRes
             </div>
         </div>
@@ -457,7 +459,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.SubZipcodeRes
             </div>
         </div>
@@ -468,7 +470,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.Product
             </div>
         </div>
@@ -479,7 +481,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.ItemType
             </div>
         </div>
@@ -490,7 +492,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.ItemYear
             </div>
         </div>
@@ -501,7 +503,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.OtrPrice
             </div>
         </div>
@@ -512,7 +514,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.DP
             </div>
         </div>
@@ -523,7 +525,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.LTV
             </div>
         </div>
@@ -534,7 +536,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.Tenor
             </div>
         </div>
@@ -545,7 +547,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.Plafond
             </div>
         </div>
@@ -556,7 +558,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.MonthInstallment
             </div>
         </div>
@@ -567,7 +569,7 @@
             <div class="col- spasi">
                 :
             </div>
-            <div class="col-8 spasi" style="border-bottom: solid;">
+            <div class="col spasi" style="border-bottom: solid;">
                 @Model.Notes
             </div>
         </div>

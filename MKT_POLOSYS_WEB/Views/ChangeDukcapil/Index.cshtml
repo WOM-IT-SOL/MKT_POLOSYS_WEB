@@ -1,12 +1,13 @@
 ﻿@model MKT_POLOSYS_WEB.Models.IndexViewModel
 
 
+@{
+    Layout = "~/Views/Shared/_LayoutDukcapil.cshtml";
+}
+
 @Html.HiddenFor(m => m.empNo)
 @Html.HiddenFor(m => m.empName)
-@{
-    Layout = "~/Views/Shared/_LayoutViews.cshtml";
-    ViewBag.PageModel = Model.empName;
-}
+
 
 <style>
     .spasi {
@@ -21,6 +22,54 @@
 </style>
 
 
+
+<div class="wrapper">
+    <div class="container-fluid" style="margin-bottom:10px">
+        <div class="form-group">
+        </div>
+        <div class="container-fluid mx-auto mt-3 mb-2" style="width: 100%;">
+            <div class="text-align:left">
+            </div>
+        </div>
+        <form id="frmUpload" action="" method="POST" enctype="multipart/form-data">
+            <div class="form-row">
+                <div>
+                    <label for="myFile">File Upload : </label>
+                </div>
+                <div class="col-6">
+                    <div class="custom-file">
+                        <input type="file" id="myFile" name="filename">
+                    </div>
+                </div>
+                <div class="col-1">
+
+                    <button type="submit" class="btn btn-md btn-primary">Upload</button>
+                </div>
+                <div class="col-1">
+                    <button type="submit" class="btn btn-md btn-warning" id="reset">Reset</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="container">
+        <div class="row" style="width:100%;background-color:#5f76e8;color:white;height:20px;font-size:12px;border-radius:2px">
+            Perubahan Dukcapil
+        </div>
+        <div class="row" style="width:100%">
+            <div class="card ex1" style="width:100%">
+                <div class="container-fluid" style="padding: 30px;">
+                    <table id="myTableListDukcapil" class="table table-striped table-bordered" style="width:100%">
+                        <thead class="font_headerdukcapil">
+                        </thead>
+                        <tbody class="font_detaildukcapil">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
 
 <form method="post" id="frm">
     <div class="container">
@@ -44,6 +93,7 @@
                 <input id="txtFpName" class="form-control" />
             </div>
             <div class="col-2" style="text-align:right">
+                <button id="btnDownload" class="btn btn-primary" style="background-color:#f1f1f1;color:black;width:60px">Download</button>
             </div>
         </div>
         <div class="row" style="height:30px">
@@ -177,20 +227,18 @@
     </div>
 
     <div class="container">
-        <div class="row" style="background-color:#5f76e8;color:white;height:20px;font-size:12px;border-radius:2px">
+        <div class="row" style="width:100%;background-color:#5f76e8;color:white;height:20px;font-size:12px;border-radius:2px">
             Task Detail
         </div>
-        <div class="row tableDownload">
-            <div class="col">
-                <div class="card ex1">
-                    <div class="container-fluid" style="padding: 30px;">
-                        <table id="myTableList" class="table table-striped table-bordered" style="width:100%">
-                            <thead class="font_header">
-                            </thead>
-                            <tbody class="font_detail">
-                            </tbody>
-                        </table>
-                    </div>
+        <div class="row" style="width:100%">
+            <div class="card ex1" style="width:100%">
+                <div class="container-fluid" style="padding: 30px;">
+                    <table id="myTableList" class="table table-striped table-bordered" style="width:100%">
+                        <thead class="font_header">
+                        </thead>
+                        <tbody class="font_detail">
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -198,3 +246,84 @@
     </div>
 
 </form>
+
+
+<script>
+    $(document).ready(function () {
+        $('#frmUpload').submit(function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $(this).prop('disabled', true);
+            var form = new FormData(this)
+            var fileExtension = ['xlsx', 'xls'];
+            var namaFile = $("#myFile").val();
+            if (namaFile == "" || namaFile == "Choose file...") {
+                $(this).prop('disabled', false);
+                Swal.fire("Information", "Format file extension yang diupload tidak sesuai", "info")
+                return false;
+            }
+            else if ($.inArray($("#myFile").val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+                $(this).prop('disabled', false);
+                Swal.fire("Information", "Format file extension yang diupload tidak sesuai", "info")
+                return false;
+            } else {
+                Swal.fire({
+                    title: "Uploading...",
+                    text: "Please wait",
+                    imageUrl: "css/jax-loader.gif",
+                    showConfirmButton: false,
+                    allowOutsideClick: false
+                });
+                $.ajax({
+                    url: 'UploadTaskInquiry/ValidasiUpload',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    async: false,
+                    dataType: 'json',
+                    type: 'POST',
+                    data: {
+                        pEmpNo: $("#empNo").val()
+                    },
+                    success: function (isSucceed) {
+                        if (isSucceed == true) {
+                            $(this).prop('disabled', false);
+                            Swal.close();
+                            Swal.fire("Information", $("#empName").val() + " belum menjalankan proses Download,sehingga Proses Upload tidak bisa dilanjutkan.", "info")
+                            return false;
+                        }
+                        else {
+                            $.ajax({
+                                url: 'UploadTaskInquiry/Upload?empNo=' + $("#empNo").val(),
+                                data: form,
+                                type: 'POST',
+                                contentType: false,
+                                processData: false,
+                                enctype: 'multipart/form-data',
+                                dataType: 'json',
+                                async: true,
+                                success: function (result) {
+                                    Swal.close();
+                                    $(this).prop('disabled', false);
+                                    if (result.isSucceed) {
+                                        Swal.fire("Information", result.message, "info")
+                                        var href = '';
+                                        href = 'UploadTaskInquiry/ExportLog?guid=' + result.pguid;
+                                        window.location.href = href;
+                                    }
+                                    else {
+                                        Swal.fire("Information", result.message, "info")
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+            return false;
+        });
+
+        $('#reset').click(function (e) {
+            e.preventDefault();
+            $("#myFile").val('');
+        });
+    });
+</script>

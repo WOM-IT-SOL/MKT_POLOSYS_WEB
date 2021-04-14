@@ -1,5 +1,5 @@
 ﻿$('#ddlPriorityLevel').multiselect({
-    buttonWidth: '180px'
+    buttonWidth: '100%'
 });
 
 $(".caret").css('float', 'right');
@@ -8,17 +8,18 @@ $(".caret").css('margin', '8px 0');
 var myTable = $('#myTableList').DataTable({
     "paging": true,
     "lengthChange": true,
-    "searching": true,
+    "searching": false,
     "ordering": true,
     "info": true,
     "autoWidth": true,
     "data": [],
     "columns": [
         {
-            "title": "SOURCE DATA",
-            "data": "sourceData"
+            "title": "Source Data",
+            "data": "sourceData",
+            "width": '150px'
         }, {
-            "title": "CABANG",
+            "title": "Cabang",
             "data": "cabang"
         }, {
             "title": "Region",

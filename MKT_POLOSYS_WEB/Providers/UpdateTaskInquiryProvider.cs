@@ -147,7 +147,7 @@ namespace MKT_POLOSYS_WEB.Providers
 
             SqlCommand command = new SqlCommand();
             command.Connection = new SqlConnection(connectionString);
-            command.CommandText = @"SELECT TASK_ID FROM T_MKT_POLO_UPLOAD WHERE UPLOAD_STS = 1 AND QUEUE_UID = '" + guid + "'";
+            command.CommandText = @"SELECT A.TASK_ID FROM T_MKT_POLO_UPLOAD  A JOIN T_MKT_POLO_ORDER_IN B ON A.TASK_ID=B.TASK_ID WHERE A.UPLOAD_STS = 1 AND A.QUEUE_UID = '" + guid + "'  B.DUKCAPIL_STAT IN ('Match','Not Found',NULL,'') AND B.PROSPECT_STAT='Prospek'";
             command.CommandType = CommandType.Text;
             command.Connection.Open();
             SqlDataReader dr = command.ExecuteReader();
