@@ -19,11 +19,16 @@
         width: 100%;
         overflow-x: scroll;
     }
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: 0px;
+}
 </style>
 
 
 
-<div class="wrapper">
+<div class="wrapper" style="margin-bottom:20px" >
     <div class="container-fluid" style="margin-bottom:10px">
         <div class="form-group">
         </div>
@@ -41,12 +46,11 @@
                         <input type="file" id="myFile" name="filename">
                     </div>
                 </div>
-                <div class="col-1">
-
-                    <button type="submit" class="btn btn-md btn-primary">Upload</button>
+                <div class="col" style="text-align:right">
                 </div>
-                <div class="col-1">
-                    <button type="submit" class="btn btn-md btn-warning" id="reset">Reset</button>
+                <div class="col-2" style="text-align:right;margin-right:15px">
+                    <button type="submit" class="btn btn-md btn-primary" style="width:60px">Upload</button>
+                    <button type="submit" class="btn btn-md btn-warning" id="reset" style="width:60px">Reset</button>
                 </div>
             </div>
         </form>
@@ -57,7 +61,7 @@
         </div>
         <div class="row" style="width:100%">
             <div class="card ex1" style="width:100%">
-                <div class="container-fluid" style="padding: 30px;">
+                <div class="container-fluid" style="padding: 10px;">
                     <table id="myTableListDukcapil" class="table table-striped table-bordered" style="width:100%">
                         <thead class="font_headerdukcapil">
                         </thead>
@@ -72,8 +76,8 @@
 </div>
 
 <form method="post" id="frm">
-    <div class="container">
-        <div class="row" style="height:30px">
+    <div class="container" style="margin-bottom: 10px">
+        <div class="row" style="height:30px;margin-top:10px">
             <div class="col-2 spasi">
                 Region
             </div>
@@ -93,7 +97,7 @@
                 <input id="txtFpName" class="form-control" />
             </div>
             <div class="col-2" style="text-align:right">
-                <button id="btnDownload" class="btn btn-primary" style="background-color:#f1f1f1;color:black;width:60px">Download</button>
+                <button id="btnDownload" class="btn btn-primary" style="background-color:#f1f1f1;color:black;width:120px">Download All</button>
             </div>
         </div>
         <div class="row" style="height:30px">
@@ -114,7 +118,6 @@
             </div>
             <div class="col">
                 <select class="form-control" data-toggle="dropdown" id="ddlEmpPosition" name="ddlEmpPosition">
-                    <option>All</option>
                     @foreach (var item in Model.ddlEmpPosition)
                     {
 
@@ -177,7 +180,6 @@
             </div>
             <div class="col">
                 <select class="form-control" data-toggle="dropdown" id="ddlStatusDukcapil" name="ddlStatusDukcapil">
-                    <option>All</option>
                     @foreach (var item in Model.ddlStatusDukcapil)
                     {
                         <option id="" value="@item.Value"> @item.Text</option>
@@ -232,7 +234,7 @@
         </div>
         <div class="row" style="width:100%">
             <div class="card ex1" style="width:100%">
-                <div class="container-fluid" style="padding: 30px;">
+                <div class="container-fluid" style="padding: 10px;">
                     <table id="myTableList" class="table table-striped table-bordered" style="width:100%">
                         <thead class="font_header">
                         </thead>
@@ -282,7 +284,7 @@
                     processData: false,
                     enctype: 'multipart/form-data',
                     dataType: 'json',
-                    async: true,
+                    async: false,
                     success: function (result) {
                         Swal.close();
                         $(this).prop('disabled', false);
@@ -291,6 +293,25 @@
                             var href = '';
                             href = 'ChangeDukcapil/ExportLog?guid=' + result.pguid;
                             window.location.href = href;
+                            $.ajax({
+                                url: 'ChangeDukcapil/ListDetailDukcapil',
+                                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                                async: false,
+                                dataType: 'json',
+                                type: 'POST',
+                                traditional: true,
+                                data: {
+                                     guid: result.pguid,
+                                },
+                                success: function (result) {
+                                    var jsonString = JSON.stringify(result);
+                                    myTableDukcapil.clear();
+                                    $.each(result, function (index, value) {
+                                        myTableDukcapil.row.add(value);
+                                    });
+                                    myTableDukcapil.draw();
+                                }
+                            });
                         }
                         else {
                             Swal.fire("Information", result.message, "info")
@@ -304,6 +325,8 @@
         $('#reset').click(function (e) {
             e.preventDefault();
             $("#myFile").val('');
+            myTableDukcapil.clear();
+            myTableDukcapil.draw();
         });
     });
 </script>

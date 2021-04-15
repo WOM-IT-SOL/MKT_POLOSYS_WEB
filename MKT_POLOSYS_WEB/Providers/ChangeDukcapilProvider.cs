@@ -280,7 +280,7 @@ namespace MKT_POLOSYS_WEB.Providers
             return ListData;
 
         }
-        public List<DropdownListViewModel> ddlEmpPosition()
+        public List<DropdownListViewModel> ddlEmpPosition(string type)
         {
             List<DropdownListViewModel> ListData = new List<DropdownListViewModel>();
             var connectionString = context.Database.GetDbConnection().ConnectionString;
@@ -302,7 +302,10 @@ namespace MKT_POLOSYS_WEB.Providers
                     data.Value = rd[1].ToString();
                     data.Filter = rd[2].ToString();
                     data.Filter2 = rd[3].ToString();
-                    ListData.Add(data);
+                    if (rd[1].ToString() == type)
+                    {
+                        ListData.Add(data);
+                    }
                 }
 
                 //Connection Close
@@ -407,7 +410,10 @@ namespace MKT_POLOSYS_WEB.Providers
                     data.Value = rd[1].ToString();
                     data.Filter = rd[2].ToString();
                     data.Filter2 = rd[3].ToString();
-                    ListData.Add(data);
+                    if (rd[0].ToString() == "NOT MATCH")
+                    {
+                        ListData.Add(data);
+                    }
                 }
 
                 //Connection Close
@@ -497,34 +503,34 @@ namespace MKT_POLOSYS_WEB.Providers
             var connectionString = context.Database.GetDbConnection().ConnectionString;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                var querySstring = "spMKT_POLO_UPLOAD_STATUS_DUKCAPIL_TASK";
-                SqlCommand command = new SqlCommand(querySstring, connection);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                //Define Query Parameter
-                command.Parameters.AddWithValue("@pTaskID", model.TaskID);
-                command.Parameters.AddWithValue("@pCustName", model.CustomerName);
-                command.Parameters.AddWithValue("@pIdNo", model.NIK);
-                command.Parameters.AddWithValue("@pBirthPlace", model.TempatLahir);
-                command.Parameters.AddWithValue("@pBirthDt", model.TglLahir);
-                command.Parameters.AddWithValue("@pQueueUid", guid);
-                command.Parameters.AddWithValue("@pEmpNo", model.EmpNo);
-                //open Connection
-                command.Connection.Open();
+                    var querySstring = "spMKT_POLO_UPLOAD_STATUS_DUKCAPIL_TASK";
+                    SqlCommand command = new SqlCommand(querySstring, connection);
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    //Define Query Parameter
+                    command.Parameters.AddWithValue("@pTaskID", model.TaskID);
+                    command.Parameters.AddWithValue("@pCustName", model.CustomerName);
+                    command.Parameters.AddWithValue("@pIdNo", model.NIK);
+                    command.Parameters.AddWithValue("@pBirthPlace", model.TempatLahir);
+                    command.Parameters.AddWithValue("@pBirthDt", model.TglLahir);
+                    command.Parameters.AddWithValue("@pQueueUid", guid);
+                    command.Parameters.AddWithValue("@pEmpNo", model.EmpNo);
+                    //open Connection
+                    command.Connection.Open();
 
-                //PRoses Sp
-                SqlDataReader rd = command.ExecuteReader();
-                while (rd.Read())
-                {
-                }
+                    //PRoses Sp
+                    SqlDataReader rd = command.ExecuteReader();
+                    while (rd.Read())
+                    {
 
-                //Connection Close
-                command.Connection.Close();
+                    }
+                    //Connection Close
+                    command.Connection.Close();
             }
             return ListData;
 
         }
 
-        public async Task SendApiCekDukcapil(string sGUID)
+        public async Task<String> SendApiCekDukcapil(string sGUID)
         {
             var connectionString = context.Database.GetDbConnection().ConnectionString;
             string url = "";
@@ -547,28 +553,38 @@ namespace MKT_POLOSYS_WEB.Providers
             var content = new StringContent(bodyJSON, Encoding.UTF8, "application/json");
             HttpClient client = new HttpClient();
             var response = await client.PostAsync(new Uri(url), content);
+            return await response.Content.ReadAsStringAsync();
         }
 
-        public async Task SendApiToWiseMSS(string guid)
+        public async Task SendApiToWiseMSS(string guid,string done)
         {
+            await Task.Delay(10000);
             var connectionString = context.Database.GetDbConnection().ConnectionString;
-
-            SqlCommand command = new SqlCommand();
-            command.Connection = new SqlConnection(connectionString);
-            command.CommandText = @"SELECT A.TASK_ID FROM T_MKT_POLO_UPLOAD  A JOIN T_MKT_POLO_ORDER_IN B ON A.TASK_ID=B.TASK_ID WHERE A.UPLOAD_STS = 1 AND A.QUEUE_UID = '" + guid + "'  AND B.DUKCAPIL_STAT IN ('Match','Not Found','NULL','') AND B.PROSPECT_STAT='Prospek'";
-            command.CommandType = CommandType.Text;
-            command.Connection.Open();
-            SqlDataReader dr = command.ExecuteReader();
-
-            SendDataPreparation send = new SendDataPreparation(connectionString);
-            while (dr.Read())
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                await send.startProcess(dr[0].ToString());
-            }
+                var querySstring = "spMKT_POLO_SEND_TO_WISE_CHECK";
+                SqlCommand command = new SqlCommand(querySstring, connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                //Define Query Parameter
+                command.Parameters.AddWithValue("@pQueueUid", guid);
+                command.Parameters.AddWithValue("@done", done);
+                //open Connection
+                command.Connection.Open();
 
-            dr.Close();
-            command.Connection.Close();
+                //PRoses Sp
+                SqlDataReader rd = command.ExecuteReader();
+                SendDataPreparation send = new SendDataPreparation(connectionString);
+                while (rd.Read())
+                {
+                    await send.startProcess(rd[0].ToString());
+                }
+                rd.Close();
+                //Connection Close
+                command.Connection.Close();
+            }
         }
+
+
 
         public bool validasiUpload(string empNo)
         {
@@ -729,7 +745,42 @@ select TASK_ID,UPLOAD_MESSAGE from WISE_STAGING.dbo.T_MKT_POLO_UPLOAD where UPLO
 
         }
 
-        
+
+        public List<DownloadDukcapilViewModel> getResultDukcapil(string pGuid)
+        {
+            List<DownloadDukcapilViewModel> listData = new List<DownloadDukcapilViewModel>();
+            bool isSucceed = true;
+            var connectionString = context.Database.GetDbConnection().ConnectionString;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                //Declare COnnection                
+                var querySstring = @"
+ select TASK_ID,ID_NO,CUST_NAME,BIRTH_PLACE,BIRTH_DT from WISE_STAGING.dbo.T_MKT_POLO_UPLOAD where UPLOAD_STS=1 and QUEUE_UID='" + pGuid + "'";
+                SqlCommand command = new SqlCommand(querySstring, connection);
+                //open Connection
+                command.Connection.Open();
+
+                //PRoses Sp
+                SqlDataReader rd = command.ExecuteReader();
+                while (rd.Read())
+                {
+                    DownloadDukcapilViewModel data = new DownloadDukcapilViewModel();
+                    data.TaskID = rd[0].ToString();
+                    data.NIK = rd[1].ToString();
+                    data.CustomerName = rd[2].ToString();
+                    data.TempatLahir = rd[3].ToString();
+                    data.TglLahir = Convert.ToDateTime(rd[4].ToString()).ToString("dd/MM/yyyy");
+                    listData.Add(data);
+                }
+                //Connection Close
+                command.Connection.Close();
+
+            }
+
+            return listData;
+
+        }
+
     }
 }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using ClosedXML.Excel;
 using ExcelDataReader;
@@ -25,9 +26,7 @@ namespace MKT_POLOSYS_WEB.Controllers.ChangeDukcapil
                 var model = new IndexViewModel();
                 model.ddlRegion = changeDukcapilProvider.ddlRegion().ToList();
                 model.ddlBranch = changeDukcapilProvider.ddlBranch().ToList();
-                model.ddlEmpPosition = changeDukcapilProvider.ddlEmpPosition().ToList();
                 model.ddlStsProspek = changeDukcapilProvider.ddlStsProspek().ToList();
-                model.ddlPriorityLevel = changeDukcapilProvider.ddlPriorityLevel("All", "All", "All").ToList();
                 model.ddlStatusDukcapil = changeDukcapilProvider.ddlStatusDukcapil().ToList();
                 model.ddlSourceData = changeDukcapilProvider.ddlSourceData().ToList();
                 var base64EncodedBytes = System.Convert.FromBase64String(emp_no);
@@ -35,6 +34,9 @@ namespace MKT_POLOSYS_WEB.Controllers.ChangeDukcapil
                 model.empNo = empNo;
                 isSucceed = changeDukcapilProvider.validasiUser(model.empNo);
                 model.empName = changeDukcapilProvider.getUser(model.empNo);
+                var Type = changeDukcapilProvider.validasiUserType(model.empNo);
+                model.ddlEmpPosition = changeDukcapilProvider.ddlEmpPosition(Type).ToList();
+                model.ddlPriorityLevel = changeDukcapilProvider.ddlPriorityLevel("All", Type, "All").ToList();
                 if (isSucceed)
                 {
                     ViewData["empNames"] = model.empName;
@@ -61,6 +63,13 @@ namespace MKT_POLOSYS_WEB.Controllers.ChangeDukcapil
             return Json(result);
         }
 
+        public ActionResult ListDetailDukcapil(string guid)
+        {
+            ChangeDukcapilProvider changeDukcapilProvider = new ChangeDukcapilProvider();
+            var result = changeDukcapilProvider.getResultDukcapil(guid);
+            return Json(result);
+        }
+
         public ActionResult DdlPriorityLvl(string source,string empPost,string prospect)
         {
             ChangeDukcapilProvider changeDukcapilProvider = new ChangeDukcapilProvider();
@@ -79,11 +88,11 @@ namespace MKT_POLOSYS_WEB.Controllers.ChangeDukcapil
                 ChangeDukcapilProvider changeDukcapilProvider = new ChangeDukcapilProvider();
                 var worksheet = workbook.Worksheets.Add("DUKCAPIL");
                 var currentRow = 1;
-                worksheet.Cell(currentRow, 2).Value = "Task ID";
+                worksheet.Cell(currentRow, 1).Value = "Task ID";
                 worksheet.Cell(currentRow, 2).Value = "Nik Ktp";
                 worksheet.Cell(currentRow, 3).Value = "Customer Name";
-                worksheet.Cell(currentRow, 5).Value = "Tempat Lahir";
-                worksheet.Cell(currentRow, 6).Value = "Tanggal Lahir";
+                worksheet.Cell(currentRow, 4).Value = "Tempat Lahir";
+                worksheet.Cell(currentRow, 5).Value = "Tanggal Lahir";
                 var result = changeDukcapilProvider.ListDownload(pRegion,
                     pFPName, pBranchName, pEmpPosition,
              pTaskID, pStatProspek, pAppID, pPriorityLevel,
@@ -116,7 +125,7 @@ namespace MKT_POLOSYS_WEB.Controllers.ChangeDukcapil
                     return File(
                         content,
                         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                       pEmpNo + "_"+ type + "_" + DateTime.Now.ToString("yyyyMMdd") + ".xlsx");
+                       "Dukcapil_" + pEmpNo + "_"+ type + "_" + DateTime.Now.ToString("yyyyMMdd") + ".xlsx");
                 }
             }
         }
@@ -160,7 +169,7 @@ namespace MKT_POLOSYS_WEB.Controllers.ChangeDukcapil
                     return File(
                         content,
                         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                       pEmpNo + "_"+ type + "_" + DateTime.Now.ToString("yyyyMMdd") + ".xlsx");
+                       "Dukcapil_"+pEmpNo + "_"+ type + "_" + DateTime.Now.ToString("yyyyMMdd") + ".xlsx");
                 }
             }
         }
@@ -297,8 +306,9 @@ namespace MKT_POLOSYS_WEB.Controllers.ChangeDukcapil
             }
             try
             {
-                Task.Run(async () => await changeDukcapilProvider.SendApiCekDukcapil(guid));
-                await changeDukcapilProvider.SendApiToWiseMSS(guid);
+                var done = await changeDukcapilProvider.SendApiCekDukcapil(guid);
+                await LongOperation();
+                await changeDukcapilProvider.SendApiToWiseMSS(guid, done);
             }
             catch
             {
@@ -313,7 +323,13 @@ namespace MKT_POLOSYS_WEB.Controllers.ChangeDukcapil
             return Json(result);
         }
 
-
+        private Task LongOperation()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                Thread.Sleep(5000);
+            });
+        }
 
         public ActionResult ExportLog(string guid)
         {
@@ -329,7 +345,7 @@ namespace MKT_POLOSYS_WEB.Controllers.ChangeDukcapil
             tw.Flush();
             tw.Close();
 
-            return File(memoryStream.GetBuffer(), "text/plain", "Log_datagagalupload_" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
+            return File(memoryStream.GetBuffer(), "text/plain", "Dukcapil_Log_datagagalupload_" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
         }
 
     }

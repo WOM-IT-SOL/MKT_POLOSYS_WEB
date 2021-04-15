@@ -89,12 +89,13 @@ var myTable = $('#myTableList').DataTable({
             defaultContent: '<input type="button" class="taskID" value="Download"/>'
         }],
     columnDefs: [
+        //{
+        //    targets: [6],
+        //    render: function (data) {
+        //        return '<a href="" class="rowClick">' + data + '</a>'
+        //    }
+        //},
         {
-            targets: [6],
-            render: function (data) {
-                return '<a href="" class="rowClick">' + data + '</a>'
-            }
-        }, {
             targets: [22],
             visible: false,
             searchable: false
@@ -120,7 +121,7 @@ var myTableDukcapil = $('#myTableListDukcapil').DataTable({
             "data": "customerName"
         }, {
             "title": "Nik Ktp",
-            "data": "nikId"
+            "data": "nik"
         }, {
             "title": "Tempat Lahir",
             "data": "tempatLahir"
@@ -403,14 +404,12 @@ $('#btnReset').click(function (e) {
     $("#ddlRegion").val("All");
     $("#txtFpName").val("");
     $("#ddlBranch").val("All");
-    $("#ddlEmpPosition").val("All");
     $("#txtTaskID").val("");
     $("#ddlStsProspek").val("All");
     $("#txtAppID").val("");
     $("#ddlPriorityLevel option:selected").prop("selected", false);
     $('#ddlPriorityLevel').multiselect('rebuild');
     $("#txtCustName").val("");
-    $("#ddlStatusDukcapil").val("All");
     $("#sdate").val("");
     $("#edate").val("");
     $("#ddlSourceData").val("All");
@@ -497,7 +496,6 @@ $(document).on("change", "#ddlSourceData", function () {
             $('#ddlPriorityLevel  option').each(function (index, option) {
                 $(option).remove();
             });
-            //alert(result.Value);
             $('#ddlPriorityLevel ').multiselect('rebuild');
             $.each(result, function (i, a) {
                 $('#ddlPriorityLevel').append($('<option>', {
