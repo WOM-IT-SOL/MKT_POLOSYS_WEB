@@ -23,7 +23,6 @@ namespace MKT_POLOSYS_WEB.DataAccess
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //optionsBuilder.UseSqlServer("Server=10.0.11.145;Database=WISE_STAGING;user id=IT_SOLWOM;password=Passwd789;");
                 IConfigurationRoot configuration = new ConfigurationBuilder()
                  .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                  .AddJsonFile("appsettings.json")

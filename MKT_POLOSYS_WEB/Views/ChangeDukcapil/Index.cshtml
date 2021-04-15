@@ -275,45 +275,25 @@
                     allowOutsideClick: false
                 });
                 $.ajax({
-                    url: 'UploadTaskInquiry/ValidasiUpload',
-                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                    async: false,
-                    dataType: 'json',
+                    url: 'ChangeDukcapil/Upload?empNo=' + $("#empNo").val(),
+                    data: form,
                     type: 'POST',
-                    data: {
-                        pEmpNo: $("#empNo").val()
-                    },
-                    success: function (isSucceed) {
-                        if (isSucceed == true) {
-                            $(this).prop('disabled', false);
-                            Swal.close();
-                            Swal.fire("Information", $("#empName").val() + " belum menjalankan proses Download,sehingga Proses Upload tidak bisa dilanjutkan.", "info")
-                            return false;
+                    contentType: false,
+                    processData: false,
+                    enctype: 'multipart/form-data',
+                    dataType: 'json',
+                    async: true,
+                    success: function (result) {
+                        Swal.close();
+                        $(this).prop('disabled', false);
+                        if (result.isSucceed) {
+                            Swal.fire("Information", result.message, "info")
+                            var href = '';
+                            href = 'ChangeDukcapil/ExportLog?guid=' + result.pguid;
+                            window.location.href = href;
                         }
                         else {
-                            $.ajax({
-                                url: 'UploadTaskInquiry/Upload?empNo=' + $("#empNo").val(),
-                                data: form,
-                                type: 'POST',
-                                contentType: false,
-                                processData: false,
-                                enctype: 'multipart/form-data',
-                                dataType: 'json',
-                                async: true,
-                                success: function (result) {
-                                    Swal.close();
-                                    $(this).prop('disabled', false);
-                                    if (result.isSucceed) {
-                                        Swal.fire("Information", result.message, "info")
-                                        var href = '';
-                                        href = 'UploadTaskInquiry/ExportLog?guid=' + result.pguid;
-                                        window.location.href = href;
-                                    }
-                                    else {
-                                        Swal.fire("Information", result.message, "info")
-                                    }
-                                }
-                            });
+                            Swal.fire("Information", result.message, "info")
                         }
                     }
                 });

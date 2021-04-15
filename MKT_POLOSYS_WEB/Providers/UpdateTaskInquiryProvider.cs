@@ -116,7 +116,7 @@ namespace MKT_POLOSYS_WEB.Providers
 
         }
 
-        public async Task SendApiCekDukcapil(string sGUID)
+        public async Task<String> SendApiCekDukcapil(string sGUID)
         {
             var connectionString = context.Database.GetDbConnection().ConnectionString;
             string url = "";
@@ -139,6 +139,7 @@ namespace MKT_POLOSYS_WEB.Providers
             var content = new StringContent(bodyJSON, Encoding.UTF8, "application/json");
             HttpClient client = new HttpClient();
             var response = await client.PostAsync(new Uri(url), content);
+            return await response.Content.ReadAsStringAsync();
         }
 
         public async Task SendApiToWiseMSS(string guid)
@@ -147,7 +148,7 @@ namespace MKT_POLOSYS_WEB.Providers
 
             SqlCommand command = new SqlCommand();
             command.Connection = new SqlConnection(connectionString);
-            command.CommandText = @"SELECT A.TASK_ID FROM T_MKT_POLO_UPLOAD  A JOIN T_MKT_POLO_ORDER_IN B ON A.TASK_ID=B.TASK_ID WHERE A.UPLOAD_STS = 1 AND A.QUEUE_UID = '" + guid + "'  B.DUKCAPIL_STAT IN ('Match','Not Found',NULL,'') AND B.PROSPECT_STAT='Prospek'";
+            command.CommandText = @"SELECT A.TASK_ID FROM T_MKT_POLO_UPLOAD  A JOIN T_MKT_POLO_ORDER_IN B ON A.TASK_ID=B.TASK_ID WHERE A.UPLOAD_STS = 1 AND A.QUEUE_UID = '" + guid + "' AND B.DUKCAPIL_STAT IN ('Match','Not Found','NULL','') AND B.PROSPECT_STAT='Prospek'";
             command.CommandType = CommandType.Text;
             command.Connection.Open();
             SqlDataReader dr = command.ExecuteReader();
@@ -155,7 +156,8 @@ namespace MKT_POLOSYS_WEB.Providers
             SendDataPreparation send = new SendDataPreparation(connectionString);
             while (dr.Read())
             {
-                await send.startProcess(dr[0].ToString());
+                var TaskID = dr[0].ToString();
+                await send.startProcess(TaskID);
             }
 
             dr.Close();

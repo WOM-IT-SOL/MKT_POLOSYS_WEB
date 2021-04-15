@@ -352,8 +352,11 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
             }
             try
             {
-                await updateTaskInquiryProvider.SendApiCekDukcapil(guid);
-                await updateTaskInquiryProvider.SendApiToWiseMSS(guid);
+
+                string done =  await updateTaskInquiryProvider.SendApiCekDukcapil(guid);
+                if (done == "{}") {
+                    await updateTaskInquiryProvider.SendApiToWiseMSS(guid);
+                }
             }
             catch
             {

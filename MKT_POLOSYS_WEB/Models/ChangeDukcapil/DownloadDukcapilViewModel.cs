@@ -8,7 +8,6 @@ namespace MKT_POLOSYS_WEB.Models
 {
     public class DownloadDukcapilViewModel
     {
-        public string Number { get; set; }
         public string TaskID { get; set; }
         public string CustomerName { get; set; }
         public string NIK { get; set; }

@@ -79,10 +79,9 @@ namespace MKT_POLOSYS_WEB.Controllers.ChangeDukcapil
                 ChangeDukcapilProvider changeDukcapilProvider = new ChangeDukcapilProvider();
                 var worksheet = workbook.Worksheets.Add("DUKCAPIL");
                 var currentRow = 1;
-                worksheet.Cell(currentRow, 1).Value = "No";
                 worksheet.Cell(currentRow, 2).Value = "Task ID";
+                worksheet.Cell(currentRow, 2).Value = "Nik Ktp";
                 worksheet.Cell(currentRow, 3).Value = "Customer Name";
-                worksheet.Cell(currentRow, 4).Value = "Nik Ktp";
                 worksheet.Cell(currentRow, 5).Value = "Tempat Lahir";
                 worksheet.Cell(currentRow, 6).Value = "Tanggal Lahir";
                 var result = changeDukcapilProvider.ListDownload(pRegion,
@@ -93,20 +92,19 @@ namespace MKT_POLOSYS_WEB.Controllers.ChangeDukcapil
                 foreach (var item in result)
                 {
                     currentRow++;
-                    worksheet.Cell(currentRow, 1).Value = item.Number;
-                    worksheet.Cell(currentRow, 2).Value = item.TaskID;
+                    worksheet.Cell(currentRow, 1).Value = item.TaskID;
+                    worksheet.Cell(currentRow, 2).Value = "'" + item.NIK; 
                     worksheet.Cell(currentRow, 3).Value = item.CustomerName;
-                    worksheet.Cell(currentRow, 4).Value = "'" + item.NIK;
-                    worksheet.Cell(currentRow, 5).Value = item.TempatLahir;
+                    worksheet.Cell(currentRow, 4).Value = item.TempatLahir;
                     try
                     {
-                        worksheet.Cell(currentRow, 6).Value = "'" + Convert.ToDateTime(item.TglLahir).ToString("dd/MM/yyyy");
+                        worksheet.Cell(currentRow, 5).Value = "'" + Convert.ToDateTime(item.TglLahir).ToString("dd/MM/yyyy");
                     }
                     catch
                     {
-                        worksheet.Cell(currentRow, 6).Value = "'" + item.TglLahir;
+                        worksheet.Cell(currentRow, 5).Value = "'" + item.TglLahir;
                     }
-                    
+
                 }
 
                 var type = changeDukcapilProvider.validasiUserType(pEmpNo);
@@ -130,29 +128,26 @@ namespace MKT_POLOSYS_WEB.Controllers.ChangeDukcapil
                 ChangeDukcapilProvider changeDukcapilProvider = new ChangeDukcapilProvider();
                 var worksheet = workbook.Worksheets.Add("DUKCAPIL");
                 var currentRow = 1;
-
-                worksheet.Cell(currentRow, 1).Value = "No";
-                worksheet.Cell(currentRow, 2).Value = "Task ID";
+                worksheet.Cell(currentRow, 1).Value = "Task ID";
+                worksheet.Cell(currentRow, 2).Value = "Nik Ktp";
                 worksheet.Cell(currentRow, 3).Value = "Customer Name";
-                worksheet.Cell(currentRow, 4).Value = "Nik Ktp";
-                worksheet.Cell(currentRow, 5).Value = "Tempat Lahir";
-                worksheet.Cell(currentRow, 6).Value = "Tanggal Lahir";
+                worksheet.Cell(currentRow, 4).Value = "Tempat Lahir";
+                worksheet.Cell(currentRow, 5).Value = "Tanggal Lahir";
                 var result = changeDukcapilProvider.ListDownloadDetail(pID, pEmpNo);
                 foreach (var item in result)
                 {
                     currentRow++;
-                    worksheet.Cell(currentRow, 1).Value = item.Number;
-                    worksheet.Cell(currentRow, 2).Value = item.TaskID;
+                    worksheet.Cell(currentRow, 1).Value = item.TaskID;
+                    worksheet.Cell(currentRow, 2).Value = "'" + item.NIK;
                     worksheet.Cell(currentRow, 3).Value = item.CustomerName;
-                    worksheet.Cell(currentRow, 4).Value = "'" + item.NIK;
-                    worksheet.Cell(currentRow, 5).Value = item.TempatLahir;
+                    worksheet.Cell(currentRow, 4).Value = item.TempatLahir;
                     try
                     {
-                        worksheet.Cell(currentRow, 6).Value = "'" + Convert.ToDateTime(item.TglLahir).ToString("dd/MM/yyyy");
+                        worksheet.Cell(currentRow, 5).Value = "'" + Convert.ToDateTime(item.TglLahir).ToString("dd/MM/yyyy");
                     }
                     catch
                     {
-                        worksheet.Cell(currentRow, 6).Value = "'" + item.TglLahir;
+                        worksheet.Cell(currentRow, 5).Value = "'" + item.TglLahir;
                     }
 
                 }
@@ -226,13 +221,11 @@ namespace MKT_POLOSYS_WEB.Controllers.ChangeDukcapil
                     if (uploadFile != null)
                     {
                         Dictionary<string, string> names = new Dictionary<string, string>();
-                        names.Add("labelName1", "No");
-                        names.Add("labelName2", "Task ID");
+                        names.Add("labelName1", "Task ID");
+                        names.Add("labelName2", "Nik Ktp");
                         names.Add("labelName3", "Customer Name");
-                        names.Add("labelName4", "Nik Ktp");
-                        names.Add("labelName5", "Tempat Lahir");
-                        names.Add("labelName6", "Tanggal Lahir");
-
+                        names.Add("labelName4", "Tempat Lahir");
+                        names.Add("labelName5", "Tanggal Lahir");
                         string sFileExtension = Path.GetExtension(uploadFile.FileName).ToLower();
 
                         if ((uploadFile != null) && !string.IsNullOrEmpty(uploadFile.FileName))
@@ -253,7 +246,7 @@ namespace MKT_POLOSYS_WEB.Controllers.ChangeDukcapil
 
                             var totalRows = dtTable.Tables[0].Rows.Count;
                             var maxColumn = dtTable.Tables[0].Columns.Count;
-                            for (int j = 0; j <= 60; j++)
+                            for (int j = 0; j <= 4; j++)
                             {
                                 int i = j + 1;
                                 var data1 = names["labelName" + i].ToString();
@@ -268,21 +261,21 @@ namespace MKT_POLOSYS_WEB.Controllers.ChangeDukcapil
                             for (int i = 1; i < totalRows; i++)
                             {
                                 DownloadDukcapilViewModel model = new DownloadDukcapilViewModel();
-                                model.Number = dtTable.Tables[0].Rows[i][0].ToString();
-                                model.TaskID = dtTable.Tables[0].Rows[i][1].ToString();
+                                model.TaskID = dtTable.Tables[0].Rows[i][0].ToString();
+                                model.NIK = dtTable.Tables[0].Rows[i][1].ToString();
                                 model.CustomerName = dtTable.Tables[0].Rows[i][2].ToString();
-                                model.NIK = dtTable.Tables[0].Rows[i][3].ToString();
-                                model.TempatLahir = dtTable.Tables[0].Rows[i][4].ToString();
+                                model.TempatLahir = dtTable.Tables[0].Rows[i][3].ToString();
                                 try
                                 {
 
-                                    var locDate = dtTable.Tables[0].Rows[i][5].ToString();
+                                    var locDate = dtTable.Tables[0].Rows[i][4].ToString();
                                     model.TglLahir = Convert.ToDateTime(locDate).ToString("yyyy-MM-dd HH:mm:ss.mmm");
                                 }
                                 catch
                                 {
-                                    model.TglLahir = dtTable.Tables[0].Rows[i][5].ToString();
+                                    model.TglLahir = dtTable.Tables[0].Rows[i][4].ToString();
                                 }
+                                model.EmpNo = empNo;
                                 var data = changeDukcapilProvider.UploadData(model, guid);
                             }
 
@@ -304,7 +297,7 @@ namespace MKT_POLOSYS_WEB.Controllers.ChangeDukcapil
             }
             try
             {
-                await changeDukcapilProvider.SendApiCekDukcapil(guid);
+                Task.Run(async () => await changeDukcapilProvider.SendApiCekDukcapil(guid));
                 await changeDukcapilProvider.SendApiToWiseMSS(guid);
             }
             catch
