@@ -218,7 +218,7 @@ namespace MKT_POLOSYS_WEB.Controllers.ChangeDukcapil
         {
             Proccessresult result = new Proccessresult();
             string guid = System.Guid.NewGuid().ToString().ToUpper();
-
+            string done = string.Empty;
             ChangeDukcapilProvider changeDukcapilProvider = new ChangeDukcapilProvider();
             try
             {
@@ -306,9 +306,12 @@ namespace MKT_POLOSYS_WEB.Controllers.ChangeDukcapil
             }
             try
             {
-                var done = await changeDukcapilProvider.SendApiCekDukcapil(guid);
-                await LongOperation();
-                await changeDukcapilProvider.SendApiToWiseMSS(guid, done);
+                await changeDukcapilProvider.SendApiCekDukcapil(guid);
+                done = await changeDukcapilProvider.getLoopDukcapil(guid);
+                if (done == "done")
+                {
+                    await changeDukcapilProvider.SendApiToWiseMSS(guid);
+                }
             }
             catch
             {

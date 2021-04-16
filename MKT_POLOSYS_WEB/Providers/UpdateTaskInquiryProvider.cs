@@ -14,6 +14,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Data;
+using System.Threading;
 
 namespace MKT_POLOSYS_WEB.Providers
 {
@@ -142,10 +143,46 @@ namespace MKT_POLOSYS_WEB.Providers
             return await response.Content.ReadAsStringAsync();
         }
 
+        public async Task<string> getLoopDukcapil(string pGuid)
+        {
+            string result = "not done";
+            var connectionString = context.Database.GetDbConnection().ConnectionString;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                while (result != "done")
+                {
+
+                    //Declare COnnection                
+                    var querySstring = @"DECLARE @count INT " +
+                                "DECLARE @done INT " +
+                                "SELECT @count = COUNT(RESPONSE_CODE) " +
+                                "FROM T_MKT_POLO_DUKCAPIL_CHECK_QUEUE " +
+                                "where QUEUE_UID='" + pGuid + "' " +
+                                "SELECT @done = COUNT(RESPONSE_CODE) " +
+                                "FROM T_MKT_POLO_DUKCAPIL_CHECK_QUEUE " +
+                                "WHERE RESPONSE_CODE IS NOT NULL " +
+                                "AND QUEUE_UID='" + pGuid + "' SELECT CASE WHEN @count = @done THEN 'done' ELSE 'not done' END as cekDukcapil";
+                    SqlCommand command = new SqlCommand(querySstring, connection);
+                    //open Connection
+                    command.Connection.Open();
+
+                    //PRoses Sp
+                    SqlDataReader rd = command.ExecuteReader();
+                    while (rd.Read())
+                    {
+                        result = rd[0].ToString();
+                    }
+                    //Connection Close
+                    command.Connection.Close();
+                    await Task.Delay(1500);
+                }
+
+            }
+            return result;
+        }
         public async Task SendApiToWiseMSS(string guid)
         {
             var connectionString = context.Database.GetDbConnection().ConnectionString;
-
             SqlCommand command = new SqlCommand();
             command.Connection = new SqlConnection(connectionString);
             command.CommandText = @"SELECT A.TASK_ID FROM T_MKT_POLO_UPLOAD  A JOIN T_MKT_POLO_ORDER_IN B ON A.TASK_ID=B.TASK_ID WHERE A.UPLOAD_STS = 1 AND A.QUEUE_UID = '" + guid + "' AND B.DUKCAPIL_STAT IN ('Match','Not Found','NULL','') AND B.PROSPECT_STAT='Prospek'";

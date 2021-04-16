@@ -86,7 +86,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
         {
             Proccessresult result = new Proccessresult();
             string guid = System.Guid.NewGuid().ToString().ToUpper();
-
+            string done = string.Empty;
             UpdateTaskInquiryProvider updateTaskInquiryProvider = new UpdateTaskInquiryProvider();
             try
             {
@@ -353,8 +353,9 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
             try
             {
 
-                string done =  await updateTaskInquiryProvider.SendApiCekDukcapil(guid);
-                if (done == "{}") {
+                await updateTaskInquiryProvider.SendApiCekDukcapil(guid);
+                done = await updateTaskInquiryProvider.getLoopDukcapil(guid);
+                if (done == "done") {
                     await updateTaskInquiryProvider.SendApiToWiseMSS(guid);
                 }
             }
