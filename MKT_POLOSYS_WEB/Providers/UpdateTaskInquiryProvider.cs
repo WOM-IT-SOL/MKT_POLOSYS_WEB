@@ -117,7 +117,7 @@ namespace MKT_POLOSYS_WEB.Providers
 
         }
 
-        public async Task<String> SendApiCekDukcapil(string sGUID)
+        public async Task SendApiCekDukcapil(string sGUID)
         {
             var connectionString = context.Database.GetDbConnection().ConnectionString;
             string url = "";
@@ -140,13 +140,24 @@ namespace MKT_POLOSYS_WEB.Providers
             var content = new StringContent(bodyJSON, Encoding.UTF8, "application/json");
             HttpClient client = new HttpClient();
             var response = await client.PostAsync(new Uri(url), content);
-            return await response.Content.ReadAsStringAsync();
         }
 
         public async Task<string> getLoopDukcapil(string pGuid)
         {
             string result = "not done";
             var connectionString = context.Database.GetDbConnection().ConnectionString;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                //Declare COnnection                
+                var querySstring = @"
+                    INSERT INTO T_MKT_POLO_LOG_DUKCAPIL ([KEY],[VALUE],[DESCRIPTION],[DATE]) VALUES('start','getLoopDukcapil','lop','" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss.fff") + "')";
+                SqlCommand command = new SqlCommand(querySstring, connection);
+                //open Connection
+                command.Connection.Open();
+                //PRoses Sp
+                SqlDataReader rd = command.ExecuteReader();
+                command.Connection.Close();
+            }
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 while (result != "done")
@@ -178,6 +189,19 @@ namespace MKT_POLOSYS_WEB.Providers
                 }
 
             }
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                //Declare COnnection                
+                var querySstring = @"
+                    INSERT INTO T_MKT_POLO_LOG_DUKCAPIL ([KEY],[VALUE],[DESCRIPTION],[DATE]) VALUES('end','getLoopDukcapil','lop','" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss.fff") + "')";
+                SqlCommand command = new SqlCommand(querySstring, connection);
+                //open Connection
+                command.Connection.Open();
+                //PRoses Sp
+                SqlDataReader rd = command.ExecuteReader();
+                command.Connection.Close();
+            }
             return result;
         }
         public async Task SendApiToWiseMSS(string guid)
@@ -194,6 +218,18 @@ namespace MKT_POLOSYS_WEB.Providers
             while (dr.Read())
             {
                 var TaskID = dr[0].ToString();
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    //Declare COnnection                
+                    var querySstring2 = @"
+                    INSERT INTO T_MKT_POLO_LOG_DUKCAPIL ([KEY],[VALUE],[DESCRIPTION],[DATE]) VALUES('start','SendDataPreparation','" + TaskID + "','" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss.fff") + "')";
+                    SqlCommand command2 = new SqlCommand(querySstring2, connection);
+                    //open Connection
+                    command2.Connection.Open();
+                    //PRoses Sp
+                    SqlDataReader rd2 = command2.ExecuteReader();
+                    command2.Connection.Close();
+                }
                 await send.startProcess(TaskID);
             }
 

@@ -17,11 +17,15 @@ using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using OfficeOpenXml;
+using MKT_POLOSYS_WEB.DataAccess;
+using System.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
 {
     public class UploadTaskInquiryController : Controller
     {
+        private WISE_STAGINGContext context = new WISE_STAGINGContext();
 
 
         // GET: TaskInquiry
@@ -352,11 +356,84 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
             }
             try
             {
-
-                await updateTaskInquiryProvider.SendApiCekDukcapil(guid);
+                var connectionString = context.Database.GetDbConnection().ConnectionString;
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    //Declare COnnection                
+                    var querySstring = @"
+                    INSERT INTO T_MKT_POLO_LOG_DUKCAPIL ([KEY],[VALUE],[DESCRIPTION],[DATE]) VALUES('start','SendApiCekDukcapil','SendApiCekDukcapil','" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss.fff") + "')";
+                    SqlCommand command = new SqlCommand(querySstring, connection);
+                    //open Connection
+                    command.Connection.Open();
+                    //PRoses Sp
+                    SqlDataReader rd = command.ExecuteReader();
+                    command.Connection.Close();
+                }
+                Task sendData = Task.Run(async () => await updateTaskInquiryProvider.SendApiCekDukcapil(guid));
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    //Declare COnnection                
+                    var querySstring = @"
+                    INSERT INTO T_MKT_POLO_LOG_DUKCAPIL ([KEY],[VALUE],[DESCRIPTION],[DATE]) VALUES('end','SendApiCekDukcapil','SendApiCekDukcapil','" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss.fff") + "')";
+                    SqlCommand command = new SqlCommand(querySstring, connection);
+                    //open Connection
+                    command.Connection.Open();
+                    //PRoses Sp
+                    SqlDataReader rd = command.ExecuteReader();
+                    command.Connection.Close();
+                }
+                await sendData;
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    //Declare COnnection                
+                    var querySstring = @"
+                    INSERT INTO T_MKT_POLO_LOG_DUKCAPIL ([KEY],[VALUE],[DESCRIPTION],[DATE]) VALUES('start','getLoopDukcapil','getLoopDukcapil','" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss.fff") + "')";
+                    SqlCommand command = new SqlCommand(querySstring, connection);
+                    //open Connection
+                    command.Connection.Open();
+                    //PRoses Sp
+                    SqlDataReader rd = command.ExecuteReader();
+                    command.Connection.Close();
+                }
                 done = await updateTaskInquiryProvider.getLoopDukcapil(guid);
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    //Declare COnnection                
+                    var querySstring = @"
+                    INSERT INTO T_MKT_POLO_LOG_DUKCAPIL ([KEY],[VALUE],[DESCRIPTION],[DATE]) VALUES('end','getLoopDukcapil','getLoopDukcapil','" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss.fff") + "')";
+                    SqlCommand command = new SqlCommand(querySstring, connection);
+                    //open Connection
+                    command.Connection.Open();
+                    //PRoses Sp
+                    SqlDataReader rd = command.ExecuteReader();
+                    command.Connection.Close();
+                }
                 if (done == "done") {
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        //Declare COnnection                
+                        var querySstring = @"
+                    INSERT INTO T_MKT_POLO_LOG_DUKCAPIL ([KEY],[VALUE],[DESCRIPTION],[DATE]) VALUES('start','SendApiToWiseMSS','SendApiToWiseMSS','" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss.fff") + "')";
+                        SqlCommand command = new SqlCommand(querySstring, connection);
+                        //open Connection
+                        command.Connection.Open();
+                        //PRoses Sp
+                        SqlDataReader rd = command.ExecuteReader();
+                        command.Connection.Close();
+                    }
                     await updateTaskInquiryProvider.SendApiToWiseMSS(guid);
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        //Declare COnnection                
+                        var querySstring = @"
+                    INSERT INTO T_MKT_POLO_LOG_DUKCAPIL ([KEY],[VALUE],[DESCRIPTION],[DATE]) VALUES('end','SendApiToWiseMSS','SendApiToWiseMSS','" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss.fff") + "')";
+                        SqlCommand command = new SqlCommand(querySstring, connection);
+                        //open Connection
+                        command.Connection.Open();
+                        //PRoses Sp
+                        SqlDataReader rd = command.ExecuteReader();
+                        command.Connection.Close();
+                    }
                 }
             }
             catch

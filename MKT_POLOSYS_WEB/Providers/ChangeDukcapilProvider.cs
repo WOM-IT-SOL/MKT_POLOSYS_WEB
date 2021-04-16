@@ -531,7 +531,7 @@ namespace MKT_POLOSYS_WEB.Providers
 
         }
 
-        public async Task<String> SendApiCekDukcapil(string sGUID)
+        public async Task SendApiCekDukcapil(string sGUID)
         {
             var connectionString = context.Database.GetDbConnection().ConnectionString;
             string url = "";
@@ -554,7 +554,6 @@ namespace MKT_POLOSYS_WEB.Providers
             var content = new StringContent(bodyJSON, Encoding.UTF8, "application/json");
             HttpClient client = new HttpClient();
             var response = await client.PostAsync(new Uri(url), content);
-            return await response.Content.ReadAsStringAsync();
         }
 
 
@@ -577,6 +576,18 @@ namespace MKT_POLOSYS_WEB.Providers
                 while (rd.Read())
                 {
                     var TaskID = rd[0].ToString();
+                    //Declare COnnection      
+                    using (SqlConnection connection2 = new SqlConnection(connectionString))
+                    {
+                        var querySstring2 = @"
+                    INSERT INTO T_MKT_POLO_LOG_DUKCAPIL ([KEY],[VALUE],[DESCRIPTION],[DATE]) VALUES('start','SendDataPreparation','" + TaskID + "','" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss.fff") + "')";
+                        SqlCommand command2 = new SqlCommand(querySstring2, connection2);
+                        //open Connection
+                        command2.Connection.Open();
+                        //PRoses Sp
+                        SqlDataReader rd2 = command2.ExecuteReader();
+                        command2.Connection.Close();
+                    }
                     await send.startProcess(TaskID);
                 }
                 rd.Close();
@@ -748,8 +759,20 @@ select TASK_ID,UPLOAD_MESSAGE from WISE_STAGING.dbo.T_MKT_POLO_UPLOAD where UPLO
 
         public async Task<string> getLoopDukcapil(string pGuid)
         {
-            string result = "not done";
             var connectionString = context.Database.GetDbConnection().ConnectionString;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                //Declare COnnection                
+                var querySstring = @"
+                    INSERT INTO T_MKT_POLO_LOG_DUKCAPIL ([KEY],[VALUE],[DESCRIPTION],[DATE]) VALUES('start','getLoopDukcapil','lop','" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss.fff") + "')";
+                SqlCommand command = new SqlCommand(querySstring, connection);
+                //open Connection
+                command.Connection.Open();
+                //PRoses Sp
+                SqlDataReader rd = command.ExecuteReader();
+                command.Connection.Close();
+            }
+            string result = "not done";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 while (result != "done")
@@ -779,6 +802,18 @@ select TASK_ID,UPLOAD_MESSAGE from WISE_STAGING.dbo.T_MKT_POLO_UPLOAD where UPLO
                     await Task.Delay(1500);
                 }
 
+            }
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                //Declare COnnection                
+                var querySstring = @"
+                    INSERT INTO T_MKT_POLO_LOG_DUKCAPIL ([KEY],[VALUE],[DESCRIPTION],[DATE]) VALUES('end','getLoopDukcapil','lop','" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss.fff") + "')";
+                SqlCommand command = new SqlCommand(querySstring, connection);
+                //open Connection
+                command.Connection.Open();
+                //PRoses Sp
+                SqlDataReader rd = command.ExecuteReader();
+                command.Connection.Close();
             }
             return result;
         }
