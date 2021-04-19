@@ -323,7 +323,8 @@ namespace MKT_POLOSYS_WEB.Controllers.ChangeDukcapil
                     SqlDataReader rd = command.ExecuteReader();
                     command.Connection.Close();
                 }
-                Task sendData = Task.Run(async () => await changeDukcapilProvider.SendApiCekDukcapil(guid));
+                //Task sendData = Task.Run(async () => await changeDukcapilProvider.SendApiCekDukcapil(guid));
+                await changeDukcapilProvider.SendApiCekDukcapil(guid);
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     //Declare COnnection                
@@ -336,7 +337,7 @@ namespace MKT_POLOSYS_WEB.Controllers.ChangeDukcapil
                     SqlDataReader rd = command.ExecuteReader();
                     command.Connection.Close();
                 }
-                await sendData;
+                //await sendData;
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     //Declare COnnection                

@@ -780,7 +780,7 @@ select TASK_ID,UPLOAD_MESSAGE from WISE_STAGING.dbo.T_MKT_POLO_UPLOAD where UPLO
                     //Declare COnnection                
                     var querySstring = @"DECLARE @count INT "+
                                 "DECLARE @done INT "+
-                                "SELECT @count = COUNT(RESPONSE_CODE) "+
+                                "SELECT @count = COUNT(1) "+
                                 "FROM T_MKT_POLO_DUKCAPIL_CHECK_QUEUE "+
                                 "where QUEUE_UID='" + pGuid + "' " +
                                 "SELECT @done = COUNT(RESPONSE_CODE) " +

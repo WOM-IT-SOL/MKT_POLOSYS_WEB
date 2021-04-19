@@ -166,7 +166,7 @@ namespace MKT_POLOSYS_WEB.Providers
                     //Declare COnnection                
                     var querySstring = @"DECLARE @count INT " +
                                 "DECLARE @done INT " +
-                                "SELECT @count = COUNT(RESPONSE_CODE) " +
+                                "SELECT @count = COUNT(1) " +
                                 "FROM T_MKT_POLO_DUKCAPIL_CHECK_QUEUE " +
                                 "where QUEUE_UID='" + pGuid + "' " +
                                 "SELECT @done = COUNT(RESPONSE_CODE) " +
@@ -204,37 +204,44 @@ namespace MKT_POLOSYS_WEB.Providers
             }
             return result;
         }
+
         public async Task SendApiToWiseMSS(string guid)
         {
             var connectionString = context.Database.GetDbConnection().ConnectionString;
-            SqlCommand command = new SqlCommand();
-            command.Connection = new SqlConnection(connectionString);
-            command.CommandText = @"SELECT A.TASK_ID FROM T_MKT_POLO_UPLOAD  A JOIN T_MKT_POLO_ORDER_IN B ON A.TASK_ID=B.TASK_ID WHERE A.UPLOAD_STS = 1 AND A.QUEUE_UID = '" + guid + "' AND B.DUKCAPIL_STAT IN ('Match','Not Found','NULL','') AND B.PROSPECT_STAT='Prospek'";
-            command.CommandType = CommandType.Text;
-            command.Connection.Open();
-            SqlDataReader dr = command.ExecuteReader();
-
-            SendDataPreparation send = new SendDataPreparation(connectionString);
-            while (dr.Read())
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                var TaskID = dr[0].ToString();
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    //Declare COnnection                
-                    var querySstring2 = @"
-                    INSERT INTO T_MKT_POLO_LOG_DUKCAPIL ([KEY],[VALUE],[DESCRIPTION],[DATE]) VALUES('start','SendDataPreparation','" + TaskID + "','" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss.fff") + "')";
-                    SqlCommand command2 = new SqlCommand(querySstring2, connection);
-                    //open Connection
-                    command2.Connection.Open();
-                    //PRoses Sp
-                    SqlDataReader rd2 = command2.ExecuteReader();
-                    command2.Connection.Close();
-                }
-                await send.startProcess(TaskID);
-            }
+                var querySstring = "spMKT_POLO_SEND_API_WISE_MSS";
+                SqlCommand command = new SqlCommand(querySstring, connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                //Define Query Parameter
+                command.Parameters.AddWithValue("@pQueueUid", guid);
+                //open Connection
+                command.Connection.Open();
 
-            dr.Close();
-            command.Connection.Close();
+                //PRoses Sp
+                SqlDataReader rd = command.ExecuteReader();
+                SendDataPreparation send = new SendDataPreparation(connectionString);
+                while (rd.Read())
+                {
+                    var TaskID = rd[0].ToString();
+                    //Declare COnnection      
+                    using (SqlConnection connection2 = new SqlConnection(connectionString))
+                    {
+                        var querySstring2 = @"
+                    INSERT INTO T_MKT_POLO_LOG_DUKCAPIL ([KEY],[VALUE],[DESCRIPTION],[DATE]) VALUES('start','SendDataPreparation','" + TaskID + "','" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss.fff") + "')";
+                        SqlCommand command2 = new SqlCommand(querySstring2, connection2);
+                        //open Connection
+                        command2.Connection.Open();
+                        //PRoses Sp
+                        SqlDataReader rd2 = command2.ExecuteReader();
+                        command2.Connection.Close();
+                    }
+                    send.startProcess(TaskID);
+                }
+                rd.Close();
+                //Connection Close
+                command.Connection.Close();
+            }
         }
 
         public bool  validasiUpload(string empNo)
