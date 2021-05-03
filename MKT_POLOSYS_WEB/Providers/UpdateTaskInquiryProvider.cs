@@ -148,18 +148,6 @@ namespace MKT_POLOSYS_WEB.Providers
             var connectionString = context.Database.GetDbConnection().ConnectionString;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                //Declare COnnection                
-                var querySstring = @"
-                    INSERT INTO T_MKT_POLO_LOG_DUKCAPIL ([KEY],[VALUE],[DESCRIPTION],[DATE]) VALUES('start','getLoopDukcapil','lop','" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss.fff") + "')";
-                SqlCommand command = new SqlCommand(querySstring, connection);
-                //open Connection
-                command.Connection.Open();
-                //PRoses Sp
-                SqlDataReader rd = command.ExecuteReader();
-                command.Connection.Close();
-            }
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
                 while (result != "done")
                 {
 
@@ -189,19 +177,6 @@ namespace MKT_POLOSYS_WEB.Providers
                 }
 
             }
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                //Declare COnnection                
-                var querySstring = @"
-                    INSERT INTO T_MKT_POLO_LOG_DUKCAPIL ([KEY],[VALUE],[DESCRIPTION],[DATE]) VALUES('end','getLoopDukcapil','lop','" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss.fff") + "')";
-                SqlCommand command = new SqlCommand(querySstring, connection);
-                //open Connection
-                command.Connection.Open();
-                //PRoses Sp
-                SqlDataReader rd = command.ExecuteReader();
-                command.Connection.Close();
-            }
             return result;
         }
 
@@ -224,19 +199,7 @@ namespace MKT_POLOSYS_WEB.Providers
                 while (rd.Read())
                 {
                     var TaskID = rd[0].ToString();
-                    //Declare COnnection      
-                    using (SqlConnection connection2 = new SqlConnection(connectionString))
-                    {
-                        var querySstring2 = @"
-                    INSERT INTO T_MKT_POLO_LOG_DUKCAPIL ([KEY],[VALUE],[DESCRIPTION],[DATE]) VALUES('start','SendDataPreparation','" + TaskID + "','" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss.fff") + "')";
-                        SqlCommand command2 = new SqlCommand(querySstring2, connection2);
-                        //open Connection
-                        command2.Connection.Open();
-                        //PRoses Sp
-                        SqlDataReader rd2 = command2.ExecuteReader();
-                        command2.Connection.Close();
-                    }
-                    send.startProcess(TaskID);
+                    await send.startProcess(TaskID);
                 }
                 rd.Close();
                 //Connection Close

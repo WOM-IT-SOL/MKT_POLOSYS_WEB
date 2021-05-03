@@ -41,12 +41,12 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiryView
                 else
                 {
 
-                    return View("~/Views/Shared/Error.cshtml");
+                    return View("~/Views/Shared/ErrorView.cshtml");
                 }
             }
             catch(Exception ex)
             {
-                return View("~/Views/Shared/Error.cshtml");
+                return View("~/Views/Shared/ErrorView.cshtml");
             }
 
         }
