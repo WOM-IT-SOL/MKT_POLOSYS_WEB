@@ -24,6 +24,11 @@ namespace MKT_POLOSYS_WEB
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(6000);
+                options.Cookie.HttpOnly = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,5 +58,6 @@ namespace MKT_POLOSYS_WEB
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
     }
 }

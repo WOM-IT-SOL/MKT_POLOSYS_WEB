@@ -1,0 +1,205 @@
+﻿@model MKT_POLOSYS_WEB.Models.IndexViewModel
+
+
+@{
+    ViewBag.PageModel = Model.empName;
+}
+
+
+@Html.HiddenFor(m => m.empNo)
+@Html.HiddenFor(m => m.empName)
+
+<style>
+    .spasi {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    .ex1 {
+        width: 100%;
+        overflow-x: scroll;
+    }
+    .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: 0px;
+}
+</style>
+
+
+
+<form method="post" id="frm">
+    <div class="container">
+        <div class="row" style="height: 30px">
+            <div class="col-2 spasi">
+                Region
+            </div>
+            <div class="col">
+                <select class="form-control" data-toggle="dropdown" id="ddlRegion" name="ddlRegion">
+                    <option>All</option>
+                    @foreach (var item in Model.ddlRegion)
+                    {
+                        <option value="@item.Value"> @item.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col-2 spasi">
+                Field Person Name
+            </div>
+            <div class="col">
+                <input id="txtFpName" class="form-control" />
+            </div>
+            <div class="col-2" style="text-align:right">
+                <button id="btnDownload" class="btn btn-primary" style="background-color:#f1f1f1;color:black;width:120px">Download All</button>
+            </div>
+        </div>
+        <div class="row" style="height:30px">
+            <div class="col-2 spasi">
+                Branch Name
+            </div>
+            <div class="col">
+                <select class="form-control" data-toggle="dropdown" id="ddlBranch" name="ddlBranch">
+                    <option data-region="0">All</option>
+                    @foreach (var item in Model.ddlBranch)
+                    {
+                        <option data-region="@item.Filter" value="@item.Value"> @item.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col-2 spasi">
+                Emp Position
+            </div>
+            <div class="col">
+                <select class="form-control" data-toggle="dropdown" id="ddlEmpPosition" name="ddlEmpPosition">
+                    <option>All</option>
+                    @foreach (var item in Model.ddlEmpPosition)
+                    {
+
+                        <option id="" value="@item.Value"> @item.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col-2"></div>
+        </div>
+        <div class="row" style="height:30px">
+            <div class="col-2 spasi">
+                Task ID
+            </div>
+            <div class="col">
+                <input id="txtTaskID" class="form-control" />
+            </div>
+            <div class="col-2 spasi">
+                Status Prospek
+            </div>
+            <div class="col">
+                <select class="form-control" data-toggle="dropdown" id="ddlStsProspek" name="ddlStsProspek">
+                    <option>All</option>
+                    @foreach (var item in Model.ddlStsProspek)
+                    {
+                        <option value="@item.Value"> @item.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col-2"></div>
+        </div>
+        <div class="row" style="height:30px">
+            <div class="col-2 spasi">
+                Application ID
+            </div>
+            <div class="col">
+                <input id="txtAppID" class="form-control" />
+            </div>
+            <div class="col-2 spasi">
+                Priority Level
+            </div>
+            <div class="col">
+                <select id="ddlPriorityLevel" multiple="multiple">
+                    @foreach (var item in Model.ddlPriorityLevel)
+                    {
+                        <option data-source="@item.Filter" data-position="@item.Filter2" data-prospek="@item.Filter3" value="@item.Value"> @item.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col-2"></div>
+        </div>
+        <div class="row" style="height:30px">
+            <div class="col-2 spasi">
+                Customer Name
+            </div>
+            <div class="col">
+                <input id="txtCustName" class="form-control" />
+            </div>
+            <div class="col-2 spasi">
+                Status Dukcapil
+            </div>
+            <div class="col">
+                <select class="form-control" data-toggle="dropdown" id="ddlStatusDukcapil" name="ddlStatusDukcapil">
+                    <option>All</option>
+                    @foreach (var item in Model.ddlStatusDukcapil)
+                    {
+                        <option id="" value="@item.Value"> @item.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col-2"></div>
+        </div>
+        <div class="row" style="height:30px">
+            <div class="col-2 spasi">
+                Distributed Date >=
+            </div>
+            <div class="col">
+                <input class="form-control" type="date" id="sdate" name="sdate" style="line-height:1.5">
+            </div>
+            <div class="col-2 spasi">
+                Distributed Date <=
+            </div>
+            <div class="col">
+
+                <input class="form-control" type="date" id="edate" name="edate" style="line-height:1.5">
+            </div>
+            <div class="col-2" style="text-align:right">
+                <button id="btnSearch" class="btn btn-primary" style="background-color:#f1f1f1;color:black;width:60px">Search</button>
+                <button id="btnReset" class="btn btn-primary" style="background-color:#f1f1f1;color:black;width:60px">Reset</button>
+            </div>
+        </div>
+        <div class="row" style="height:30px">
+            <div class="col-2 spasi">
+                Source Data
+            </div>
+            <div class="col">
+                <select class="form-control" data-toggle="dropdown" id="ddlSourceData" name="ddlSourceData">
+                    <option>All</option>
+                    @foreach (var item in Model.ddlSourceData)
+                    {
+                        <option id="" value="@item.Value"> @item.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col-2 spasi">
+            </div>
+            <div class="col">
+            </div>
+            <div class="col-2"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row" style="width:100%;background-color:#5f76e8;color:white;height:20px;font-size:12px;border-radius:2px">
+            Task Detail
+        </div>
+        <div class="row" style="width:100%">
+            <div class="card ex1" style="width:100%">
+                <div class="container-fluid" style="padding: 10px;">
+                    <table id="myTableList" class="table table-striped table-bordered" style="width:100%">
+                        <thead class="font_header">
+                        </thead>
+                        <tbody class="font_detail">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</form>
