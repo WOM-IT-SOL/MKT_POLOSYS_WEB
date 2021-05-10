@@ -1,21 +1,43 @@
 ﻿
 @model MKT_POLOSYS_WEB.Models.IndexViewModel
 
-    @{
-        ViewData["Title"] = "Pooling Order System (POLO System)";
-        Layout = "~/Views/Shared/_Layout.cshtml";
-    }
+@{
+    ViewData["Title"] = "Pooling Order System (POLO System)";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutMappingProduct.cshtml";
+}
 
-    <style>
-        .spasi {
+<style>
+    /*    .spasi {
             padding-right: 10px;
             padding-left: 10px;
-        }
+        }*/
+    .bgimg {
+        background-color:rgb(160 152 152);
+        color: white;
+        /* Add a font */
+        font-family: "Courier New", Courier, monospace;
+        /* Set the font-size to 25 pixels */
+        font-size: 25px;
+        text-align:center;
+    }
+
     </style>
 
-    <h1 style="background-color:aqua">
+    @*<h1 style="background-color:aqua">
         Pooling Order System (POLO System)
-    </h1>
-    <form method="post" id="frm">
-        <h1></h1>
-    </form>
+    </h1>*@
+
+<div class="bgimg">
+    <div class="topleft">
+        <p>Welcome To :</p>
+    </div>
+    <div class="middle">
+        <h1>WEB POOLING SYSTEM</h1>
+        <hr>
+        <p>[ P o o l i n g - O r d e r - S y s t e m ]</p>
+    </div> 
+</div>
+<form method="post" id="frm">
+    <h1></h1>
+</form>
