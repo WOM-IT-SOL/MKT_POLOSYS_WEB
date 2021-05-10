@@ -34,6 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controllers\MappingProductMtrku\" />
     <Folder Include="Scripts\" />
   </ItemGroup>
 
@@ -43,7 +44,7 @@
 
   <ItemGroup>
     <Reference Include="POLO_EXTENSION">
-      <HintPath>D:\Arif 000204694\Work document\WEB POOLING\dll\POLO_EXTENSION.dll</HintPath>
+      <HintPath>D:\Juans-Area\2021\05.Mei\Webpooling-Phase1-Improvement\Api\publish\POLO_EXTENSION.dll</HintPath>
     </Reference>
   </ItemGroup>
 
