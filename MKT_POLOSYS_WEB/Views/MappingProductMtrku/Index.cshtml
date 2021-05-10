@@ -44,7 +44,7 @@
         padding-left: 10px;
         width: 100%;
         border: 1px solid;
-        padding-right: unset;
+        padding: 10px;
         background-color: white;
         border-radius: 3px 4px;
         box-shadow: 2px 2px 2px rgb(178 178 178);
@@ -63,8 +63,7 @@
     }
 
         .active, .collapsible:hover {
-            background-color: transparent;
-            opacity: 1;
+            opacity: 0;
         }
 
     .contentx {
@@ -74,6 +73,17 @@
         -webkit-transition: visibility 0.2s linear, opacity 0.2s linear;
         -moz-transition: visibility 0.2s linear, opacity 0.2s linear;
         -o-transition: visibility 0.2s linear, opacity 0.2s linear;
+    }
+
+    .titlebox {
+        float: left;
+        padding: 0 5px;
+        margin: -20px 0 0 30px;
+        background: #fff;
+        color:black;
+        font-style:italic;
+        font-family:Courier New, Courier, monospace
+        
     }
 </style>
 
@@ -103,9 +113,10 @@
 <!-- Form Search Data Mapping -->
 <form id="frm" role="form" asp-action="Index">
     @Html.HiddenFor(x => x.empNo)
-    @Html.HiddenFor(x => x.empName)
-    <div class="container container-search">
-        <div class="form-row">
+    @Html.HiddenFor(x => x.empName)    
+    <div class="container container-search ">
+        <div class="titlebox form-row">[ Search ]</div>
+        <div class="form-row" style="margin-top:30px;">
             <div class="form-group col-sm-2">
                 @Html.LabelFor(x => x.product30, new { @class = "label-small" })
             </div>
@@ -132,10 +143,11 @@
 
 </form>
 <!-- Form Table Data Mapping -->
-<div class="contentx">
+<div class="content" style="margin-top:30px;">    
     <form id="frm" role="form" asp-action="Index">
         <div class="container container-data">
-            <button type="button" class="collapsible">[Show / Hide Table]</button>
+            <div class="titlebox">[ Mapping Product List ]</div>
+            @*<button type="button" class="collapsible">[Show / Hide Table]</button>*@
             <div class="row" style="width:100%">
                 <div class="card ex1" style="width:100%;margin-left:5px">
                     <div class="container" style="padding: 10px;">
@@ -160,17 +172,17 @@
                             <tbody class="font_detail">
                                 @foreach (var item in Model.ListDetail)
                                 {
-                                    <tr>
-                                        <td align="center">@Html.DisplayFor(modelItem => item.rowNum)</td>
-                                        <td align="center">@Html.DisplayFor(modelItem => item.product30Code) </td>
-                                        <td>@Html.DisplayFor(modelItem => item.product30Name)</td>
-                                        <td align="center">@Html.DisplayFor(modelItem => item.product120Code)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.product120Name)</td>
-                                        <td align="center">
-                                            <a data-code30="@Html.DisplayFor(modelItem => item.product30Code)" data-code120="@Html.DisplayFor(modelItem => item.product120Code)" class="btn btn-sm btn-outline-success" data-toggle="modal" title="Edit Data Mapping" data-target="#edit-modal" onclick="editMapping(this)">Edit <i class="fa fa-edit"></i></a> |
-                                            <button id="btn-del" type="submit" data-id="@Html.DisplayFor(modelItem => item.id)" class="btn btn-sm btn-outline-danger" title="Hapus Data Mapping" onclick="deleteMapping(this)">Delete <i class="fa fa-trash"></i></button>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td align="center">@Html.DisplayFor(modelItem => item.rowNum)</td>
+                                    <td align="center">@Html.DisplayFor(modelItem => item.product30Code) </td>
+                                    <td>@Html.DisplayFor(modelItem => item.product30Name)</td>
+                                    <td align="center">@Html.DisplayFor(modelItem => item.product120Code)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.product120Name)</td>
+                                    <td align="center">
+                                        <a data-code30="@Html.DisplayFor(modelItem => item.product30Code)" data-code120="@Html.DisplayFor(modelItem => item.product120Code)" class="btn btn-sm btn-outline-success" data-toggle="modal" title="Edit Data Mapping" data-target="#edit-modal" onclick="editMapping(this)">Edit <i class="fa fa-edit"></i></a> |
+                                        <button id="btn-del" type="submit" data-id="@Html.DisplayFor(modelItem => item.id)" class="btn btn-sm btn-outline-danger" title="Hapus Data Mapping" onclick="deleteMapping(this)">Delete <i class="fa fa-trash"></i></button>
+                                    </td>
+                                </tr>
                                 }
                             </tbody>
                         </table>
