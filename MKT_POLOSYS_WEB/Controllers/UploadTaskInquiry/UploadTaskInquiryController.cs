@@ -72,6 +72,8 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
             public bool isSucceed { get; set; }
             public string pguid { get; set; }
             public string message { get; set; }
+
+            public string countError { get; set; }
         }
 
         public static DateTime FromExcelDate(double value)
@@ -91,6 +93,8 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
             Proccessresult result = new Proccessresult();
             string guid = System.Guid.NewGuid().ToString().ToUpper();
             string done = string.Empty;
+            string countError = string.Empty;
+            string countSuccess = string.Empty;
             UpdateTaskInquiryProvider updateTaskInquiryProvider = new UpdateTaskInquiryProvider();
             try
             {
@@ -337,8 +341,25 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                                 model.EmpNo = empNo;
                                 var data = updateTaskInquiryProvider.UploadData(model, guid);
                             }
+                            //start
+                            //penambahan
+                            var connectionString = context.Database.GetDbConnection().ConnectionString;
+                            SqlCommand command = new SqlCommand();
+                            command.Connection = new SqlConnection(connectionString);
+                            command.CommandText = @"select count(TASK_ID) as countError,(select count(TASK_ID)  from T_MKT_POLO_UPLOAD where QUEUE_UID='" + guid + "' and UPLOAD_STS=1) as countSuccess from T_MKT_POLO_UPLOAD where QUEUE_UID = '"+ guid + "' and UPLOAD_STS = 0";
+                            command.CommandType = CommandType.Text;
+                            command.Connection.Open();
+                            SqlDataReader dr = command.ExecuteReader();
 
-                            //}
+                            while (dr.Read())
+                            {
+                                countError = dr[0].ToString();
+                                countSuccess = dr[1].ToString();
+                            }
+
+                            dr.Close();
+                            command.Connection.Close();
+                            //end
                         }
 
                     }
@@ -351,7 +372,15 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
             {
                 result.isSucceed = true;
                 result.pguid = guid;
-                result.message = "Upload Error";
+                result.countError = countError.ToString(); ;
+                if (countError == "0")
+                {
+                    result.message = "Upload Done";
+                }
+                else
+                {
+                    result.message = "Upload Done, Terdapat " + countError + " Error Data dan " + countSuccess + " Success Data, Silahkan Download Log Untuk Detail Error";
+                }
                 return Json(result);
             }
             try
@@ -368,12 +397,28 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
             {
                 result.isSucceed = true;
                 result.pguid = guid;
-                result.message = "Upload Done";
+                result.countError = countError.ToString(); ;
+                if (countError == "0")
+                {
+                    result.message = "Upload Done";
+                }
+                else
+                {
+                    result.message = "Upload Done, Terdapat " + countError + " Error Data dan " + countSuccess + " Success Data, Silahkan Download Log Untuk Detail Error";
+                }
                 return Json(result);
             }
             result.isSucceed = true;
             result.pguid = guid;
-            result.message = "Upload Done";
+            result.countError = countError.ToString(); ;
+            if (countError == "0")
+            {
+                result.message = "Upload Done";
+            }
+            else
+            {
+                result.message = "Upload Done, Terdapat "+ countError + " Error Data dan "+ countSuccess + " Success Data, Silahkan Download Log Untuk Detail Error"; 
+            }
             return Json(result);
         }
 

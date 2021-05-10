@@ -59,10 +59,20 @@ var myTable = $('#myTableList').DataTable({
         }, {
             "title": "Aplikasi IA",
             "data": "aplikasiAI"
-        }, {
-            "title": "Application ID",
+        },
+        //start
+        //penambahan
+        {
+            "title": "Order No",
+            "data": "orderNo"
+        },
+        //end
+        {
+            "title": "Application No",
             "data": "applicationID"
-        }, {
+        },
+
+        {
             "title": "Status MSS",
             "data": "statusMSS"
         }, {
@@ -75,17 +85,35 @@ var myTable = $('#myTableList').DataTable({
             "title": "SOA",
             "data": "soa"
         }, {
-            "title": "Referantor 1",
-            "data": "referentorName"
+            //perbahan Label
+            //"title": "Referantor 1",
+            //"data": "referentorName"
+            "title": "Referantor 1 Code",
+            "data": "referentorCode"
         }, {
-            "title": "Referantor 2",
+            //"title": "Referantor 2",
+            //"data": "referentorName2"
+            "title": "Referantor 1 Name",
+            "data": "referentorName"
+        },
+        //start 
+        //penambahan 
+        {
+            "title": "Referantor 2 Code",
+            "data": "referentorCode2"
+        },
+        {
+            "title": "Referantor 2 Name",
             "data": "referentorName2"
+        }, {
+            "title": "Negative Customer",
+            "data": "negativeCust"
         }, {
             "title": "order ID",
             "data": "orderInID"
         },
         {
-            "title":"Download",
+            "title": "Download",
             defaultContent: '<input type="button" class="taskID" value="Download"/>'
         }],
     columnDefs: [
@@ -96,7 +124,7 @@ var myTable = $('#myTableList').DataTable({
         //    }
         //},
         {
-            targets: [22],
+            targets: [26],
             visible: false,
             searchable: false
         }

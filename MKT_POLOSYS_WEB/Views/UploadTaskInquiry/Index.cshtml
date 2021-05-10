@@ -71,6 +71,7 @@
                     showConfirmButton: false,
                     allowOutsideClick: false
                 });
+                debugger
                 $.ajax({
                     url: 'UploadTaskInquiry/ValidasiUpload',
                     contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -102,9 +103,12 @@
                                     $(this).prop('disabled', false);
                                     if (result.isSucceed) {
                                         Swal.fire("Information", result.message, "info")
-                                        var href = '';
-                                        href = 'UploadTaskInquiry/ExportLog?guid=' + result.pguid;
-                                        window.location.href = href;
+                                        debugger;
+                                        if (result.countError != "0") {
+                                            var href = '';
+                                            href = 'UploadTaskInquiry/ExportLog?guid=' + result.pguid;
+                                            window.location.href = href;
+                                        }
                                     }
                                     else {
                                         Swal.fire("Information", result.message, "info")
