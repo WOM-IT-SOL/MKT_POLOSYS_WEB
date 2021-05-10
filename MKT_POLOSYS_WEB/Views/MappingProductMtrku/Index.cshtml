@@ -1,0 +1,519 @@
+﻿@model MKT_POLOSYS_WEB.Models.MappingProductMtrku.MappingProductMtrkuIndexViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutMappingProduct.cshtml";
+}
+
+
+
+<!-- Area Style -->
+<style>
+    .spasi {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    .ex1 {
+        width: 100%;
+        overflow-x: scroll;
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-right: 0px;
+    }
+
+    .label-small {
+        font-size: small;
+        color: black;
+    }
+     
+
+    .container-search {
+        margin-bottom: 10px;
+        margin-top: 50px;
+        padding: 10px;
+        border: 1px solid;
+        background-color: white;
+        border-radius: 3px 4px;
+        box-shadow: 2px 2px 2px rgb(178 178 178);
+    }
+
+    .container-data {
+        padding-left: 10px;
+        width: 100%;
+        border: 1px solid;
+        padding-right: unset;
+        background-color: white;
+        border-radius: 3px 4px;
+        box-shadow: 2px 2px 2px rgb(178 178 178);
+    }
+
+    .collapsible {
+        background-color: transparent;
+        color: dodgerblue;
+        cursor: pointer;
+        padding: 5px;
+        width: 100%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 15px;
+    }
+
+        .active, .collapsible:hover {
+            background-color: transparent;
+            opacity: 1;
+        }
+
+    .contentx {
+        padding: 0 5px;
+        overflow: hidden;
+        background-color: transparent;
+        -webkit-transition: visibility 0.2s linear, opacity 0.2s linear;
+        -moz-transition: visibility 0.2s linear, opacity 0.2s linear;
+        -o-transition: visibility 0.2s linear, opacity 0.2s linear;
+    }
+</style>
+
+
+<!-- Area Header -->
+<section class="content-header">
+    <nav class="sidebar-nav" style="padding-top:unset">
+        <ul id="sidebarnav">
+            <li class="sidebar-item">
+                <a class="sidebar-link" style="height: 40px;" href=""
+                   aria-expanded="false">
+                    <h3 style="font-weight:600">
+                        <i class="fa fa-check-circle"></i>
+                        MAPPING PRODUCT
+                        <small>MOTORKU 30 TO 120</small>
+                    </h3>
+                </a>
+
+                <p style="font-size:12px; "><i class="fa fa-home"></i> Home > <a href="#">Mapping Product Motorku</a> </p>
+            </li>
+        </ul>
+    </nav>
+</section>
+<!-- End Area Header -->
+
+<!-- Area Content -->
+<!-- Form Search Data Mapping -->
+<form id="frm" role="form" asp-action="Index">
+    @Html.HiddenFor(x => x.empNo)
+    @Html.HiddenFor(x => x.empName)
+    <div class="container container-search">
+        <div class="form-row">
+            <div class="form-group col-sm-2">
+                @Html.LabelFor(x => x.product30, new { @class = "label-small" })
+            </div>
+            <div class="form-group col-sm-3">
+                @Html.TextBoxFor(x => x.product30, new { @class = "form-control form-control-sm", @id = "product30", placeholder = "Input Product Motorku 30 ..", @style = "font-size:small;border:1px solid;" })
+                <input type="hidden" value="search" id="action" name="action" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-sm-2">
+                @Html.LabelFor(x => x.product120, new { @class = "label-small" })
+            </div>
+            <div class="form-group col-sm-3">
+                @Html.TextBoxFor(x => x.product120, new { @class = "form-control form-control-sm", @id = "product120", placeholder = "Input Product Motorku 120 ..", @style = "font-size:small;border:1px solid;" })
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-sm-4">
+                <button class="btn btn-sm btn-outline-info" type="submit" title="Cari Data Mapping"><i class="fa fa-search"></i>Search</button>
+                <button class="btn btn-sm btn-outline-warning" type="button" id="btn-clear-search" title="Reset Form "><i class="fa fa-eraser"></i>Clear</button>
+            </div>
+        </div>
+    </div>
+
+</form>
+<!-- Form Table Data Mapping -->
+<div class="contentx">
+    <form id="frm" role="form" asp-action="Index">
+        <div class="container container-data">
+            <button type="button" class="collapsible">[Show / Hide Table]</button>
+            <div class="row" style="width:100%">
+                <div class="card ex1" style="width:100%;margin-left:5px">
+                    <div class="container" style="padding: 10px;">
+                        <div id="kh">
+                            <button type="button" id="btn-add-kh" class="btn btn-outline-info btn-sm" data-toggle="modal" title="Tambah Data Mapping" data-target="#add-modal" style="float:right;display:block;">Add Mapping <i class="fa fa-plus"></i></button>
+                        </div>
+                        <input type="hidden" id="idDel" name="idDel" />
+                        <div></div>
+                        <input type="hidden" value="delete" id="action" name="action" />
+                        <table id="myTableList" class="table table-sm table-striped table-bordered label-small" style="width:100%; ">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th width="3%">No</th>
+                                    <th width="18%">OFFERING CODE 30</th>
+                                    <th width="20%">OFFERING NAME 30</th>
+                                    <th width="18%">OFFERING CODE 120</th>
+                                    <th width="20%">OFFERING NAME 120</th>
+                                    <th width="21%" class="text-center">Action</th>
+                                </tr>
+
+                            </thead>
+                            <tbody class="font_detail">
+                                @foreach (var item in Model.ListDetail)
+                                {
+                                    <tr>
+                                        <td align="center">@Html.DisplayFor(modelItem => item.rowNum)</td>
+                                        <td align="center">@Html.DisplayFor(modelItem => item.product30Code) </td>
+                                        <td>@Html.DisplayFor(modelItem => item.product30Name)</td>
+                                        <td align="center">@Html.DisplayFor(modelItem => item.product120Code)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.product120Name)</td>
+                                        <td align="center">
+                                            <a data-code30="@Html.DisplayFor(modelItem => item.product30Code)" data-code120="@Html.DisplayFor(modelItem => item.product120Code)" class="btn btn-sm btn-outline-success" data-toggle="modal" title="Edit Data Mapping" data-target="#edit-modal" onclick="editMapping(this)">Edit <i class="fa fa-edit"></i></a> |
+                                            <button id="btn-del" type="submit" data-id="@Html.DisplayFor(modelItem => item.id)" class="btn btn-sm btn-outline-danger" title="Hapus Data Mapping" onclick="deleteMapping(this)">Delete <i class="fa fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </form>
+</div>
+<!-- Form Tambah Data Mapping -->
+<div class="container" width="70%">
+    <form class="form-add" role="form" asp-action="Index">
+        <div id="add-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="btn btn-info btn-sm" data-toggle="tooltip" title="Batal" data-dismiss="modal">
+                            <i class="fa fa-times"></i>
+                        </button>
+
+                        <nav class="sidebar-nav" style="padding-top:unset;height:50px;">
+                            <ul id="sidebarnav">
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link" style="height: 35px;" href=""
+                                       aria-expanded="false">
+                                        <h4>
+                                            Tambah Data Mapping Product Motorku
+                                        </h4>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            @*<input type="text" class="form-control" id="prod-30-code" name="prod_30_code" placeholder="Prod Offering Code 30 " required>*@
+                            <select class="form-control label-small" data-toggle="dropdown" id="ddlMotorku30" name="ddlMotorku30">
+                                <option value="">--Pilih Prod Offering Code 30--</option>
+                                @foreach (var item in Model.ddlMotorku30)
+                                {
+                                    <option value="@item.kode"> @item.nama</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control label-small" id="prod-30-name" name="prod_30_name" placeholder="Prod Offering Name 30 " readonly required>
+                        </div>
+                        <div class="form-group">
+                            @*<input type="text" class="form-control" id="prod-120-code" name="prod_120_code" placeholder="Prod Offering Code 120 ">*@
+                            <select class="form-control label-small" data-toggle="dropdown" id="ddlMotorku120" name="ddlMotorku120">
+                                <option value="">--Pilih Prod Offering Code 120--</option>
+                                @foreach (var item in Model.ddlMotorku120)
+                                {
+                                    <option value="@item.kode"> @item.nama</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control label-small" id="prod-120-name" name="prod_120_name" placeholder="Prod Offering Name 120 " readonly required>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" value="saveadd" id="action" name="action" />
+                        <button type="button" class="btn btn-warning" onclick="clearModalAdd(this)">Clear</button>
+                        <button type="submit" class="btn btn-info" id="submit-mapping">Simpan</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- Form Tambah Data Mapping END -->
+<!-- Form Edit data Mapping -->
+<div class="container" width="70%">
+    <form class="form-edit" role="form" asp-action="Index">
+        <div id="edit-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="btn btn-info btn-sm" data-toggle="tooltip" title="Batal" data-dismiss="modal">
+                            <i class="fa fa-times"></i>
+                        </button>
+
+                        <nav class="sidebar-nav" style="padding-top:unset;height:50px;">
+                            <ul id="sidebarnav">
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link" style="height: 35px;" href=""
+                                       aria-expanded="false">
+                                        <h4>
+                                            Edit Data Mapping Product Motorku
+                                        </h4>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="label-small">Prod Offering Code 30 :</label>
+                            <input type="text" class="form-control label-small" id="ddlMotorku30Upd" name="ddlMotorku30Upd" placeholder="Prod Offering Code 30 " readonly required>
+                        </div>
+                        <div class="form-group">
+                            <label class="label-small">Prod Offering Name :</label>
+                            <input type="text" class="form-control label-small" id="prod-30-name-upd" name="prod_30_name_upd" placeholder="Prod Offering Name 30 " readonly required>
+                        </div>
+                        <div class="form-group">
+                            <label class="label-small">Prod Offering Code 120 :</label>
+                            <input type="hidden" id="ddlMotorku120UpdOld" name="ddlMotorku120UpdOld" />
+                            @*<input type="text" class="form-control" id="prod-120-code" name="prod_120_code" placeholder="Prod Offering Code 120 ">*@
+                            <select class="form-control label-small" data-toggle="dropdown" id="ddlMotorku120Upd" name="ddlMotorku120Upd">
+                                <option value="">--Pilih Prod Offering Code 120--</option>
+                                @foreach (var item in Model.ddlMotorku120)
+                                {
+                                    <option value="@item.kode"> @item.nama</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="label-small">Prod Offering Name :</label>
+                            <input type="text" class="form-control label-small" id="prod-120-name-upd" name="prod_120_name_upd" placeholder="Prod Offering Name 120 " readonly required>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" value="update" id="action" name="action" />
+                        <button type="submit" class="btn btn-info" id="update-mapping">Update</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- Form Edit data Mapping END   -->
+<!-- End Area Content -->
+
+<!-- Area Script   -->
+<script>
+    $(document).ready(function () {
+        //Set DataTable
+        $('#myTableList').DataTable({
+            "scrollX": true,
+            "searching":false
+        });
+
+        //Process result
+        $('#submit-mapping').prop('disabled', true);
+        var msg = '@Model.messagesCode'
+        if (msg.length>0) {
+            if (msg=='00') {
+                Swal.fire("Information", '@Model.messages', "success");
+            } else if (msg == '01') {
+                Swal.fire("Information", '@Model.messages', "warning");
+
+            }else if (msg == '02') {
+                Swal.fire("Information", '@Model.messages', "danger");
+
+            }else {
+                Swal.fire("Information", 'Unknown Error..', "danger");
+
+            }
+        }
+
+        //action saat produk 30 dipilih
+        $('#ddlMotorku30').change(function (e) {
+            e.preventDefault();
+            var datas = $('#ddlMotorku30').val();
+            var datas120 = $('#ddlMotorku120').val();
+            if (datas.length > 0 && datas120.length > 0) {
+                $('#submit-mapping').prop('disabled', false);
+            } else {
+                $('#submit-mapping').prop('disabled', true);
+            }
+
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("ddlMotorku30SelectOne", "MappingProductMtrku")",
+                data: {pKode : datas},
+                dataType: "json",
+                success: function (response) {
+                    if (response.message=="00") {
+                        $('#prod-30-name').val(response.namaProd.nama);
+                    }
+
+                }
+            });
+
+        });
+
+        //action saat produk 120 dipilih
+        $('#ddlMotorku120').change(function (e) {
+            e.preventDefault();
+            var datas = $('#ddlMotorku120').val();
+            var datas30 = $('#ddlMotorku30').val();
+            if (datas.length > 0 && datas30.length > 0) {
+                $('#submit-mapping').prop('disabled', false);
+            } else {
+                $('#submit-mapping').prop('disabled', true);
+            }
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("ddlMotorku120SelectOne", "MappingProductMtrku")",
+                data: {pKode : datas},
+                dataType: "json",
+                success: function (response) {
+                    if (response.message120=="00") {
+                        $('#prod-120-name').val(response.namaProd120.nama);
+                    }
+
+                }
+            });
+
+        });
+
+
+         //action saat produk 120 dipilih pada proses form update
+        $('#ddlMotorku120Upd').change(function (e) {
+            e.preventDefault();
+            var datas = $('#ddlMotorku120Upd').val();
+            var datas30 = $('#ddlMotorku30Upd').val();
+            if (datas.length > 0 && datas30.length > 0) {
+                $('#update-mapping').prop('disabled', false);
+            } else {
+                $('#update-mapping').prop('disabled', true);
+            }
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("ddlMotorku120SelectOne", "MappingProductMtrku")",
+                data: {pKode : datas},
+                dataType: "json",
+                success: function (response) {
+                    if (response.message120=="00") {
+                        $('#prod-120-name-upd').val(response.namaProd120.nama);
+                    }
+
+                }
+            });
+
+        });
+
+
+    });//end ready
+
+
+
+    //clear form search
+    $('#btn-clear-search').click(function (e) {
+        e.preventDefault();
+        $('#product30').val("");
+        $('#product120').val("");
+    });
+
+
+    //action delete
+    function deleteMapping(sel) {
+        var refCode1 = $(sel).attr("data-id");
+        var result = confirm('Yakin Akan Menghapus Data Ini ?');
+        if (result) {
+            $("#idDel").val(refCode1);
+        }
+
+    }
+
+    //action edit
+    function editMapping(sel) {
+        var refCode30 = $(sel).attr("data-code30");
+        var refCode120 = $(sel).attr("data-code120");
+
+        $.ajax({
+                type: "GET",
+                url: "@Url.Action("getOneMapping", "MappingProductMtrku")",
+                data: { refCode30: refCode30, refCode120: refCode120},
+                dataType: "json",
+            success: function (response) {
+                    if (response.messageUpd=="00") {
+                        $('#ddlMotorku30Upd').val(response.data[0].product30Code);
+                        $('#prod-30-name-upd').val(response.data[0].product30Name);
+                        $('#ddlMotorku120Upd').val(response.data[0].product120Code);
+                        $('#prod-120-name-upd').val(response.data[0].product120Name);
+                        $('#ddlMotorku120UpdOld').val(response.data[0].product120Code);
+
+                    }
+
+                }
+            });
+
+    }
+
+    //reset form Add
+    function clearModalAdd(sel) {
+        $('#ddlMotorku30').val('');
+        $('#ddlMotorku120').val('');
+        $('#prod-30-name').val('');
+        $('#prod-120-name').val('');
+        $('#submit-mapping').prop('disabled', true);
+    }
+
+    //validasi inputan
+    function valInput(sel) {
+        var ddlcode30 = $('#ddlMotorku30').val();
+        var ddlcode120 = $('#ddlMotorku120').val();
+        var ddlname30 = $('#prod-30-name').val();
+        var ddlname120 = $('#prod-120-name').val();
+
+        if (ddlcode30.lenth <= 0) {
+            Swal.fire("Information", "Product Motorku 30 Belum dipilih.!", "warning");
+            return false;
+        } else if (ddlcode120.lenth <= 0) {
+            Swal.fire("Information", "Product Motorku 120 Belum dipilih.!", "warning");
+            return false;
+        } else if (ddlname30.lenth <= 0) {
+            Swal.fire("Information", "Nama product Motorku 30 masih kosong.!", "warning");
+            return false;
+        } else if (ddlname120.lenth <= 0) {
+            Swal.fire("Information", "Nama product Motorku 120 masih kosong.!", "warning");
+            return false;
+        } else {
+            return true;
+        }
+    }
+</script>
+
+<script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
+            }
+        });
+    }
+</script>
