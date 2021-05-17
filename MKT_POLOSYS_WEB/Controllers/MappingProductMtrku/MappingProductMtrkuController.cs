@@ -28,7 +28,7 @@ namespace MKT_POLOSYS_WEB.Controllers.MappingProductMtrku
                 {
                 var base64EncodedBytes = System.Convert.FromBase64String(emp_no);
                 var emp_nox = System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
-                var emp_name =  mappingProductMtrku.getUser(emp_nox);
+                var emp_name =  mappingProductMtrku.getUser(emp_nox); 
                 var sessionLogin = new SessionLogin() { empName = emp_name, empNo= emp_nox, idMenu=id };
                 HttpContext.Session.SetString("SessionLogin", JsonConvert.SerializeObject(sessionLogin));
                 HttpContext.Session.SetString("getusername", sessionLogin.empName);
@@ -84,7 +84,10 @@ namespace MKT_POLOSYS_WEB.Controllers.MappingProductMtrku
         [HttpPost]
         public ActionResult Index([Bind] MappingProductMtrkuCreateUpdateViewModel param)
         {
-       
+            if (HttpContext.Session.GetString("getusername") == null || HttpContext.Session.GetString("getmenuid") == null)
+            {
+                return View("~/Views/Shared/Redir.cshtml");
+            }
             try
             {
                 if (param.action == "search")
