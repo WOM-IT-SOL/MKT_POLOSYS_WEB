@@ -35,6 +35,12 @@ namespace MKT_POLOSYS_WEB.Models
         public string referentorName2 { get; set; }
         public string orderInID { get; set; }
 
+        //penambahan Arif
+        public string referentorCode { get; set; }
+        public string referentorCode2 { get; set; }
+        public string negativeCust { get; set; }
+        public string orderNo { get; set; }
+
 
     }
 }

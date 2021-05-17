@@ -28,7 +28,7 @@ namespace MKT_POLOSYS_WEB
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromSeconds(6000);
+                options.IdleTimeout = TimeSpan.FromSeconds(3600);
                 options.Cookie.HttpOnly = true;
             });
         }
