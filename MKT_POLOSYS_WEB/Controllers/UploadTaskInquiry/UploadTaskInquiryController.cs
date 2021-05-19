@@ -375,7 +375,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                 result.countError = countError.ToString(); ;
                 if (countError == "0")
                 {
-                    result.message = "Upload Done";
+                    result.message = "Upload Done, Terdapat " + countError + " Error Data dan " + countSuccess + " Success Data";
                 }
                 else
                 {
@@ -400,7 +400,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                 result.countError = countError.ToString(); ;
                 if (countError == "0")
                 {
-                    result.message = "Upload Done";
+                    result.message = "Upload Done, Terdapat " + countError + " Error Data dan " + countSuccess + " Success Data";
                 }
                 else
                 {
@@ -413,7 +413,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
             result.countError = countError.ToString(); ;
             if (countError == "0")
             {
-                result.message = "Upload Done";
+                result.message = "Upload Done, Terdapat " + countError + " Error Data dan " + countSuccess + " Success Data";
             }
             else
             {
