@@ -46,7 +46,7 @@
 
   <ItemGroup>
     <Reference Include="POLO_EXTENSION">
-      <HintPath>D:\Juans-Area\2021\05.Mei\Webpooling-Phase1-Improvement\Api\SendData\publish\20210607\POLO_EXTENSION.dll</HintPath>
+      <HintPath>D:\Juans-Area\2021\05.Mei\Webpooling-Phase1-Improvement\Api\SendData\publish\20210609\POLO_EXTENSION.dll</HintPath>
     </Reference>
   </ItemGroup>
 
