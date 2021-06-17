@@ -96,12 +96,13 @@ namespace MKT_POLOSYS_WEB.Providers
                     data.referentorName = rd[20].ToString();
                     data.referentorName2 = rd[21].ToString();
                     data.orderInID = rd[22].ToString();
-                    //penambahanArif
+                    //start --add by arif PR-009-01-21 - Project Pooling Order System (POLO System) - Improvement
                     data.referentorCode = rd[23].ToString();
                     data.referentorCode2 = rd[24].ToString();
                     data.negativeCust = rd[25].ToString();
                     data.orderNo = rd[26].ToString();
                     ListData.Add(data);
+                    //end
                 }
 
                 //Connection Close

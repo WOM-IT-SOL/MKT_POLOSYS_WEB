@@ -342,7 +342,7 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                                 var data = updateTaskInquiryProvider.UploadData(model, guid);
                             }
                             //start
-                            //penambahan
+                            //--add by arif PR-009-01-21 - Project Pooling Order System (POLO System) - Improvement
                             var connectionString = context.Database.GetDbConnection().ConnectionString;
                             SqlCommand command = new SqlCommand();
                             command.Connection = new SqlConnection(connectionString);
@@ -375,11 +375,13 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                 result.countError = countError.ToString(); ;
                 if (countError == "0")
                 {
-                    result.message = "Upload Done";
+                    //result.message = "Upload Done";--remark by arif PR-009-01-21 - Project Pooling Order System (POLO System) - Improvement
+                    result.message = "Upload Done, Terdapat " + countError + " Error Data dan " + countSuccess + " Success Data";//--add by arif PR-009-01-21 - Project Pooling Order System (POLO System) - Improvement
                 }
                 else
                 {
-                    result.message = "Upload Done, Terdapat " + countError + " Error Data dan " + countSuccess + " Success Data, Silahkan Download Log Untuk Detail Error";
+                    //result.message = "Upload Done";--remark by arif PR-009-01-21 - Project Pooling Order System (POLO System) - Improvement
+                    result.message = "Upload Done, Terdapat " + countError + " Error Data dan " + countSuccess + " Success Data, Silahkan Download Log Untuk Detail Error";//--add by arif PR-009-01-21 - Project Pooling Order System (POLO System) - Improvement
                 }
                 return Json(result);
             }
@@ -400,11 +402,13 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
                 result.countError = countError.ToString(); ;
                 if (countError == "0")
                 {
-                    result.message = "Upload Done";
+                    //result.message = "Upload Done";--remark by arif PR-009-01-21 - Project Pooling Order System (POLO System) - Improvement
+                    result.message = "Upload Done, Terdapat " + countError + " Error Data dan " + countSuccess + " Success Data";//--add by arif PR-009-01-21 - Project Pooling Order System (POLO System) - Improvement
                 }
                 else
                 {
-                    result.message = "Upload Done, Terdapat " + countError + " Error Data dan " + countSuccess + " Success Data, Silahkan Download Log Untuk Detail Error";
+                    //result.message = "Upload Done";--remark by arif PR-009-01-21 - Project Pooling Order System (POLO System) - Improvement
+                    result.message = "Upload Done, Terdapat " + countError + " Error Data dan " + countSuccess + " Success Data, Silahkan Download Log Untuk Detail Error";//--add by arif PR-009-01-21 - Project Pooling Order System (POLO System) - Improvement
                 }
                 return Json(result);
             }
@@ -413,11 +417,13 @@ namespace MKT_POLOSYS_WEB.Controllers.TaskInquiry
             result.countError = countError.ToString(); ;
             if (countError == "0")
             {
-                result.message = "Upload Done";
+                //result.message = "Upload Done";--remark by arif PR-009-01-21 - Project Pooling Order System (POLO System) - Improvement
+                result.message = "Upload Done, Terdapat " + countError + " Error Data dan " + countSuccess + " Success Data";//--add by arif PR-009-01-21 - Project Pooling Order System (POLO System) - Improvement
             }
             else
             {
-                result.message = "Upload Done, Terdapat "+ countError + " Error Data dan "+ countSuccess + " Success Data, Silahkan Download Log Untuk Detail Error"; 
+                //result.message = "Upload Done";--remark by arif PR-009-01-21 - Project Pooling Order System (POLO System) - Improvement
+                result.message = "Upload Done, Terdapat "+ countError + " Error Data dan "+ countSuccess + " Success Data, Silahkan Download Log Untuk Detail Error"; //--add by arif PR-009-01-21 - Project Pooling Order System (POLO System) - Improvement
             }
             return Json(result);
         }
